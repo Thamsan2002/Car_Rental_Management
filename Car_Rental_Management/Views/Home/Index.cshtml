@@ -1,4 +1,4 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,3 +6,86 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+ *@
+
+@{
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Dashboard</title>
+        <link rel="stylesheet" href="~/css/adminlayout.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    </head>
+    <body>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2 class="logo">CAR RENTAL ADMIN</h2>
+            <ul class="menu">
+                <li><a href="#"><i class="fa-solid fa-chart-line"></i> DASHBOARD</a></li>
+                <li><a href="#"><i class="fa-solid fa-users"></i> STAFF MANAGEMENT</a></li>
+                <li><a href="#"><i class="fa-solid fa-user-tie"></i> DRIVER MANAGEMENT</a></li>
+                <li><a href="#"><i class="fa-solid fa-car"></i> VEHICLE MANAGEMENT</a></li>
+                <li><a href="#"><i class="fa-solid fa-user"></i> CUSTOMER MANAGEMENT</a></li>
+                <li><a href="#"><i class="fa-solid fa-file-alt"></i> REPORTS</a></li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Navbar -->
+            <div class="topbar">
+                <div class="search-box">
+                    <input type="text" placeholder="Search here...">
+                    <i class="fa fa-search"></i>
+                </div>
+                <div class="top-icons">
+                    <i class="fa-solid fa-bell notification"></i>
+                    <img src="https://i.pravatar.cc/40" class="profile-pic" alt="Profile">
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard">
+                <h1>DASHBOARD OVERVIEW</h1>
+                <div class="cards">
+                    <div class="card">
+                        <h3>TOTAL REVENUE</h3>
+                        <p>$78,423</p>
+                    </div>
+                    <div class="card">
+                        <h3>NEW BOOKINGS</h3>
+                        <p>32,567</p>
+                    </div>
+                    <div class="card">
+                        <h3>RENTED CARS</h3>
+                        <p>41,411</p>
+                    </div>
+                    <div class="card">
+                        <h3>AVAILABLE CARS</h3>
+                        <p>28,623</p>
+                    </div>
+                </div>
+
+                <!-- Profile Section -->
+                <div class="profile-section">
+                    <h2>ADMIN PROFILE</h2>
+                    <div class="profile-box">
+                        <img src="https://i.pravatar.cc/100" alt="Admin">
+                        <div>
+                            <h3>ADMIN NAME</h3>
+                            <p>Email: admin@carrental.com</p>
+                            <p>Role: Super Admin</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
+
+}
