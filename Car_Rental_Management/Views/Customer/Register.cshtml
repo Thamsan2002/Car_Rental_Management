@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Sign In</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(#ffffff);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            max-width: 450px;
+            margin: 60px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+            .form-container:hover {
+                transform: translateY(-3px);
+            }
+
+        .form-title {
+            color: #6a11cb;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+
+
+        .btn-primary {
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            border: none;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+            .btn-primary:hover {
+                background: linear-gradient(90deg, #2575fc, #6a11cb);
+                transform: translateY(-2px);
+            }
+
+        label {
+            font-weight: 600;
+        }
+
+        .form-control:hover, .form-select:hover {
+            border-color: #6a11cb;
+            box-shadow: 0 0 8px rgba(106,17,203,0.3);
+            transition: all 0.3s ease-in-out;
+        }
+
+
+        .form-control:focus, .form-select:focus {
+            border-color: #2575fc;
+            box-shadow: 0 0 10px rgba(37,117,252,0.4);
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <div class="form-container shadow">
+        <h2 class="form-title">Customer Sign In</h2>
+        <form id="signinForm">
+            <div class="mb-3">
+                <label for="signinType" class="form-label">Choose Sign In Option</label>
+                <select class="form-select" id="signinType" name="signinType" required>
+                    <option value="email" selected>Email</option>
+                    <option value="phone">Phone</option>
+                </select>
+            </div>
+
+            <!-- Email Fields -->
+            <div id="emailForm">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="emailPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="emailPassword" name="emailPassword" required>
+                </div>
+            </div>
+
+            <!-- Phone Fields -->
+            <div id="phoneForm" style="display:none;">
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phonePassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="phonePassword" name="phonePassword" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phoneConfirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="phoneConfirmPassword" name="phoneConfirmPassword" required>
+                </div>
+            </div>
+
+            <div class="d-grid mt-3">
+                <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+            </div>
+        </form>
+
+        <div class="d-grid mt-3">
+            <button class="btn btn-outline-primary" onclick="history.back()">Back</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const signinType = document.getElementById('signinType');
+        const emailForm = document.getElementById('emailForm');
+        const phoneForm = document.getElementById('phoneForm');
+
+        signinType.addEventListener('change', function () {
+            if (this.value === 'email') {
+                emailForm.style.display = 'block';
+                phoneForm.style.display = 'none';
+            } else if (this.value === 'phone') {
+                emailForm.style.display = 'none';
+                phoneForm.style.display = 'block';
+            }
+        });
+
+        // Initial display
+        if (signinType.value === 'email') {
+            emailForm.style.display = 'block';
+            phoneForm.style.display = 'none';
+        } else {
+            emailForm.style.display = 'none';
+            phoneForm.style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
