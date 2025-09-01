@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .sidebar {
+      height: 100vh;
+      background-color: #1f2934;
+      color: white;
+      padding: 20px;
+    }
+    .sidebar a {
+      display: block;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      margin-bottom: 5px;
+    }
+    .sidebar a:hover {
+      background-color: #374151;
+      text-decoration: none;
+    }
+    .card-summary {
+      background-color: #f3f4f6;
+      padding: 20px;
+      border-radius: 8px;
+      flex: 1;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+            <!-- Sidebar -->
+            <nav class="col-md-2 d-none d-md-block sidebar">
+                <h2 class="mb-4">GoDrive</h2>
+                <a href="#">Car Management</a>
+                <a href="#">Customer Management</a>
+                <a href="#">Staff Management</a>
+                <a href="#">Booking Management</a>
+                <a href="#">Payment Management</a>
+                <a href="#">Settings</a>
+            </nav>
+
+
+      <!-- Main Content -->
+      <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h1 class="h2">Admin Dashboard</h1>
+          <div class="d-flex align-items-center">
+            <input class="form-control me-2" type="text" placeholder="Search...">
+            <span style="font-size: 1.5rem;">👤</span>
+          </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="d-flex flex-wrap gap-3 mb-4">
+          <div class="card-summary">
+            Total Revenue<br><b>$78,423</b>
+          </div>
+          <div class="card-summary">
+            New Booking<br><b>32,567</b>
+          </div>
+          <div class="card-summary">
+            Rented Cars<br><b>41,411</b>
+          </div>
+          <div class="card-summary">
+            Available Cars<br><b>28,623</b>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row mb-4">
+          <div class="col-md-8 mb-3">
+            <div class="card p-3">
+              <h5>Earnings Summary</h5>
+              <p>[Graph placeholder]</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card p-3">
+              <h5>Car Availability</h5>
+              <p>Check Number of Cars</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Booking Overview -->
+        <div class="row">
+          <div class="col-md-8 mb-3">
+            <div class="card p-3">
+              <h5>Booking Overview</h5>
+              <p>[Bar chart placeholder]</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card p-3">
+              <h5>Booking Status</h5>
+              <p>[Pie chart placeholder]</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
