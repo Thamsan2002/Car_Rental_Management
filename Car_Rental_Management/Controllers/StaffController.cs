@@ -1,8 +1,5 @@
-﻿
-using Car_Rental_Management.Intrface;
-using Car_Rental_Management.Mapper;
+﻿using Car_Rental_Management.Intrface;
 using Car_Rental_Management.viewmodel;
-
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -22,8 +19,8 @@ namespace Car_Rental_Management.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var staffList = await _staffService.GetAllStaffAsync();
-            return View(staffList); // List<StaffDto>
+            var staffList = await _staffService.GetAllStaffAsync(); // DTO already mapped in service
+            return View(staffList);
         }
 
         // 🔹 View staff details
@@ -34,14 +31,14 @@ namespace Car_Rental_Management.Controllers
             if (staffDto == null)
                 return NotFound();
 
-            return View(staffDto); // View: Details.cshtml
+            return View(staffDto);
         }
 
         // 🔹 Create staff (GET)
         [HttpGet]
         public IActionResult Create()
         {
-            return View(new Staffviewmodel()); // Empty form
+            return View(new Staffviewmodel());
         }
 
         // 🔹 Create staff (POST)
@@ -58,19 +55,9 @@ namespace Car_Rental_Management.Controllers
                 TempData["Success"] = "Staff added successfully!";
                 return RedirectToAction("Index");
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
-                return View(vm);
-            }
-            catch (InvalidOperationException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return View(vm);
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError(string.Empty, "Unexpected error occurred.");
                 return View(vm);
             }
         }
@@ -79,12 +66,11 @@ namespace Car_Rental_Management.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var staff = await _staffService.GetStaffByIdAsync(id);
-            if (staff == null)
+            var staffDto = await _staffService.GetStaffByIdAsync(id);
+            if (staffDto == null)
                 return NotFound();
 
-            var vm = Staffmapper.ToViewModel(staff);
-            return View(vm);
+            return View(staffDto); // Mapper in service, not controller
         }
 
         // 🔹 Edit staff (POST)
@@ -101,9 +87,9 @@ namespace Car_Rental_Management.Controllers
                 TempData["Success"] = "Staff updated successfully!";
                 return RedirectToAction("Index");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Failed to update staff.");
+                ModelState.AddModelError(string.Empty, ex.Message);
                 return View(vm);
             }
         }
@@ -119,9 +105,9 @@ namespace Car_Rental_Management.Controllers
                 TempData["Success"] = "Staff deleted successfully!";
                 return RedirectToAction("Index");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                TempData["Error"] = "Failed to delete staff.";
+                TempData["Error"] = ex.Message;
                 return RedirectToAction("Index");
             }
         }
