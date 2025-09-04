@@ -1,6 +1,6 @@
-﻿using Car_Rental_Management.Dtos;
-using Car_Rental_Management.Models;
-    using Car_Rental_Management.viewmodel;
+﻿using Car_Rental_Management.Models;
+using Car_Rental_Management.Dtos;
+using Car_Rental_Management.viewmodel;
 
 namespace Car_Rental_Management.Mapper
 {
@@ -19,11 +19,10 @@ namespace Car_Rental_Management.Mapper
                 ProfileImage = vm.ProfileImage,
                 Salary = vm.Salary,
                 ShiftTime = vm.ShiftTime,
-                 // User.Id is Guid
             };
         }
 
-        // ViewModel → Model
+        // ViewModel → User Model
         public static User ToUserModel(Staffviewmodel vm)
         {
             return new User
@@ -34,32 +33,39 @@ namespace Car_Rental_Management.Mapper
                 Role = vm.Role
             };
         }
-        // 🔹 Convert Staff model to StaffListDto
+
+        // Staff → List DTO
         public static StaffDto ToListDto(Staff staff)
         {
             return new StaffDto
             {
+                Id = staff.Id,
                 StaffCode = staff.StaffCode,
                 Name = staff.Name,
                 Status = staff.Status
             };
         }
 
-        // 🔹 Convert Staff model to StaffDetailDto
+        // Staff → Detail DTO (frontend safe)
         public static StaffDetailDto ToDetailDto(Staff staff)
         {
             return new StaffDetailDto
             {
-                
                 StaffCode = staff.StaffCode,
                 Name = staff.Name,
                 Address = staff.Address,
                 Status = staff.Status,
                 ProfileImage = staff.ProfileImage,
                 Salary = staff.Salary,
-                //ShiftTime = staff.ShiftTime
+                ShiftTime = staff.ShiftTime,
+                EmailAddress = staff.User?.EmailAddress ?? string.Empty,
+                PhoneNumber = staff.User?.PhoneNumber ?? string.Empty,
+                Role = staff.User?.Role ?? string.Empty,
+                // password skip pannittu
             };
         }
+
+        // Update existing staff from ViewModel
         public static void UpdateStaffModel(Staff staff, Staffviewmodel vm)
         {
             staff.Name = vm.Name;
@@ -68,9 +74,10 @@ namespace Car_Rental_Management.Mapper
             staff.Status = vm.Status;
             staff.ProfileImage = vm.ProfileImage;
             staff.Salary = vm.Salary;
-            staff.ShiftTime = vm.ShiftTime;
+            staff.ShiftTime = vm.ShiftTime; // ⚡ Ensure type matches TimeSpan
         }
 
+        // Update existing user from ViewModel
         public static void UpdateUserModel(User user, Staffviewmodel vm)
         {
             user.EmailAddress = vm.EmailAddress;
@@ -78,6 +85,8 @@ namespace Car_Rental_Management.Mapper
             user.PhoneNumber = vm.PhoneNumber;
             user.Role = vm.Role;
         }
+
+        // Detail DTO → ViewModel (edit form)
         public static Staffviewmodel ToViewModel(StaffDetailDto dto)
         {
             return new Staffviewmodel
@@ -90,14 +99,9 @@ namespace Car_Rental_Management.Mapper
                 Salary = dto.Salary,
                 ShiftTime = dto.ShiftTime,
                 EmailAddress = dto.EmailAddress,
-                Password = dto.Password,
                 PhoneNumber = dto.PhoneNumber,
                 Role = dto.Role
             };
         }
-
-
-
-
     }
-}   
+}

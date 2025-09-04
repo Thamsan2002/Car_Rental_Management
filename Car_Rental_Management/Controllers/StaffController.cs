@@ -1,4 +1,5 @@
 ﻿using Car_Rental_Management.Intrface;
+using Car_Rental_Management.Mapper;
 using Car_Rental_Management.viewmodel;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,7 +20,7 @@ namespace Car_Rental_Management.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var staffList = await _staffService.GetAllStaffAsync(); // DTO already mapped in service
+            var staffList = await _staffService.GetAllStaffAsync(); // DTO from service
             return View(staffList);
         }
 
@@ -53,7 +54,7 @@ namespace Car_Rental_Management.Controllers
             {
                 await _staffService.AddStaffAsync(vm);
                 TempData["Success"] = "Staff added successfully!";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
@@ -70,7 +71,9 @@ namespace Car_Rental_Management.Controllers
             if (staffDto == null)
                 return NotFound();
 
-            return View(staffDto); // Mapper in service, not controller
+            // Use mapper to create ViewModel
+            var vm = Staffmapper.ToViewModel(staffDto);
+            return View(vm);
         }
 
         // 🔹 Edit staff (POST)
@@ -85,7 +88,7 @@ namespace Car_Rental_Management.Controllers
             {
                 await _staffService.UpdateStaffAsync(id, vm);
                 TempData["Success"] = "Staff updated successfully!";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
@@ -103,12 +106,12 @@ namespace Car_Rental_Management.Controllers
             {
                 await _staffService.DeleteStaffAsync(id);
                 TempData["Success"] = "Staff deleted successfully!";
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
         }
     }
