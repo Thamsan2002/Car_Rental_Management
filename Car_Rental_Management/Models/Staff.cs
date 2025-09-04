@@ -1,9 +1,12 @@
-﻿namespace Car_Rental_Management.Models
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+namespace Car_Rental_Management.Models
 {
     public class Staff
     {
         public Guid Id { get; set; }
-        public string StaffCode { get; set; }
+        [BindNever]
+        public string? StaffCode { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public StaffStatus Status { get; set; }

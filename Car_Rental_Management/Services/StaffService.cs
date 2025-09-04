@@ -40,28 +40,37 @@ namespace Car_Rental_Management.Services
             if (existingUser != null)
                 throw new InvalidOperationException("User with this email already exists.");
 
-            // Map ViewModel -> User
+            // Map ViewModel -> model User
             var userModel = Staffmapper.ToUserModel(vm);
             var savedUserId = await _userRepo.AddAsync(userModel);
 
             if (savedUserId == Guid.Empty)
                 throw new Exception("Failed to save user record.");
 
-            // Map ViewModel -> Staff
+            // Map ViewModel -> model Staff
             var staffModel = Staffmapper.ToStaffModel(vm);
             staffModel.UserId = savedUserId;
 
-            staffModel.StaffCode = GenerateStaffCode();
+            staffModel.StaffCode = await GenerateStaffCode();
 
             await _staffRepo.AddAsync(staffModel);
+           // GenerateStaffCode
         }
 
-        private string GenerateStaffCode()
+        private async Task<string> GenerateStaffCode()
         {
-            var prefix = "STF";
-            var timestamp = DateTime.UtcNow.Ticks % 1000000;
-            var random = new Random().Next(100, 999);
-            return $"{prefix}{timestamp}{random}";
+            var lastStaff = (await _staffRepo.GetAllAsync())
+                            .OrderByDescending(s => s.StaffCode)
+                            .FirstOrDefault();
+
+            int newNumber = 1; // default for first staff
+            if (lastStaff != null &&
+                int.TryParse(lastStaff.StaffCode.Replace("STF", ""), out int lastNumber))
+            {
+                newNumber = lastNumber + 1;
+            }
+
+            return $"STF{newNumber:D3}"; // STF001, STF002, etc.
         }
 
         //  Get all staff

@@ -53,7 +53,7 @@ namespace Car_Rental_Management.Repositories
             catch (Exception ex)
             {
                 Console.WriteLine($"[StaffRepository] GetAllAsync Error: {ex.Message}");
-                return new List<Staff>(); // crash aagakoodadhu
+                return new List<Staff>(); 
             }
         }
 
