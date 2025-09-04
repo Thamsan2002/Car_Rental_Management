@@ -61,7 +61,7 @@ namespace Car_Rental_Management.Mapper
                 EmailAddress = staff.User?.EmailAddress ?? string.Empty,
                 PhoneNumber = staff.User?.PhoneNumber ?? string.Empty,
                 Role = staff.User?.Role ?? string.Empty,
-                // password skip pannittu
+               
             };
         }
 

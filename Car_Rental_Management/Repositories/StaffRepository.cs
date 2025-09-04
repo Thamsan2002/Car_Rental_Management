@@ -61,7 +61,9 @@ namespace Car_Rental_Management.Repositories
         {
             try
             {
-                return await _context.Staffs.FindAsync(id);
+                return await _context.Staffs
+                                     .Include(s => s.User)  
+                                     .FirstOrDefaultAsync(s => s.Id == id);
             }
             catch (Exception ex)
             {
@@ -99,5 +101,7 @@ namespace Car_Rental_Management.Repositories
                 Console.WriteLine($"[StaffRepository] UpdateAsync Error: {ex.Message}");
             }
         }
+       
+
     }
 }

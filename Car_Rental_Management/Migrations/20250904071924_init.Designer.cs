@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Car_Rental_Management.Migrations
 {
     [DbContext(typeof(Db))]
-    [Migration("20250904051642_init")]
+    [Migration("20250904071924_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -49,7 +49,6 @@ namespace Car_Rental_Management.Migrations
                         .HasColumnType("time");
 
                     b.Property<string>("StaffCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")

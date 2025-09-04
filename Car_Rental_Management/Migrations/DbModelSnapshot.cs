@@ -46,7 +46,6 @@ namespace Car_Rental_Management.Migrations
                         .HasColumnType("time");
 
                     b.Property<string>("StaffCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")

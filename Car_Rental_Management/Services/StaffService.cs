@@ -86,7 +86,7 @@ namespace Car_Rental_Management.Services
             var staff = await _staffRepo.GetByIdAsync(id);
             if (staff == null) throw new Exception("Staff not found");
 
-            return Staffmapper.ToDetailDto(staff); // password skip panna DTO la
+            return Staffmapper.ToDetailDto(staff);
         }
 
         //  Delete staff
