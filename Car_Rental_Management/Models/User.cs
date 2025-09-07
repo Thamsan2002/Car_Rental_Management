@@ -1,12 +1,19 @@
-﻿namespace Car_Rental_Management.Models
+
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Car_Rental_Management.Models
 {
     public class User
     {
-        public Guid Id { get; set; }   // <-- Add this
-        public string EmailAddress { get; set; }
-        public string Password { get; set; }        
-        public string PhoneNumber { get; set; } = string.Empty;
-        public string Role { get; set; }
 
+        [Key]
+        public Guid userId { get; set; } = Guid.NewGuid();
+
+        [Required]
+        public string Email { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+        public Driver Driver { get; set; }
     }
 }

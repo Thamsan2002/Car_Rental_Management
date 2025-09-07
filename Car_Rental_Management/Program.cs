@@ -1,23 +1,25 @@
 using Car_Rental_Management.Data;
-using Car_Rental_Management.Intrface;
-using Car_Rental_Management.Repositories;
-using Car_Rental_Management.Services;
+using Car_Rental_Management.Repository.Implement;
+using Car_Rental_Management.Repository.Interface;
+using Car_Rental_Management.Service.Implement;
+using Car_Rental_Management.Service.Interface;
 using Microsoft.EntityFrameworkCore;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
+
         var builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddScoped<IStaffservice, StaffService>(); // Service interface ? Service class
-        builder.Services.AddScoped<IUserRepository, UserRepository>(); // User repo
-        builder.Services.AddScoped<IStaffRepository, StaffRepository>(); // Staff repo
+        builder.Services.AddScoped<IDriverService, DriverService>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+        builder.Services.AddDbContext<ApplicationDbcontext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-        // Add services to the container.
+//Add services to the container.
         builder.Services.AddControllersWithViews();
-        builder.Services.AddDbContext<Db>(options
-                        => options.UseSqlServer(builder.Configuration.GetConnectionString("Car")));
 
 
         var app = builder.Build();
@@ -29,7 +31,6 @@ internal class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
-
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 

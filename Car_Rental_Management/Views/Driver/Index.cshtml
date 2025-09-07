@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Car_Rental_Management.DTO.DriverDto>
+@{
+    ViewData["Title"] = "Drivers List";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Drivers</h2>
+    <table class="table table-bordered table-striped shadow">
+        <thead class="table-dark">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Emergency Contact</th>
+                <th>NIC</th>
+                <th>Gender</th>
+                <th>Address</th>
+                <th>License Number</th>
+                <th>License Expiry</th>
+                <th>Experience</th>
+                <th>Vehicle Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var driver in Model)
+            {
+                <tr>
+                    <td>@driver.Id</td>
+                    <td>@driver.Name</td>
+                    <td>@driver.Email</td>
+                    <td>@driver.EmergencyContact</td>
+                    <td>@driver.Nic</td>
+                    <td>@driver.Gender</td>
+                    <td>@driver.Address</td>
+                    <td>@driver.LicenseNumber</td>
+                    <td>@driver.LicenseExpiryDate</td>
+                    <td>@driver.Experience</td>
+                    <td>@driver.VehicleType</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
