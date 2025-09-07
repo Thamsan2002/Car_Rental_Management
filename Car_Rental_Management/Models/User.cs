@@ -1,3 +1,4 @@
+
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace Car_Rental_Management.Models
@@ -14,6 +15,5 @@ namespace Car_Rental_Management.Models
         [Required]
         public string Password { get; set; }
         public Driver Driver { get; set; }
-
     }
 }
