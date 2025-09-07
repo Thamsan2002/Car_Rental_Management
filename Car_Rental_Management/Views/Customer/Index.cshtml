@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Car_Rental_Management.DTO.CustomerDto>
+
+@{
+    ViewData["Title"] = "Customers List";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Customers</h2>
+    <table class="table table-bordered table-striped shadow">
+        <thead class="table-dark">
+            <tr>
+                <th>Id</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>NationalIdentityCard</th>
+                <th>Gender</th>
+                <th>Address</th>
+                <th>Account Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Model)
+            {
+                <tr>
+                    <td>@customer.Id</td>
+                    <td>@customer.FullName</td>
+                    <td>@customer.Email</td>
+                    <td>@customer.Phonenumber</td>
+                    <td>@customer.NationalIdentityCard</td>
+                    <td>@customer.Gender</td>
+                    <td>@customer.Address</td>
+                    <td>@customer.AccountCreateDate.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
