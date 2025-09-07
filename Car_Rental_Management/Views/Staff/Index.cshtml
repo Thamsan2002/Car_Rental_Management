@@ -1,0 +1,33 @@
+﻿@model List<Car_Rental_Management.Dtos.StaffDto>
+
+<h2>Staff List</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Staff Code</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var staff in Model)
+        {
+            <tr>
+                <td>@staff.StaffCode</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@staff.Id">@staff.Name</a>
+                </td>
+                <td>@staff.Status</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@staff.Id">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@staff.Id" method="post" style="display:inline">
+                        <button type="submit" class="btn btn-sm btn-danger"
+                            onclick="return confirm('Are you sure?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
