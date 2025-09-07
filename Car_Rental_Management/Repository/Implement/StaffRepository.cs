@@ -1,9 +1,9 @@
 ﻿using Car_Rental_Management.Data;
-using Car_Rental_Management.Intrface;
 using Car_Rental_Management.Models;
+using Car_Rental_Management.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
-namespace Car_Rental_Management.Repositories
+namespace Car_Rental_Management.Repository.Implement
 {
     public class StaffRepository : IStaffRepository
     {

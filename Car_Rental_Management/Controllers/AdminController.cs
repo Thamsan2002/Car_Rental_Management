@@ -6,6 +6,7 @@ namespace Car_Rental_Management.Controllers
     {
         public IActionResult Dashboard()
         {
+            ViewData["Layout"] = "_AdminLayout";
             return View();
         }
     }

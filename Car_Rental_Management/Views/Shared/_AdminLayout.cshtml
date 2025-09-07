@@ -1,11 +1,16 @@
-﻿@* <!DOCTYPE html>
+﻿@*
+    Views/Shared/_AdminLayout.cshtml
+*@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin Dashboard</title>
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
             background-color: #f0f2f8;
@@ -17,6 +22,9 @@
             background: linear-gradient(180deg, #6a11cb, #2575fc); /* Purple → Blue */
             color: white;
             padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
         }
 
             .sidebar h2 {
@@ -38,6 +46,12 @@
                     background: rgba(255, 255, 255, 0.2);
                     transform: translateX(5px);
                 }
+
+        /* Main content area */
+        .content {
+            margin-left: 220px; /* sidebar width */
+            padding: 20px;
+        }
 
         /* Summary Cards */
         .card-summary {
@@ -61,7 +75,7 @@
             color: #6a11cb;
         }
 
-        /* Cards section */
+        /* Card style */
         .card {
             border: none;
             border-radius: 12px;
@@ -72,6 +86,10 @@
                 color: #2575fc;
                 font-weight: bold;
             }
+
+        footer {
+            margin-left: 220px;
+        }
     </style>
 </head>
 <body>
@@ -80,72 +98,27 @@
             <!-- Sidebar -->
             <nav class="col-md-2 d-none d-md-block sidebar">
                 <h2 class="mb-4">GoDrive</h2>
-                <a href="#">Car Management</a>
-                <a href="#">Customer Management</a>
-                <a href="#">Staff Management</a>
-                <a href="#">Booking Management</a>
-                <a href="#">Payment Management</a>
-                <a href="#">Settings</a>
+                <a asp-controller="AddCar" asp-action="Details">Car Management</a>
+                <a asp-controller="Customer" asp-action="Register">Customer Management</a>
+                <a asp-controller="Staff" asp-action="Create">Staff Management</a>
+                <a asp-controller="Booking" asp-action="Booking">Booking Management</a>
+                <a asp-controller="Payment" asp-action="PaymentDetails">Payment Management</a>
+                <a asp-controller="Admin" asp-action="Dashboard">Settings</a>
             </nav>
 
             <!-- Main Content -->
-            <main class="col-md-10 ms-sm-auto px-md-4 py-4">
-                <!-- Header -->
+            <main class="col-md-10 ms-sm-auto px-md-4 py-4 content">
+                <!-- Top header -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h1 class="h2 text-primary">Admin Dashboard</h1>
+                    <h1 class="h2 text-primary">@ViewData["Title"]</h1>
                     <div class="d-flex align-items-center">
                         <input class="form-control me-2" type="text" placeholder="Search...">
                         <span class="header-icon">👤</span>
                     </div>
                 </div>
 
-                <!-- Summary Cards -->
-                <div class="d-flex flex-wrap gap-3 mb-4">
-                    <div class="card-summary">
-                        Total Revenue<br><b>$78,423</b>
-                    </div>
-                    <div class="card-summary">
-                        New Booking<br><b>32,567</b>
-                    </div>
-                    <div class="card-summary">
-                        Rented Cars<br><b>41,411</b>
-                    </div>
-                    <div class="card-summary">
-                        Available Cars<br><b>28,623</b>
-                    </div>
-                </div>
-
-                <!-- Charts Section -->
-                <div class="row mb-4">
-                    <div class="col-md-8 mb-3">
-                        <div class="card p-3">
-                            <h5>Earnings Summary</h5>
-                            <p>[Graph placeholder]</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="card p-3">
-                            <h5>Car Availability</h5>
-                            <p>Check Number of Cars</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Booking Overview -->
-                <div class="row">
-                    <div class="col-md-8 mb-3">
-                        <div class="card p-3">
-                            <h5>Booking Overview</h5>
-                            <p>[Bar chart placeholder]</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="card p-3">
-                            <h5>Booking Status</h5>
-                            <p>[Pie chart placeholder]</p>
-                        </div>
-                    </div>
-                </div>
+                <!-- Page Body -->
+                @RenderBody()
             </main>
         </div>
     </div>
@@ -153,6 +126,8 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Scripts Section -->
+    @await RenderSectionAsync("Scripts", required: false)
 
     <!-- Footer -->
     <footer class="bg-primary text-white text-center py-2 mt-4">
@@ -160,4 +135,3 @@
     </footer>
 </body>
 </html>
- *@

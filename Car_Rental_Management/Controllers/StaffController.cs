@@ -1,5 +1,5 @@
-﻿using Car_Rental_Management.Intrface;
-using Car_Rental_Management.Mapper;
+﻿using Car_Rental_Management.Mapper;
+using Car_Rental_Management.Service.Interface;
 using Car_Rental_Management.viewmodel;
 using Microsoft.AspNetCore.Mvc;
 using System;

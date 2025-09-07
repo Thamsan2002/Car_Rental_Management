@@ -1,7 +1,7 @@
 ﻿using Car_Rental_Management.Dtos;
 using Car_Rental_Management.viewmodel;
 
-namespace Car_Rental_Management.Intrface
+namespace Car_Rental_Management.Service.Interface
 {
     public interface IStaffservice
     {

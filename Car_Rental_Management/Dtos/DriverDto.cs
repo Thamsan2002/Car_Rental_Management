@@ -1,4 +1,4 @@
-﻿namespace Car_Rental_Management.DTO
+﻿namespace Car_Rental_Management.Dtos
 {
     public class DriverDto
     {
