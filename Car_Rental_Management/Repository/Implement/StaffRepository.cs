@@ -17,91 +17,51 @@ namespace Car_Rental_Management.Repository.Implement
         // Add Staff to DB
         public async Task<Staff?> AddAsync(Staff staff)
         {
-            try
-            {
-                _context.Staffs.Add(staff);       // Add staff model
-                await _context.SaveChangesAsync(); // Save changes to DB
-                return staff;                     // Return saved staff
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[StaffRepository] AddAsync Error: {ex.Message}");
-                return null; // fail aanaal null return pannum
-            }
+            _context.Staffs.Add(staff);
+            await _context.SaveChangesAsync();
+            return staff;
         }
 
+        // Get staff by StaffCode
         public async Task<Staff?> GetByStaffCodeAsync(string staffCode)
         {
-            try
-            {
-                return await _context.Staffs
-                    .FirstOrDefaultAsync(s => s.StaffCode == staffCode);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[StaffRepository] GetByStaffCodeAsync Error: {ex.Message}");
-                return null;
-            }
+            return await _context.Staffs
+                                 .Include(s => s.User) // Include related user info
+                                 .FirstOrDefaultAsync(s => s.StaffCode == staffCode);
         }
 
+        // Get all staff
         public async Task<List<Staff>> GetAllAsync()
         {
-            try
-            {
-                return await _context.Staffs.ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[StaffRepository] GetAllAsync Error: {ex.Message}");
-                return new List<Staff>(); 
-            }
+            return await _context.Staffs
+                                 .Include(s => s.User) // Include related user info
+                                 .ToListAsync();
         }
 
+        // Get by Id
         public async Task<Staff?> GetByIdAsync(Guid id)
         {
-            try
-            {
-                return await _context.Staffs
-                                     .Include(s => s.User)  
-                                     .FirstOrDefaultAsync(s => s.Id == id);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[StaffRepository] GetByIdAsync Error: {ex.Message}");
-                return null;
-            }
+            return await _context.Staffs
+                                 .Include(s => s.User) // Include related user info
+                                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
+        // Delete by Id
         public async Task DeleteByIdAsync(Guid id)
         {
-            try
+            var staff = await _context.Staffs.FindAsync(id);
+            if (staff != null)
             {
-                var staff = await _context.Staffs.FindAsync(id);
-                if (staff != null)
-                {
-                    _context.Staffs.Remove(staff);
-                    await _context.SaveChangesAsync();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[StaffRepository] DeleteByIdAsync Error: {ex.Message}");
-            }
-        }
-
-        public async Task UpdateAsync(Staff staff)
-        {
-            try
-            {
-                _context.Staffs.Update(staff);
+                _context.Staffs.Remove(staff);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[StaffRepository] UpdateAsync Error: {ex.Message}");
-            }
         }
-       
 
+        // Update staff
+        public async Task UpdateAsync(Staff staff)
+        {
+            _context.Staffs.Update(staff);
+            await _context.SaveChangesAsync();
+        }
     }
 }
