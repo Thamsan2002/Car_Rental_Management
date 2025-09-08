@@ -6,5 +6,6 @@ namespace Car_Rental_Management.Repository.Interface
     {
         Task<User> GetByEmailAsync(string email);
         Task<User> AddAsync(User user);
+        Task<User> GetByPhoneAsync(string phone);
     }
 }

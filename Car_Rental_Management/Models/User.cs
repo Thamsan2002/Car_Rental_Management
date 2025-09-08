@@ -15,7 +15,7 @@ namespace Car_Rental_Management.Models
         [Required]
         public string Password { get; set; }
         [Required]
-        public string PhoneNumber { get; set; }
+        public string Phone { get; set; }
         [Required]
         public string Role { get; set; }
         public Driver Driver { get; set; }

@@ -25,6 +25,14 @@ namespace Car_Rental_Management.Repository.Implement
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
+        public async Task<User> GetByPhoneAsync(string phone)
+        {
+            var driver = await _context.Drivers
+                .Include(d => d.User)
+                .FirstOrDefaultAsync(d => d.EmergencyContact == phone);
+
+            return driver?.User;
+        }
 
     }
 }

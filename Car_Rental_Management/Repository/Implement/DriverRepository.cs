@@ -26,5 +26,9 @@ namespace Car_Rental_Management.Repository.Implement
             return await _context.Drivers.Include(d => d.User).ToListAsync();
         }
 
+        public async Task<Driver> GetByPhoneAsync(string phone)
+        {
+            return await _context.Drivers.FirstOrDefaultAsync(d => d.EmergencyContact == phone);
+        }
     }
 }
