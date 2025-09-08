@@ -18,18 +18,11 @@ namespace Car_Rental_Management.Service.Implement
         }
         public async Task<string> CreateDriverAsync(DriverViewModel viewModel)
         {
-            // Email check
-            var existingUser = await _userRepository.GetByEmailAsync(viewModel.Email);
+            var existingUser = await _userRepository.GetByEmailAndPhoneAsync(viewModel.Email, viewModel.EmergencyContact);
+
             if (existingUser != null)
             {
-                return "User already exists with this email!";
-            }
-
-            // Phone check
-            var existingPhone = await _driverRepository.GetByPhoneAsync(viewModel.EmergencyContact);
-            if (existingPhone != null)
-            {
-                return "Driver already exists with this phone number!";
+                return "Driver already exists with this email and phone number!";
             }
 
             // Create User
@@ -42,6 +35,7 @@ namespace Car_Rental_Management.Service.Implement
 
             return "Driver created successfully!";
         }
+
 
         public async Task<IEnumerable<Driver>> GetAllDriversAsync()
         {

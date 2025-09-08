@@ -20,19 +20,18 @@ namespace Car_Rental_Management.Repository.Implement
             return user;
         }
 
-        public async Task<User> GetByEmailAsync(string email)
+    
+
+        public async Task<User> GetByEmailAndPhoneAsync(string email, string phone)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return await _context.Users
+                .Join(_context.Drivers,
+                      u => u.userId,
+                      d => d.UserId,
+                      (u, d) => new { User = u, Driver = d })
+                .Where(x => x.User.Email == email && x.Driver.EmergencyContact == phone)
+                .Select(x => x.User)
+                .FirstOrDefaultAsync();
         }
-
-        public async Task<User> GetByPhoneAsync(string phone)
-        {
-            var driver = await _context.Drivers
-                .Include(d => d.User)
-                .FirstOrDefaultAsync(d => d.EmergencyContact == phone);
-
-            return driver?.User;
-        }
-
     }
 }
