@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Principal;
 
-namespace Car_Rental_Management.DTO
+namespace Car_Rental_Management.Dtos
 {
     public class CustomerDto
     {
@@ -16,6 +16,8 @@ namespace Car_Rental_Management.DTO
         public string Phonenumber { get; set; }
         public string Address { get; set; }
         public string AccountCreateDate { get; set; }
+
+
 
     }
 }
