@@ -1,123 +1,76 @@
 ﻿using Car_Rental_Management.Dtos;
-
 using Car_Rental_Management.Mapper;
 using Car_Rental_Management.Models;
 using Car_Rental_Management.Repository.Interface;
 using Car_Rental_Management.Service.Interface;
-using Car_Rental_Management.viewmodel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using Car_Rental_Management.ViewModel;
 
-namespace Car_Rental_Management.Services
+namespace Car_Rental_Management.Service.Implement
 {
     public class StaffService : IStaffservice
     {
-        private readonly IUserRepository _userRepo;
-        private readonly IStaffRepository _staffRepo;
+        private readonly IUserRepository _userRepository;
+        private readonly IStaffRepository _staffRepository;
 
-        public StaffService(IUserRepository userRepo, IStaffRepository staffRepo)
+        public StaffService(IUserRepository userRepository, IStaffRepository staffRepository)
         {
-            _userRepo = userRepo;
-            _staffRepo = staffRepo;
+            _userRepository = userRepository;
+            _staffRepository = staffRepository;
         }
 
-        //  Add staff
-        public async Task AddStaffAsync(Staffviewmodel vm)
+        public async Task AddStaffAsync(StaffViewModel vm)
         {
-            if (vm == null)
-                throw new ArgumentNullException(nameof(vm));
+            var existingUser = await _userRepository.GetByEmailAsync(vm.Email);
+            if (existingUser != null)
+                throw new Exception("User already exists!");
 
-            // Check if email already exists
-            var existingEmailUser = await _userRepo.GetByEmailAsync(vm.EmailAddress);
-            if (existingEmailUser != null)
-                throw new InvalidOperationException("User with this email already exists.");
+            var user = StaffMapper.ToUser(vm);
+            var createdUser = await _userRepository.CreateAsync(user);
 
-            // Check if phone number already exists
-            var existingPhoneUser = await _userRepo.GetByPhoneAsync(vm.PhoneNumber);
-            if (existingPhoneUser != null)
-                throw new InvalidOperationException("User with this phone number already exists.");
-
-            // Map ViewModel -> User model using your existing mapper
-            var userModel = Staffmapper.ToUserModel(vm);
-
-            // Save User to DB
-            var savedUserId = await _userRepo.AddAsync(userModel);
-            if (savedUserId == Guid.Empty)
-                throw new Exception("Failed to save user record.");
-            
-            // Map ViewModel -> Staff model using your mapper
-            var staffModel = Staffmapper.ToStaffModel(vm);
-            staffModel.UserId = savedUserId;
-
-            // Generate staff code
-            staffModel.StaffCode = await GenerateStaffCode();
-
-            // Save Staff to DB
-            await _staffRepo.AddAsync(staffModel);
+            var staff = StaffMapper.ToModel(vm, createdUser.userId);
+            await _staffRepository.AddAsync(staff);
         }
 
-
-        private async Task<string> GenerateStaffCode()
-        {
-            var lastStaff = (await _staffRepo.GetAllAsync())
-                            .OrderByDescending(s => s.StaffCode)
-                            .FirstOrDefault();
-
-            int newNumber = 1; // default for first staff
-            if (lastStaff != null &&
-                int.TryParse(lastStaff.StaffCode.Replace("STF", ""), out int lastNumber))
-            {
-                newNumber = lastNumber + 1;
-            }
-
-            return $"STF{newNumber:D3}"; // STF001, STF002, etc.
-        }
-
-        //  Get all staff
-        public async Task<List<StaffDto>> GetAllStaffAsync()
-        {
-            var staffs = await _staffRepo.GetAllAsync();
-            return staffs.Select(Staffmapper.ToListDto).ToList();
-        }
-
-        //  Get staff by ID
-        public async Task<StaffDetailDto> GetStaffByIdAsync(Guid id)
-        {
-            var staff = await _staffRepo.GetByIdAsync(id);
-            if (staff == null) throw new Exception("Staff not found");
-
-            return Staffmapper.ToDetailDto(staff);
-        }
-
-        //  Delete staff
         public async Task DeleteStaffAsync(Guid id)
         {
-            var staff = await _staffRepo.GetByIdAsync(id);
-            if (staff == null) throw new Exception("Staff not found");
+            var staff = await _staffRepository.GetByIdAsync(id);
+            if (staff == null)
+                throw new Exception("Staff not found!");
 
-            await _staffRepo.DeleteByIdAsync(id);
+            var user = await _userRepository.GetByIdAsync(staff.UserId);
+            if (user != null)
+                await _userRepository.DeleteAsync(user);
+
+            await _staffRepository.DeleteAsync(staff);
         }
 
-        //  Update staff
-        public async Task UpdateStaffAsync(Guid id, Staffviewmodel vm)
+        public async Task<IEnumerable<StaffDto>> GetAllAsync()
         {
-            var staff = await _staffRepo.GetByIdAsync(id);
-            if (staff == null) throw new Exception("Staff not found");
+            var staffList = await _staffRepository.GetAllAsync();
+            return staffList.Select(StaffMapper.ToDTO);
+        }
 
-            // Update staff model
-            Staffmapper.UpdateStaffModel(staff, vm);
-            await _staffRepo.UpdateAsync(staff);
+        public async Task<StaffViewModel?> GetStaffByIdAsync(Guid id)
+        {
+            var staff = await _staffRepository.GetByIdAsync(id);
+            return staff == null ? null : StaffMapper.ToViewModel(staff);
+        }
 
-            // Update related user (excluding password if needed)
-            var user = await _userRepo.GetByIdAsync(staff.UserId);
-            if (user != null)
-            {
-                Staffmapper.UpdateUserModel(user, vm);
-                await _userRepo.UpdateAsync(user);
-            }
+        public async Task UpdateStaffAsync(Guid id, StaffViewModel vm)
+        {
+            var staff = await _staffRepository.GetByIdAsync(id);
+            if (staff == null) throw new Exception("Staff not found!");
+
+            var user = await _userRepository.GetByIdAsync(staff.UserId);
+            if (user == null) throw new Exception("User not found!");
+
+            user.Email = vm.Email;
+            user.PhoneNumber = vm.PhoneNumber;
+            user.Password = vm.Password;
+            await _userRepository.UpdateAsync(user);
+
+            StaffMapper.MapViewModelToEntity(vm, staff);
+            await _staffRepository.UpdateAsync(staff);
         }
     }
 }

@@ -31,8 +31,8 @@ namespace Car_Rental_Management.Service.Implement
             var user = Customermapper.ToUser(viewModel);
             var createdUser = await _userRepository.AddAsync(user);
 
-            var customer = Customermapper.ToCustomer(viewModel, createdUser.userId);
-            await _customerRepository.AddAsync(customer);
+            //var customer = Customermapper.ToCustomer(viewModel, createdUser.userId);
+            //await _customerRepository.AddAsync(customer);
 
             return "Customer created successfully!";
         }

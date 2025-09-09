@@ -14,6 +14,8 @@ internal class Program
         builder.Services.AddScoped<IDriverService, DriverService>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+        builder.Services.AddScoped<IStaffservice, StaffService>();
+        builder.Services.AddScoped<IStaffRepository, StaffRepository>();
         builder.Services.AddDbContext<ApplicationDbcontext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 

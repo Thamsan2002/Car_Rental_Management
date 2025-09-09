@@ -6,8 +6,7 @@ namespace Car_Rental_Management.Repository.Interface
     {
         Task<Driver> AddAsync(Driver driver);
         Task<IEnumerable<Driver>> GetAllAsync();
-        Task<Driver> GetByIdAsync(Guid id);
+        Task<Driver?> GetByIdAsync(Guid id);
         Task UpdateAsync(Driver driver);
-
     }
 }

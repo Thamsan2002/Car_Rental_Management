@@ -1,21 +1,16 @@
 ﻿using Car_Rental_Management.Dtos;
-using Car_Rental_Management.viewmodel;
+using Car_Rental_Management.ViewModel;
 
 namespace Car_Rental_Management.Service.Interface
 {
     public interface IStaffservice
     {
-        Task AddStaffAsync(Staffviewmodel vm);
-        // Get all staff for list view
-        Task<List<StaffDto>> GetAllStaffAsync();
-
-        // Get full details of one staff
-        Task<StaffDetailDto> GetStaffByIdAsync(Guid id);
-
-        // Optional: Delete staff
+        Task<IEnumerable<StaffDto>> GetAllAsync();
+        Task<StaffViewModel?> GetStaffByIdAsync(Guid id);
+        Task AddStaffAsync(StaffViewModel vm);
+        Task UpdateStaffAsync(Guid id, StaffViewModel vm);
         Task DeleteStaffAsync(Guid id);
 
-        // Optional: Update staff
-        Task UpdateStaffAsync(Guid id, Staffviewmodel vm);
+
     }
 }
