@@ -19,18 +19,19 @@ namespace Car_Rental_Management.Service.Implement
 
         public async Task<string> CreateDriverAsync(DriverViewModel viewModel)
         {
+            var existingUser = await _userRepository.GetByEmailAndPhoneAsync(viewModel.Email, viewModel.EmergencyContact);
 
-            var existingUser = await _userRepository.GetByEmailAsync(viewModel.Email);
             if (existingUser != null)
             {
-                return "User already exists with this email!";
+                return "Driver already exists with this email and phone number!";
             }
 
-
+            // Create User
             var user = DriverMapper.ToUser(viewModel);
             var createdUser = await _userRepository.AddAsync(user);
 
-            var driver = DriverMapper.ToDriver(viewModel, createdUser.userId);
+            // Create Driver
+            var driver = DriverMapper.ToDriver(viewModel, createdUser);
             await _driverRepository.AddAsync(driver);
 
             return "Driver created successfully!";
