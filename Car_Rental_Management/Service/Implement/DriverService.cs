@@ -1,8 +1,10 @@
-﻿using Car_Rental_Management.Mapper;
+﻿using Car_Rental_Management.Dtos;
+using Car_Rental_Management.Mapper;
 using Car_Rental_Management.Models;
 using Car_Rental_Management.Repository.Interface;
 using Car_Rental_Management.Service.Interface;
 using Car_Rental_Management.ViewModel;
+
 
 namespace Car_Rental_Management.Service.Implement
 {
@@ -37,9 +39,33 @@ namespace Car_Rental_Management.Service.Implement
             return "Driver created successfully!";
         }
 
-        public async Task<IEnumerable<Driver>> GetAllDriversAsync()
+        public async Task<IEnumerable<DriverDto>> GetAllDriversAsync()
         {
-            return await _driverRepository.GetAllAsync();
+            var drivers = await _driverRepository.GetAllAsync();
+            return drivers.Select(DriverMapper.ToDto);
+        }
+
+        public async Task<DriverDto> GetDriverByIdAsync(Guid id)
+        {
+            var driver = await _driverRepository.GetByIdAsync(id);
+            if (driver == null)
+                return null;
+
+            return DriverMapper.ToDto(driver);
+        }
+
+
+        public async Task UpdateDriverAsync(DriverViewModel viewModel)
+        {
+            // Fetch existing driver
+            var driver = await _driverRepository.GetByIdAsync(viewModel.Id);
+            if (driver == null)
+                throw new Exception("Driver not found!");
+
+            DriverMapper.MapViewModelToEntity(viewModel, driver);
+
+            // Save changes
+            await _driverRepository.UpdateAsync(driver);
         }
 
     }

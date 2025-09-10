@@ -1,4 +1,5 @@
-﻿using Car_Rental_Management.Models;
+﻿using Car_Rental_Management.Dtos;
+using Car_Rental_Management.Models;
 using Car_Rental_Management.ViewModel;
 
 namespace Car_Rental_Management.Service.Interface
@@ -6,7 +7,8 @@ namespace Car_Rental_Management.Service.Interface
     public interface IDriverService
     {
         Task<string> CreateDriverAsync(DriverViewModel viewModel);
-        Task<IEnumerable<Driver>> GetAllDriversAsync();
-
+        Task<DriverDto> GetDriverByIdAsync(Guid id);
+        Task<IEnumerable<DriverDto>> GetAllDriversAsync();
+        Task UpdateDriverAsync(DriverViewModel viewModel);
     }
 }
