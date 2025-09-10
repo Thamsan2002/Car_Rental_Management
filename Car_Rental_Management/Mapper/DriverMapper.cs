@@ -1,25 +1,17 @@
-﻿using Car_Rental_Management.Dtos;
-using Car_Rental_Management.Models;
+﻿using Car_Rental_Management.Models;
 using Car_Rental_Management.ViewModel;
-using System.ComponentModel.DataAnnotations;
+using Car_Rental_Management.Dtos;
 
 namespace Car_Rental_Management.Mapper
 {
-    public class DriverMapper
+    public static class DriverMapper
     {
-        public static User ToUser(DriverViewModel vm)
-        {
-            return new User
-            {
-                Email = vm.Email,
-                Password = vm.Password
-            };
-        }
-
-        public static Driver ToDriver(DriverViewModel vm, Guid userId)
+        // ViewModel → Model
+        public static Driver ToModel(DriverViewModel vm, Guid userId)
         {
             return new Driver
             {
+                Id = vm.Id == Guid.Empty ? Guid.NewGuid() : vm.Id,
                 Name = vm.Name,
                 EmergencyContact = vm.EmergencyContact,
                 Nic = vm.Nic,
@@ -32,30 +24,14 @@ namespace Car_Rental_Management.Mapper
                 UserId = userId
             };
         }
-        public static DriverViewModel ToViewModel(DriverDto dto)
-        {
-            return new DriverViewModel
-            {
-                Name = dto.Name,
-                Email = dto.Email,
-                EmergencyContact = dto.EmergencyContact,
-                Nic = dto.Nic,
-                Gender = dto.Gender,
-                Address = dto.Address,
-                LicenseNumber = dto.LicenseNumber,
-                LicenseExpiryDate = DateTime.Parse(dto.LicenseExpiryDate),
-                Experience = dto.Experience,
-                VehicleType = dto.VehicleType
-            };
-        }
 
+        // Model → DTO
         public static DriverDto ToDto(Driver driver)
         {
             return new DriverDto
             {
                 Id = driver.Id,
                 Name = driver.Name,
-                Email = driver.User.Email,
                 EmergencyContact = driver.EmergencyContact,
                 Nic = driver.Nic,
                 Gender = driver.Gender,
@@ -63,27 +39,64 @@ namespace Car_Rental_Management.Mapper
                 LicenseNumber = driver.LicenseNumber,
                 LicenseExpiryDate = driver.LicenseExpiryDate.ToString("yyyy-MM-dd"),
                 Experience = driver.Experience,
-                VehicleType = driver.VehicleType
+                VehicleType = driver.VehicleType,
+                Email = driver.User.Email,
+                PhoneNumber = driver.User.PhoneNumber
             };
         }
 
-        public static void MapViewModelToEntity(DriverViewModel viewModel, Driver driver)
+        // DTO → ViewModel
+        public static DriverViewModel ToViewModel(DriverDto dto)
         {
-            driver.Name = viewModel.Name;
-            driver.EmergencyContact = viewModel.EmergencyContact;
-            driver.Nic = viewModel.Nic;
-            driver.Gender = viewModel.Gender;
-            driver.Address = viewModel.Address;
-            driver.LicenseNumber = viewModel.LicenseNumber;
-            driver.LicenseExpiryDate = viewModel.LicenseExpiryDate;
-            driver.Experience = viewModel.Experience;
-            driver.VehicleType = viewModel.VehicleType;
+            return new DriverViewModel
+            {
+                Id = dto.Id,
+                Name = dto.Name,
+                EmergencyContact = dto.EmergencyContact,
+                Nic = dto.Nic,
+                Gender = dto.Gender,
+                Address = dto.Address,
+                LicenseNumber = dto.LicenseNumber,
+                LicenseExpiryDate = DateTime.Parse(dto.LicenseExpiryDate),
+                Experience = dto.Experience,
+                VehicleType = dto.VehicleType,
+                Email = dto.Email,
+                PhoneNumber = dto.PhoneNumber
+            };
+        }
+
+        // Update existing Model with ViewModel data
+        public static void MapViewModelToEntity(DriverViewModel vm, Driver driver)
+        {
+            driver.Name = vm.Name;
+            driver.EmergencyContact = vm.EmergencyContact;
+            driver.Nic = vm.Nic;
+            driver.Gender = vm.Gender;
+            driver.Address = vm.Address;
+            driver.LicenseNumber = vm.LicenseNumber;
+            driver.LicenseExpiryDate = vm.LicenseExpiryDate;
+            driver.Experience = vm.Experience;
+            driver.VehicleType = vm.VehicleType;
 
             if (driver.User != null)
             {
-                driver.User.Email = viewModel.Email;
-                driver.User.Password = viewModel.Password;
+                driver.User.Email = vm.Email;
+                driver.User.Password = vm.Password;
+                driver.User.PhoneNumber = vm.PhoneNumber;
             }
+        }
+
+        // Convert ViewModel → User entity
+        public static User ToUser(DriverViewModel vm)
+        {
+            return new User
+            {
+                userId = Guid.NewGuid(),
+                Email = vm.Email,
+                Password = vm.Password,
+                PhoneNumber = vm.PhoneNumber,
+                Role = "Driver"
+            };
         }
     }
 }
