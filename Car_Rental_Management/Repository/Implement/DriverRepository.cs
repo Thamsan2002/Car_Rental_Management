@@ -26,5 +26,19 @@ namespace Car_Rental_Management.Repository.Implement
             return await _context.Drivers.Include(d => d.User).ToListAsync();
         }
 
+
+        public async Task<Driver> GetByIdAsync(Guid id)
+        {
+            return await _context.Drivers
+                .Include(d => d.User)   // Email fetch panna User join pannum
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+        }
+
+        public async Task UpdateAsync(Driver driver)
+        {
+            _context.Drivers.Update(driver);
+            await _context.SaveChangesAsync();
+        }
     }
 }
