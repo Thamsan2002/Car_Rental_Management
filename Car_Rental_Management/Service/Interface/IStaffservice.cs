@@ -11,6 +11,5 @@ namespace Car_Rental_Management.Service.Interface
         Task UpdateStaffAsync(Guid id, StaffViewModel vm);
         Task DeleteStaffAsync(Guid id);
 
-
     }
 }

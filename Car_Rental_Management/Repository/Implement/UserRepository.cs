@@ -43,22 +43,5 @@ namespace Car_Rental_Management.Repository.Implement
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
         }
-
-        public async Task<User> GetByEmailAndPhoneAsync(string email, string phone)
-        {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.PhoneNumber == phone);
-        }
-
-        public async Task<IEnumerable<User>> GetAllAsync()
-        {
-            return await _context.Users.ToListAsync();
-        }
-
-        public async Task<Guid> AddAsync(User user)
-        {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-            return user.userId;
-        }
     }
 }

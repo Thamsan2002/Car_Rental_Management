@@ -6,6 +6,7 @@ namespace Car_Rental_Management.Mapper
 {
     public static class StaffMapper
     {
+        // Model → DTO
         public static StaffDto ToDTO(Staff staff)
         {
             return new StaffDto
@@ -17,11 +18,12 @@ namespace Car_Rental_Management.Mapper
                 ProfileImage = staff.ProfileImage,
                 Salary = staff.Salary,
                 ShiftTime = staff.ShiftTime,
-                Email = staff.User.Email,
-                PhoneNumber = staff.User.PhoneNumber
+                Email = staff.User?.Email,
+                PhoneNumber = staff.User?.PhoneNumber
             };
         }
 
+        // Model → ViewModel
         public static StaffViewModel ToViewModel(Staff staff)
         {
             return new StaffViewModel
@@ -33,12 +35,13 @@ namespace Car_Rental_Management.Mapper
                 ProfileImage = staff.ProfileImage,
                 Salary = staff.Salary,
                 ShiftTime = staff.ShiftTime,
-                Email = staff.User.Email,
-                PhoneNumber = staff.User.PhoneNumber,
-                Password = staff.User.Password
+                Email = staff.User?.Email,
+                PhoneNumber = staff.User?.PhoneNumber,
+                Password = staff.User?.Password
             };
         }
 
+        // ViewModel → Model
         public static Staff ToModel(StaffViewModel vm, Guid userId)
         {
             return new Staff
@@ -54,6 +57,7 @@ namespace Car_Rental_Management.Mapper
             };
         }
 
+        // ViewModel → User (User table ku insert panna)
         public static User ToUser(StaffViewModel vm)
         {
             return new User
@@ -66,7 +70,7 @@ namespace Car_Rental_Management.Mapper
             };
         }
 
-     
+        // Map ViewModel data to existing Model (Update use)
         public static void MapViewModelToEntity(StaffViewModel vm, Staff staff)
         {
             staff.Name = vm.Name;
@@ -75,13 +79,6 @@ namespace Car_Rental_Management.Mapper
             staff.ProfileImage = vm.ProfileImage;
             staff.Salary = vm.Salary;
             staff.ShiftTime = vm.ShiftTime;
-
-            if (staff.User != null)
-            {
-                staff.User.Email = vm.Email;
-                staff.User.Password = vm.Password;
-                staff.User.PhoneNumber = vm.PhoneNumber;
-            }
         }
     }
 }

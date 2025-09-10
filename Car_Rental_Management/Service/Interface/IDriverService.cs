@@ -6,9 +6,10 @@ namespace Car_Rental_Management.Service.Interface
 {
     public interface IDriverService
     {
-        Task<string> CreateDriverAsync(DriverViewModel viewModel);
-        Task<DriverDto> GetDriverByIdAsync(Guid id);
         Task<IEnumerable<DriverDto>> GetAllDriversAsync();
-        Task UpdateDriverAsync(DriverViewModel viewModel);
+        Task<DriverDto?> GetDriverByIdAsync(Guid id);
+        Task<DriverDto> CreateDriverAsync(DriverViewModel vm);
+        Task<DriverDto> UpdateDriverAsync(DriverViewModel vm);
+        Task DeleteDriverAsync(Guid id);
     }
 }

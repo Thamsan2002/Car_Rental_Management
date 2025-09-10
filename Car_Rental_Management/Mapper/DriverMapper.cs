@@ -1,24 +1,13 @@
-﻿using Car_Rental_Management.Dtos;
-using Car_Rental_Management.Models;
+﻿using Car_Rental_Management.Models;
 using Car_Rental_Management.ViewModel;
+using Car_Rental_Management.Dtos;
 
 namespace Car_Rental_Management.Mapper
 {
     public static class DriverMapper
     {
-        public static User ToUser(DriverViewModel vm)
-        {
-            return new User
-            {
-                userId = Guid.NewGuid(),
-                Email = vm.Email,
-                Password = vm.Password,
-                PhoneNumber = vm.EmergencyContact,
-                Role = "Driver"
-            };
-        }
-
-        public static Driver ToDriver(DriverViewModel vm, Guid userId)
+        // ViewModel → Model
+        public static Driver ToModel(DriverViewModel vm, Guid userId)
         {
             return new Driver
             {
@@ -36,13 +25,13 @@ namespace Car_Rental_Management.Mapper
             };
         }
 
+        // Model → DTO
         public static DriverDto ToDto(Driver driver)
         {
             return new DriverDto
             {
                 Id = driver.Id,
                 Name = driver.Name,
-                Email = driver.User.Email,
                 EmergencyContact = driver.EmergencyContact,
                 Nic = driver.Nic,
                 Gender = driver.Gender,
@@ -50,17 +39,19 @@ namespace Car_Rental_Management.Mapper
                 LicenseNumber = driver.LicenseNumber,
                 LicenseExpiryDate = driver.LicenseExpiryDate.ToString("yyyy-MM-dd"),
                 Experience = driver.Experience,
-                VehicleType = driver.VehicleType
+                VehicleType = driver.VehicleType,
+                Email = driver.User.Email,
+                PhoneNumber = driver.User.PhoneNumber
             };
         }
 
+        // DTO → ViewModel
         public static DriverViewModel ToViewModel(DriverDto dto)
         {
             return new DriverViewModel
             {
                 Id = dto.Id,
                 Name = dto.Name,
-                Email = dto.Email,
                 EmergencyContact = dto.EmergencyContact,
                 Nic = dto.Nic,
                 Gender = dto.Gender,
@@ -68,10 +59,13 @@ namespace Car_Rental_Management.Mapper
                 LicenseNumber = dto.LicenseNumber,
                 LicenseExpiryDate = DateTime.Parse(dto.LicenseExpiryDate),
                 Experience = dto.Experience,
-                VehicleType = dto.VehicleType
+                VehicleType = dto.VehicleType,
+                Email = dto.Email,
+                PhoneNumber = dto.PhoneNumber
             };
         }
 
+        // Update existing Model with ViewModel data
         public static void MapViewModelToEntity(DriverViewModel vm, Driver driver)
         {
             driver.Name = vm.Name;
@@ -88,8 +82,21 @@ namespace Car_Rental_Management.Mapper
             {
                 driver.User.Email = vm.Email;
                 driver.User.Password = vm.Password;
-                driver.User.PhoneNumber = vm.EmergencyContact;
+                driver.User.PhoneNumber = vm.PhoneNumber;
             }
+        }
+
+        // Convert ViewModel → User entity
+        public static User ToUser(DriverViewModel vm)
+        {
+            return new User
+            {
+                userId = Guid.NewGuid(),
+                Email = vm.Email,
+                Password = vm.Password,
+                PhoneNumber = vm.PhoneNumber,
+                Role = "Driver"
+            };
         }
     }
 }

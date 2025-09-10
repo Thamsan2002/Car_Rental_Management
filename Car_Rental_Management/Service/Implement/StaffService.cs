@@ -9,23 +9,22 @@ namespace Car_Rental_Management.Service.Implement
 {
     public class StaffService : IStaffservice
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserServices _userService;
         private readonly IStaffRepository _staffRepository;
 
-        public StaffService(IUserRepository userRepository, IStaffRepository staffRepository)
+        public StaffService(IUserServices userService, IStaffRepository staffRepository)
         {
-            _userRepository = userRepository;
+            _userService = userService;
             _staffRepository = staffRepository;
         }
 
         public async Task AddStaffAsync(StaffViewModel vm)
         {
-            var existingUser = await _userRepository.GetByEmailAsync(vm.Email);
-            if (existingUser != null)
-                throw new Exception("User already exists!");
+            var existingUser = await _userService.GetByEmailAsync(vm.Email);
+            if (existingUser != null) throw new Exception("Email already exists!");
 
             var user = StaffMapper.ToUser(vm);
-            var createdUser = await _userRepository.CreateAsync(user);
+            var createdUser = await _userService.CreateUserAsync(user);
 
             var staff = StaffMapper.ToModel(vm, createdUser.userId);
             await _staffRepository.AddAsync(staff);
@@ -34,13 +33,9 @@ namespace Car_Rental_Management.Service.Implement
         public async Task DeleteStaffAsync(Guid id)
         {
             var staff = await _staffRepository.GetByIdAsync(id);
-            if (staff == null)
-                throw new Exception("Staff not found!");
+            if (staff == null) throw new Exception("Staff not found!");
 
-            var user = await _userRepository.GetByIdAsync(staff.UserId);
-            if (user != null)
-                await _userRepository.DeleteAsync(user);
-
+            await _userService.DeleteUserAsync(staff.UserId);
             await _staffRepository.DeleteAsync(staff);
         }
 
@@ -61,13 +56,13 @@ namespace Car_Rental_Management.Service.Implement
             var staff = await _staffRepository.GetByIdAsync(id);
             if (staff == null) throw new Exception("Staff not found!");
 
-            var user = await _userRepository.GetByIdAsync(staff.UserId);
+            var user = await _userService.GetByIdAsync(staff.UserId);
             if (user == null) throw new Exception("User not found!");
 
             user.Email = vm.Email;
             user.PhoneNumber = vm.PhoneNumber;
             user.Password = vm.Password;
-            await _userRepository.UpdateAsync(user);
+            await _userService.UpdateUserAsync(user);
 
             StaffMapper.MapViewModelToEntity(vm, staff);
             await _staffRepository.UpdateAsync(staff);

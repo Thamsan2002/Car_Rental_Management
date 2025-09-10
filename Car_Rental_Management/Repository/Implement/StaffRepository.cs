@@ -16,9 +16,7 @@ namespace Car_Rental_Management.Repository.Implement
 
         public async Task<Staff?> GetByIdAsync(Guid id)
         {
-            return await _context.Staffs
-                .Include(s => s.User)
-                .FirstOrDefaultAsync(s => s.staffId == id);
+            return await _context.Staffs.Include(s => s.User).FirstOrDefaultAsync(s => s.staffId == id);
         }
 
         public async Task<IEnumerable<Staff>> GetAllAsync()

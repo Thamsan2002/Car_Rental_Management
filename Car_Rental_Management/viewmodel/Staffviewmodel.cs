@@ -12,6 +12,7 @@ namespace Car_Rental_Management.ViewModel
         [Required]
         public string Address { get; set; } = string.Empty;
 
+        [Required]
         public string Status { get; set; } = "Active";
 
         public string ProfileImage { get; set; } = string.Empty;
@@ -22,13 +23,13 @@ namespace Car_Rental_Management.ViewModel
         [Required]
         public TimeSpan ShiftTime { get; set; }
 
-        [Required]
+        [Required, EmailAddress]
         public string Email { get; set; } = string.Empty;
 
-        [Required]
-        public string PhoneNumber { get; set; } = string.Empty;
-
-        [Required]
+        [Required, MinLength(6)]
         public string Password { get; set; } = string.Empty;
+
+        [Required, Phone]
+        public string PhoneNumber { get; set; } = string.Empty;
     }
 }

@@ -9,28 +9,41 @@ namespace Car_Rental_Management.Service.Implement
 {
     public class DriverService : IDriverService
     {
-        private readonly IUserRepository _userRepository;
         private readonly IDriverRepository _driverRepository;
+        private readonly IUserRepository _userRepository;
 
-        public DriverService(IUserRepository userRepository, IDriverRepository driverRepository)
+        public DriverService(IDriverRepository driverRepository, IUserRepository userRepository)
         {
-            _userRepository = userRepository;
             _driverRepository = driverRepository;
+            _userRepository = userRepository;
         }
 
-        public async Task<string> CreateDriverAsync(DriverViewModel vm)
+        public async Task<DriverDto> CreateDriverAsync(DriverViewModel vm)
         {
-            var existingUser = await _userRepository.GetByEmailAndPhoneAsync(vm.Email, vm.EmergencyContact);
+            // Check if user exists
+            var existingUser = await _userRepository.GetByEmailAsync(vm.Email);
             if (existingUser != null)
-                return "Driver already exists!";
+                throw new Exception("Email already exists!");
 
             var user = DriverMapper.ToUser(vm);
             var createdUser = await _userRepository.CreateAsync(user);
 
-            var driver = DriverMapper.ToDriver(vm, createdUser.userId);
-            await _driverRepository.AddAsync(driver);
+            var driver = DriverMapper.ToModel(vm, createdUser.userId);
+            var createdDriver = await _driverRepository.AddAsync(driver);
 
-            return "Driver created successfully!";
+            return DriverMapper.ToDto(createdDriver);
+        }
+
+        public async Task DeleteDriverAsync(Guid id)
+        {
+            var driver = await _driverRepository.GetByIdAsync(id);
+            if (driver == null) throw new Exception("Driver not found!");
+
+            var user = await _userRepository.GetByIdAsync(driver.UserId);
+            if (user != null)
+                await _userRepository.DeleteAsync(user);
+
+            await _driverRepository.DeleteAsync(driver);
         }
 
         public async Task<IEnumerable<DriverDto>> GetAllDriversAsync()
@@ -39,14 +52,13 @@ namespace Car_Rental_Management.Service.Implement
             return drivers.Select(DriverMapper.ToDto);
         }
 
-        public async Task<DriverDto> GetDriverByIdAsync(Guid id)
+        public async Task<DriverDto?> GetDriverByIdAsync(Guid id)
         {
             var driver = await _driverRepository.GetByIdAsync(id);
-            if (driver == null) return null;
-            return DriverMapper.ToDto(driver);
+            return driver == null ? null : DriverMapper.ToDto(driver);
         }
 
-        public async Task UpdateDriverAsync(DriverViewModel vm)
+        public async Task<DriverDto> UpdateDriverAsync(DriverViewModel vm)
         {
             var driver = await _driverRepository.GetByIdAsync(vm.Id);
             if (driver == null) throw new Exception("Driver not found!");
@@ -54,8 +66,17 @@ namespace Car_Rental_Management.Service.Implement
             var user = await _userRepository.GetByIdAsync(driver.UserId);
             if (user == null) throw new Exception("User not found!");
 
+            // Update User
+            user.Email = vm.Email;
+            user.PhoneNumber = vm.PhoneNumber;
+            user.Password = vm.Password;
+            await _userRepository.UpdateAsync(user);
+
+            // Update Driver
             DriverMapper.MapViewModelToEntity(vm, driver);
-            await _driverRepository.UpdateAsync(driver);
+            var updatedDriver = await _driverRepository.UpdateAsync(driver);
+
+            return DriverMapper.ToDto(updatedDriver);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Car_Rental_Management.Mapper;
+﻿using Car_Rental_Management.Dtos;
+using Car_Rental_Management.Mapper;
 using Car_Rental_Management.Models;
 using Car_Rental_Management.Repository.Interface;
 using Car_Rental_Management.Service.Interface;
@@ -8,7 +9,6 @@ namespace Car_Rental_Management.Service.Implement
 {
     public class CustomerService : ICustomerService
     {
-         
         private readonly IUserRepository _userRepository;
         private readonly ICustomerRepository _customerRepository;
 
@@ -18,29 +18,76 @@ namespace Car_Rental_Management.Service.Implement
             _customerRepository = customerRepository;
         }
 
-        public async Task<string> CreateCustomerAsync(CustomerViewModel viewModel)
+        // Add new customer
+        public async Task<CustomerDto> AddCustomerAsync(CustomerViewModel vm)
         {
-
-            var existingUser = await _userRepository.GetByEmailAsync(viewModel.Email);
+            // Check if user already exists (email or phone)
+            var existingUser = await _userRepository.GetByEmailAsync(vm.Email);
             if (existingUser != null)
-            {
-                return "User already exists with this email!";
-            }
+                throw new Exception("Email already registered");
 
+            // Map ViewModel -> User
+            var user = CustomerMapper.ToUser(vm);
+            var createdUser = await _userRepository.CreateAsync(user);
 
-            var user = Customermapper.ToUser(viewModel);
-            var createdUser = await _userRepository.AddAsync(user);
+            // Map ViewModel -> Customer
+            var customer = CustomerMapper.ToModel(vm, createdUser.userId);
+            var createdCustomer = await _customerRepository.AddAsync(customer);
 
-            //var customer = Customermapper.ToCustomer(viewModel, createdUser.userId);
-            //await _customerRepository.AddAsync(customer);
-
-            return "Customer created successfully!";
+            // Map Customer -> DTO
+            return CustomerMapper.ToDto(createdCustomer);
         }
 
-        public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
+        // Get all customers
+        public async Task<IEnumerable<CustomerDto>> GetAllCustomersAsync()
         {
-            return await _customerRepository.GetAllAsync();
+            var customers = await _customerRepository.GetAllAsync();
+            return customers.Select(CustomerMapper.ToDto);
         }
 
+        // Get customer by Id
+        public async Task<CustomerViewModel?> GetCustomerByIdAsync(Guid id)
+        {
+            var customer = await _customerRepository.GetByIdAsync(id);
+            return customer == null ? null : CustomerMapper.ToViewModel(customer);
+        }
+
+        // Update customer
+        public async Task<CustomerDto> UpdateCustomerAsync(CustomerViewModel vm)
+        {
+            var customer = await _customerRepository.GetByIdAsync(vm.Id);
+            if (customer == null)
+                throw new Exception("Customer not found");
+
+            var user = await _userRepository.GetByIdAsync(customer.UserId);
+            if (user == null)
+                throw new Exception("User not found");
+
+            // Update User info
+            user.Email = vm.Email;
+            user.PhoneNumber = vm.PhoneNumber;
+            user.Password = vm.Password;
+            await _userRepository.UpdateAsync(user);
+
+            // Update Customer info
+            CustomerMapper.MapViewModelToEntity(vm, customer);
+            var updatedCustomer = await _customerRepository.UpdateAsync(customer);
+
+            return CustomerMapper.ToDto(updatedCustomer);
+        }
+
+        // Delete customer
+        public async Task DeleteCustomerAsync(Guid id)
+        {
+            var customer = await _customerRepository.GetByIdAsync(id);
+            if (customer == null)
+                throw new Exception("Customer not found");
+
+            var user = await _userRepository.GetByIdAsync(customer.UserId);
+            if (user != null)
+                await _userRepository.DeleteAsync(user);
+
+            await _customerRepository.DeleteAsync(customer);
+        }
     }
 }
