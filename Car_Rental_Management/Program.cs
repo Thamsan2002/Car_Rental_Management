@@ -1,8 +1,10 @@
 using Car_Rental_Management.Data;
 using Car_Rental_Management.Repository.Implement;
 using Car_Rental_Management.Repository.Interface;
+using Car_Rental_Management.Repositry;
 using Car_Rental_Management.Service.Implement;
 using Car_Rental_Management.Service.Interface;
+using Car_Rental_Management.Services;
 using Microsoft.EntityFrameworkCore;
 
 internal class Program
@@ -14,6 +16,15 @@ internal class Program
         builder.Services.AddScoped<IDriverService, DriverService>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+        builder.Services.AddScoped<IStaffservice, StaffService>();
+        builder.Services.AddScoped<IStaffRepository, StaffRepository>();
+        builder.Services.AddScoped<IUserServices, UserService>();
+        builder.Services.AddScoped<ICustomerService, CustomerService>();
+        builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+        builder.Services.AddScoped<ReviewRepository>();
+        builder.Services.AddScoped<ReviewService>();
+
+
         builder.Services.AddDbContext<ApplicationDbcontext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -40,7 +51,7 @@ internal class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+            pattern: "{controller=Customer}/{action=Register}/{id?}");
 
         app.Run();
     }

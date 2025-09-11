@@ -1,4 +1,4 @@
-﻿@model Car_Rental_Management.viewmodel.Staffviewmodel
+﻿@model Car_Rental_Management.ViewModel.StaffViewModel
 
 @{
     ViewData["Title"] = "Edit Staff";
@@ -9,6 +9,11 @@
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
     <input type="hidden" asp-for="Id" />
 
+    @* <div class="form-group">
+        <label asp-for="StaffCode"></label>
+        <input asp-for="StaffCode" class="form-control" readonly />
+    </div> *@
+
     <div class="form-group">
         <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" />
@@ -16,42 +21,8 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Address"></label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Status"></label>
-        <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<Car_Rental_Management.Models.StaffStatus>()"></select>
-        <span asp-validation-for="Status" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ProfileImage"></label>
-        <input asp-for="ProfileImage" class="form-control" />
-        <span asp-validation-for="ProfileImage" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Salary"></label>
-        <input asp-for="Salary" class="form-control" type="number" step="0.01" />
-        <span asp-validation-for="Salary" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ShiftTime"></label>
-        <input asp-for="ShiftTime" class="form-control" type="time" />
-        <span asp-validation-for="ShiftTime" class="text-danger"></span>
-    </div>
-
-    <hr />
-    <h4>User Details</h4>
-
-    <div class="form-group">
-        <label asp-for="EmailAddress"></label>
-        <input asp-for="EmailAddress" class="form-control" />
-        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" readonly />
     </div>
 
     <div class="form-group">
@@ -61,24 +32,38 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Role"></label>
-        <input asp-for="Role" class="form-control" />
-        <span asp-validation-for="Role" class="text-danger"></span>
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
     </div>
 
-    <!-- Password -->
     <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" type="password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
+        <label asp-for="Salary"></label>
+        <input asp-for="Salary" class="form-control" />
+        <span asp-validation-for="Salary" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Update Staff</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+    <div class="form-group">
+        <label asp-for="ShiftTime"></label>
+        <input asp-for="ShiftTime" class="form-control" type="time" />
+        <span asp-validation-for="ShiftTime" class="text-danger"></span>
+    </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+    <div class="form-group">
+        <label asp-for="ProfileImage"></label>
+        <input asp-for="ProfileImage" class="form-control" type="file" />
+        <span asp-validation-for="ProfileImage" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <select asp-for="Status" class="form-control">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>

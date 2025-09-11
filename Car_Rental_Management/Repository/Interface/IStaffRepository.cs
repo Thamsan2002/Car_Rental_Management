@@ -4,13 +4,10 @@ namespace Car_Rental_Management.Repository.Interface
 {
     public interface IStaffRepository
     {
-        Task<Staff?> AddAsync(Staff staff);
-
-        Task<Staff?> GetByStaffCodeAsync(string staffCode);
-        Task<List<Staff>> GetAllAsync();
         Task<Staff?> GetByIdAsync(Guid id);
-        Task DeleteByIdAsync(Guid id);
-        Task UpdateAsync(Staff staff);
-      
+        Task<IEnumerable<Staff>> GetAllAsync();
+        Task<Staff> AddAsync(Staff staff);
+        Task<Staff> UpdateAsync(Staff staff);
+        Task DeleteAsync(Staff staff);
     }
 }

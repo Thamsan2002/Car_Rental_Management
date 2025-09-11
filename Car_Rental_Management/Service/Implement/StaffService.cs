@@ -1,32 +1,26 @@
 ﻿using Car_Rental_Management.Dtos;
-
 using Car_Rental_Management.Mapper;
 using Car_Rental_Management.Models;
 using Car_Rental_Management.Repository.Interface;
 using Car_Rental_Management.Service.Interface;
-using Car_Rental_Management.viewmodel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using Car_Rental_Management.ViewModel;
 
-namespace Car_Rental_Management.Services
+namespace Car_Rental_Management.Service.Implement
 {
     public class StaffService : IStaffservice
     {
-        private readonly IUserRepository _userRepo;
-        private readonly IStaffRepository _staffRepo;
+        private readonly IUserServices _userService;
+        private readonly IStaffRepository _staffRepository;
 
-        public StaffService(IUserRepository userRepo, IStaffRepository staffRepo)
+        public StaffService(IUserServices userService, IStaffRepository staffRepository)
         {
-            _userRepo = userRepo;
-            _staffRepo = staffRepo;
+            _userService = userService;
+            _staffRepository = staffRepository;
         }
 
-        //  Add staff
-        public async Task AddStaffAsync(Staffviewmodel vm)
+        public async Task AddStaffAsync(StaffViewModel vm)
         {
+
             if (vm == null)
                 throw new ArgumentNullException(nameof(vm));
 
@@ -43,73 +37,48 @@ namespace Car_Rental_Management.Services
             // Map ViewModel -> User model using your existing mapper
             var userModel = Staffmapper.ToUserModel(vm);
 
-            // Save User to DB
-            var savedUserId = await _userRepo.AddAsync(userModel);
-            if (savedUserId == Guid.Empty)
-                throw new Exception("Failed to save user record.");
-            
-            // Map ViewModel -> Staff model using your mapper
-            var staffModel = Staffmapper.ToStaffModel(vm);
-            staffModel.UserId = savedUserId;
 
-            // Generate staff code
-            staffModel.StaffCode = await GenerateStaffCode();
+            var user = StaffMapper.ToUser(vm);
+            var createdUser = await _userService.CreateUserAsync(user);
 
-            // Save Staff to DB
-            await _staffRepo.AddAsync(staffModel);
+            var staff = StaffMapper.ToModel(vm, createdUser.userId);
+            await _staffRepository.AddAsync(staff);
         }
 
-
-        private async Task<string> GenerateStaffCode()
-        {
-            var lastStaff = (await _staffRepo.GetAllAsync())
-                            .OrderByDescending(s => s.StaffCode)
-                            .FirstOrDefault();
-
-            int newNumber = 1; // default for first staff
-            if (lastStaff != null &&
-                int.TryParse(lastStaff.StaffCode.Replace("STF", ""), out int lastNumber))
-            {
-                newNumber = lastNumber + 1;
-            }
-
-            return $"STF{newNumber:D3}"; // STF001, STF002, etc.
-        }
-
-        //  Get all staff
-        public async Task<List<StaffDto>> GetAllStaffAsync()
-        {
-            var staffs = await _staffRepo.GetAllAsync();
-            return staffs.Select(Staffmapper.ToListDto).ToList();
-        }
-
-        //  Get staff by ID
-        public async Task<StaffDetailDto> GetStaffByIdAsync(Guid id)
-        {
-            var staff = await _staffRepo.GetByIdAsync(id);
-            if (staff == null) throw new Exception("Staff not found");
-
-            return Staffmapper.ToDetailDto(staff);
-        }
-
-        //  Delete staff
         public async Task DeleteStaffAsync(Guid id)
         {
-            var staff = await _staffRepo.GetByIdAsync(id);
-            if (staff == null) throw new Exception("Staff not found");
+            var staff = await _staffRepository.GetByIdAsync(id);
+            if (staff == null) throw new Exception("Staff not found!");
 
-            await _staffRepo.DeleteByIdAsync(id);
+            await _userService.DeleteUserAsync(staff.UserId);
+            await _staffRepository.DeleteAsync(staff);
         }
 
-        //  Update staff
-        public async Task UpdateStaffAsync(Guid id, Staffviewmodel vm)
+        public async Task<IEnumerable<StaffDto>> GetAllAsync()
         {
-            var staff = await _staffRepo.GetByIdAsync(id);
-            if (staff == null) throw new Exception("Staff not found");
+            var staffList = await _staffRepository.GetAllAsync();
+            return staffList.Select(StaffMapper.ToDTO);
+        }
 
-            // Update staff model
-            Staffmapper.UpdateStaffModel(staff, vm);
-            await _staffRepo.UpdateAsync(staff);
+        public async Task<StaffViewModel?> GetStaffByIdAsync(Guid id)
+        {
+            var staff = await _staffRepository.GetByIdAsync(id);
+            return staff == null ? null : StaffMapper.ToViewModel(staff);
+        }
+
+        public async Task UpdateStaffAsync(Guid id, StaffViewModel vm)
+        {
+            var staff = await _staffRepository.GetByIdAsync(id);
+            if (staff == null) throw new Exception("Staff not found!");
+
+            var user = await _userService.GetByIdAsync(staff.UserId);
+            if (user == null) throw new Exception("User not found!");
+
+            user.Email = vm.Email;
+            user.PhoneNumber = vm.PhoneNumber;
+            user.Password = vm.Password;
+            await _userService.UpdateUserAsync(user);
+
 
             // Update related user (excluding password if needed)
             //var user = await _userRepo.GetByEmailAndPhoneAsync(staff.UserId,staff);
@@ -118,6 +87,7 @@ namespace Car_Rental_Management.Services
             //    Staffmapper.UpdateUserModel(user, vm);
             //    await _userRepo.UpdateAsync(user);
             //}
+
         }
     }
 }
