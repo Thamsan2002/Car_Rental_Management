@@ -31,13 +31,13 @@ namespace Car_Rental_Management.Services
                 throw new ArgumentNullException(nameof(vm));
 
             // Check if email already exists
-            var existingEmailUser = await _userRepo.GetByEmailAsync(vm.EmailAddress);
+            var existingEmailUser = await _userRepo.GetByEmailAndPhoneAsync(vm.EmailAddress, vm.PhoneNumber);
             if (existingEmailUser != null)
                 throw new InvalidOperationException("User with this email already exists.");
 
             // Check if phone number already exists
-            var existingPhoneUser = await _userRepo.GetByPhoneAsync(vm.PhoneNumber);
-            if (existingPhoneUser != null)
+            //var existingPhoneUser = await _userRepo.GetByPhoneAsync(vm.PhoneNumber);
+            //if (existingPhoneUser != null)
                 throw new InvalidOperationException("User with this phone number already exists.");
 
             // Map ViewModel -> User model using your existing mapper
@@ -112,12 +112,12 @@ namespace Car_Rental_Management.Services
             await _staffRepo.UpdateAsync(staff);
 
             // Update related user (excluding password if needed)
-            var user = await _userRepo.GetByIdAsync(staff.UserId);
-            if (user != null)
-            {
-                Staffmapper.UpdateUserModel(user, vm);
-                await _userRepo.UpdateAsync(user);
-            }
+            //var user = await _userRepo.GetByEmailAndPhoneAsync(staff.UserId,staff);
+            //if (user != null)
+            //{
+            //    Staffmapper.UpdateUserModel(user, vm);
+            //    await _userRepo.UpdateAsync(user);
+            //}
         }
     }
 }
