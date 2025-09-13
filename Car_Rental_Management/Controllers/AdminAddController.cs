@@ -23,6 +23,8 @@ namespace Car_Rental_Management.Controllers
         // POST: Admin/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
+        
+        
         public async Task<IActionResult> Add(Adminviewmodel vm)
         {
             if (!ModelState.IsValid)
@@ -30,27 +32,16 @@ namespace Car_Rental_Management.Controllers
                 return View(vm); // Validation failed → return form
             }
 
-            try
-            {
-                // Call service to save admin + user
-                await _adminService.AddAdminAsync(vm);
+            // Call service to save admin + user
+            await _adminService.AddAdminAsync(vm);
 
-                TempData["SuccessMessage"] = "Admin saved successfully.";
+            // Optionally, TempData message can be used in view
+            TempData["SuccessMessage"] = "Admin saved successfully.";
 
-                // After add, return same add form (no list page)
-                return RedirectToAction("Add");
-            }
-            catch (InvalidOperationException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message); // duplicate error
-                return View(vm);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "Something went wrong: " + ex.Message);
-                return View(vm);
-            }
+            // After add, return same Add form
+            return RedirectToAction("Add");
         }
+
         public async Task<IActionResult> List()
         {
             // Fetch list of admins as DTO
