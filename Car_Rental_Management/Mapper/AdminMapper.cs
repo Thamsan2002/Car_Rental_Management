@@ -1,4 +1,5 @@
-﻿using Car_Rental_Management.Models;
+﻿using Car_Rental_Management.Dtos;
+using Car_Rental_Management.Models;
 using Car_Rental_Management.ViewModel;
 
 namespace Car_Rental_Management.Mapper
@@ -24,6 +25,32 @@ namespace Car_Rental_Management.Mapper
             admin.Name = vm.Name;
             admin.Address = vm.Address;
             return admin;
+        }
+        public static void UpdateAdminModel(Admin admin, Adminviewmodel vm)
+        {
+            admin.Name = vm.Name;
+            admin.Address = vm.Address;
+            if (admin.User != null)
+            {
+                admin.User.Email = vm.Email;
+                admin.User.PhoneNumber = vm.PhoneNumber;
+                if (!string.IsNullOrEmpty(vm.Password))
+                {
+                    admin.User.Password = vm.Password;
+                }
+            }
+        }
+        public static AdminDto ToDto(Admin admin)
+        {
+            return new AdminDto
+            {
+                Id = admin.Id,
+                Name = admin.Name,
+                Address = admin.Address,
+                Email = admin.User.Email,
+                PhoneNumber = admin.User.PhoneNumber,
+                Role = admin.User.Role
+            };
         }
     }
 }

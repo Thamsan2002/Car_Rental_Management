@@ -1,4 +1,6 @@
-﻿using Car_Rental_Management.Mapper;
+﻿using Car_Rental_Management.Dtos;
+using Car_Rental_Management.Mapper;
+using Car_Rental_Management.Models;
 using Car_Rental_Management.Repository.Interface;
 using Car_Rental_Management.Service.Interface;
 using Car_Rental_Management.ViewModel;
@@ -40,5 +42,44 @@ namespace Car_Rental_Management.Service.Implement
 
             
         }
+        // Update Admin
+        public async Task UpdateAdminAsync(Guid Id, Adminviewmodel vm)
+        {
+            var admin = await _adminRepo.GetByIdAsync(Id);
+            if (admin == null) throw new Exception("Admin not found");
+
+            // Update Admin + User in memory
+            AdminMapper.UpdateAdminModel(admin, vm);
+
+            // Save changes to User table
+            await _userRepo.UpdateAsync(admin.User);
+
+            // Save changes to Admin table
+            await _adminRepo.UpdateAdminAsync(admin);
+        }
+        public async Task<List<AdminDto>> GetAllAdminsAsync()
+        {
+            var admins = await _adminRepo.GetAllAsync(); // List<Admin> including User
+            var adminDtoList = admins.Select(AdminMapper.ToDto).ToList();
+            return adminDtoList;
+        }
+        public async Task<AdminDto> GetAdminByIdAsync(Guid id)
+        {
+            var admin = await _adminRepo.GetByIdAsync(id);
+            if (admin == null) return null;
+
+            return AdminMapper.ToDto(admin);
+        }
+        public async Task DeleteAdminAsync(Guid id)
+        {
+            // Fetch admin from repo
+            var admin = await _adminRepo.GetByIdAsync(id);
+            if (admin == null)
+                throw new Exception("Admin not found"); // not found case
+
+            // Call repo to delete admin + related user
+            await _adminRepo.DeleteAdminAsync(id);
+        }
+
     }
 }

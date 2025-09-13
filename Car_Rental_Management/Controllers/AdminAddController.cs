@@ -1,4 +1,5 @@
-﻿using Car_Rental_Management.Service.Interface;
+﻿using Car_Rental_Management.Dtos;
+using Car_Rental_Management.Service.Interface;
 using Car_Rental_Management.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,6 +51,44 @@ namespace Car_Rental_Management.Controllers
                 return View(vm);
             }
         }
+        public async Task<IActionResult> List()
+        {
+            // Fetch list of admins as DTO
+            List<AdminDto> adminList = await _adminService.GetAllAdminsAsync();
+            return View(adminList); // pass DTO list to Razor view
+        }
+        // GET: Admin/Edit/{id} → show prefilled form
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var adminVm = await _adminService.GetAdminByIdAsync(id); // returns AdminViewModel
+            if (adminVm == null)
+                return NotFound();
+
+            return View(adminVm);
+        }
+
+        // POST: Admin/Edit/{id} → handle update
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid id, Adminviewmodel vm)
+        {
+            if (!ModelState.IsValid)
+                return View(vm);
+
+            await _adminService.UpdateAdminAsync(id, vm); // service handles mapping + repo
+
+            TempData["Success"] = "Admin updated successfully.";
+            return RedirectToAction("List");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _adminService.DeleteAdminAsync(id);
+            return RedirectToAction("List");
+        }
+
     }
 }
 

@@ -4,6 +4,7 @@ namespace Car_Rental_Management.ViewModel
 {
     public class Adminviewmodel
     {
+        public Guid Id { get; set; }
         // Admin fields
         [Required(ErrorMessage = "Admin name is required")]
         [StringLength(50, ErrorMessage = "Name cannot exceed 50 characters")]
