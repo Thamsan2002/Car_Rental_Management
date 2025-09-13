@@ -21,7 +21,7 @@ namespace Car_Rental_Management.Service.Implement
         public async Task<string> CreateCustomerAsync(CustomerViewModel viewModel)
         {
 
-            var existingUser = await _userRepository.GetByEmailAsync(viewModel.Email);
+            var existingUser = await _userRepository.GetByEmailAndPhoneAsync(viewModel.Email, viewModel.Phonenumber);
             if (existingUser != null)
             {
                 return "User already exists with this email!";
@@ -31,7 +31,7 @@ namespace Car_Rental_Management.Service.Implement
             var user = Customermapper.ToUser(viewModel);
             var createdUser = await _userRepository.AddAsync(user);
 
-            var customer = Customermapper.ToCustomer(viewModel, createdUser.userId);
+            var customer = Customermapper.ToCustomer(viewModel, createdUser);
             await _customerRepository.AddAsync(customer);
 
             return "Customer created successfully!";

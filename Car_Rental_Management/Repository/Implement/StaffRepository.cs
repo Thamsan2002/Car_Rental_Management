@@ -7,9 +7,9 @@ namespace Car_Rental_Management.Repository.Implement
 {
     public class StaffRepository : IStaffRepository
     {
-        private readonly Db _context;
+        private readonly ApplicationDbcontext _context;
 
-        public StaffRepository(Db context)
+        public StaffRepository(ApplicationDbcontext context)
         {
             _context = context;
         }
@@ -17,7 +17,7 @@ namespace Car_Rental_Management.Repository.Implement
         // Add Staff to DB
         public async Task<Staff?> AddAsync(Staff staff)
         {
-            _context.Staffs.Add(staff);
+            await _context.Staffs.AddAsync(staff);
             await _context.SaveChangesAsync();
             return staff;
         }

@@ -4,6 +4,7 @@ namespace Car_Rental_Management.ViewModel
 {
     public class DriverViewModel
     {
+        public Guid Id { get; set; }
 
         [Required(ErrorMessage = "Please enter your name.")]
         public string Name { get; set; }

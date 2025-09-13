@@ -3,6 +3,7 @@ using Car_Rental_Management.Repository.Implement;
 using Car_Rental_Management.Repository.Interface;
 using Car_Rental_Management.Service.Implement;
 using Car_Rental_Management.Service.Interface;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 internal class Program
@@ -12,10 +13,12 @@ internal class Program
 
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddScoped<IDriverService, DriverService>();
+        builder.Services.AddScoped<ICarService, CarService>();
+        builder.Services.AddScoped<ICarRepository, CarRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IDriverRepository, DriverRepository>();
         builder.Services.AddDbContext<ApplicationDbcontext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Car")));
 
 
 //Add services to the container.
