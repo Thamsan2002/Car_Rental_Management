@@ -18,6 +18,7 @@ namespace Car_Rental_Management.Repository.Implement
         {
             await _context.Admins.AddAsync(admin);
             await _context.SaveChangesAsync();
+            //rfgtggyhujmnKVKC
         }
     }
 }
