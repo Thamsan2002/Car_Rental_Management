@@ -9,6 +9,7 @@ namespace Car_Rental_Management.Repository.Interface
         //Task<User?> GetByIdAsync(Guid id);
         //Task UpdateAsync(User user);
         Task<User> GetByEmailAndPhoneAsync(string email, string phone);
+        //Task<User> Emailandphone (string email, string phone);
 
     }
 }
