@@ -36,7 +36,7 @@ namespace Car_Rental_Management.Controllers
             if (result)
             {
                 TempData["SuccessMessage"] = "Car added successfully!";
-                return RedirectToAction("CarList"); // or wherever you want
+                return RedirectToAction("AddCar"); // or wherever you want
             }
             else
             {
