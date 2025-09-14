@@ -12,7 +12,9 @@ namespace Car_Rental_Management.Mapper
             return new User
             {
                 Email = vm.Email,
-                Password = vm.Password
+                Password = vm.Password,
+                PhoneNumber =vm.PhoneNumber,
+                Role = "Driver"
             };
         }
 

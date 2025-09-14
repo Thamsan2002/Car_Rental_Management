@@ -31,8 +31,8 @@ namespace Car_Rental_Management.Services
                 throw new ArgumentNullException(nameof(vm));
 
             // Check if email already exists
-            var existingEmailUser = await _userRepo.GetByEmailAndPhoneAsync(vm.EmailAddress, vm.PhoneNumber);
-            if (existingEmailUser != null)
+            var existingEmailUser = await _userRepo.IsEmailOrPhoneExistAsync(vm.EmailAddress, vm.PhoneNumber);
+            if (!existingEmailUser)
                 throw new InvalidOperationException("User with this email already exists.");
 
             // Check if phone number already exists

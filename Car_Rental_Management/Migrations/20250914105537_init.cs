@@ -135,8 +135,7 @@ namespace Car_Rental_Management.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Drivers_UserId",
                 table: "Drivers",
-                column: "UserId",
-                unique: true);
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Staffs_UserId",

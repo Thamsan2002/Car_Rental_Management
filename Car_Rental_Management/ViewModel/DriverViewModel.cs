@@ -18,6 +18,9 @@ namespace Car_Rental_Management.ViewModel
         public string Password { get; set; }
 
         [Required(ErrorMessage = "( personal phone number )Emergency contact number is required.")]
+        public string PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "contact number is required.")]
         public string EmergencyContact { get; set; }
 
         [Required(ErrorMessage = "NIC number is required.")]
