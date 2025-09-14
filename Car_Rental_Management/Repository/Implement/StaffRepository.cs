@@ -26,7 +26,7 @@ namespace Car_Rental_Management.Repository.Implement
 
         public async Task<Staff> AddAsync(Staff staff)
         {
-            _context.Staffs.Add(staff);
+            await _context.Staffs.AddAsync(staff);
             await _context.SaveChangesAsync();
             return staff;
         }
