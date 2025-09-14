@@ -1,84 +1,108 @@
 ﻿using Car_Rental_Management.Dtos;
 using Car_Rental_Management.Models;
+using Car_Rental_Management.viewmodel;
 using Car_Rental_Management.ViewModel;
 
 namespace Car_Rental_Management.Mapper
 {
-    public static class StaffMapper
+    public class Staffmapper
     {
-        // Model → DTO
-        public static StaffDto ToDTO(Staff staff)
-        {
-            return new StaffDto
-            {
-                staffId = staff.staffId,
-                Name = staff.Name,
-                Address = staff.Address,
-                Status = staff.Status,
-                ProfileImage = staff.ProfileImage,
-                Salary = staff.Salary,
-                ShiftTime = staff.ShiftTime,
-                Email = staff.User?.Email,
-                PhoneNumber = staff.User?.PhoneNumber
-            };
-        }
-
-        // Model → ViewModel
-        public static StaffViewModel ToViewModel(Staff staff)
-        {
-            return new StaffViewModel
-            {
-                Id = staff.staffId,
-                Name = staff.Name,
-                Address = staff.Address,
-                Status = staff.Status,
-                ProfileImage = staff.ProfileImage,
-                Salary = staff.Salary,
-                ShiftTime = staff.ShiftTime,
-                Email = staff.User?.Email,
-                PhoneNumber = staff.User?.PhoneNumber,
-                Password = staff.User?.Password
-            };
-        }
-
-        // ViewModel → Model
-        public static Staff ToModel(StaffViewModel vm, Guid userId)
+        // ViewModel → Staff Model
+        public static Staff ToStaffModel(Staffviewmodel vm)
         {
             return new Staff
             {
-                staffId = vm.Id == Guid.Empty ? Guid.NewGuid() : vm.Id,
+                Id = Guid.NewGuid(),
+                StaffCode = vm.StaffCode,
                 Name = vm.Name,
                 Address = vm.Address,
                 Status = vm.Status,
                 ProfileImage = vm.ProfileImage,
                 Salary = vm.Salary,
                 ShiftTime = vm.ShiftTime,
-                UserId = userId
             };
         }
 
-        // ViewModel → User (User table ku insert panna)
-        public static User ToUser(StaffViewModel vm)
+        // ViewModel → User Model
+        public static User ToUserModel(Staffviewmodel vm)
         {
             return new User
             {
-                userId = Guid.NewGuid(),
-                Email = vm.Email,
+                Email = vm.EmailAddress,
                 Password = vm.Password,
                 PhoneNumber = vm.PhoneNumber,
-                Role = "Staff"
+                Role = vm.Role
             };
         }
 
-        // Map ViewModel data to existing Model (Update use)
-        public static void MapViewModelToEntity(StaffViewModel vm, Staff staff)
+        // Staff → List DTO
+        public static StaffDto ToListDto(Staff staff)
+        {
+            return new StaffDto
+            {
+                Id = staff.Id,
+                StaffCode = staff.StaffCode,
+                Name = staff.Name,
+                Status = staff.Status
+            };
+        }
+
+        // Staff → Detail DTO (frontend safe)
+        public static StaffDetailDto ToDetailDto(Staff staff)
+        {
+            return new StaffDetailDto
+            {
+                StaffCode = staff.StaffCode,
+                Name = staff.Name,
+                Address = staff.Address,
+                Status = staff.Status,
+                ProfileImage = staff.ProfileImage,
+                Salary = staff.Salary,
+                ShiftTime = staff.ShiftTime,
+                EmailAddress = staff.User?.Email ?? string.Empty,
+                PhoneNumber = staff.User?.PhoneNumber ?? string.Empty,
+                Role = staff.User?.Role ?? string.Empty,
+
+            };
+        }
+
+        // Update existing staff from ViewModel
+        public static void UpdateStaffModel(Staff staff, Staffviewmodel vm)
         {
             staff.Name = vm.Name;
+            staff.StaffCode = vm.StaffCode;
             staff.Address = vm.Address;
             staff.Status = vm.Status;
             staff.ProfileImage = vm.ProfileImage;
             staff.Salary = vm.Salary;
-            staff.ShiftTime = vm.ShiftTime;
+            staff.ShiftTime = vm.ShiftTime; // ⚡ Ensure type matches TimeSpan
+        }
+
+        // Update existing user from ViewModel
+        public static void UpdateUserModel(User user, Staffviewmodel vm)
+        {
+            user.Email = vm.EmailAddress;
+            user.Password = vm.Password;
+            user.PhoneNumber = vm.PhoneNumber;
+            user.Role = vm.Role;
+        }
+
+        // Detail DTO → ViewModel (edit form)
+        public static Staffviewmodel ToViewModel(StaffDetailDto dto)
+        {
+            return new Staffviewmodel
+            {
+                Name = dto.Name,
+                StaffCode = dto.StaffCode,
+                Address = dto.Address,
+                Status = dto.Status,
+                ProfileImage = dto.ProfileImage,
+                Salary = dto.Salary,
+                ShiftTime = dto.ShiftTime,
+                EmailAddress = dto.EmailAddress,
+                PhoneNumber = dto.PhoneNumber,
+                Role = dto.Role
+            };
         }
     }
 }

@@ -1,66 +1,86 @@
-﻿@model Car_Rental_Management.ViewModel.StaffViewModel
+﻿@model Car_Rental_Management.viewmodel.Staffviewmodel
+
 
 @{
-    ViewData["Title"] = "Create Staff";
+    ViewData["Title"] = "Add Staff";
 }
 
-<h2>Create Staff</h2>
+<h2>Add Staff</h2>
+
+<!-- Success message -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
 
 <form asp-action="Create" method="post" enctype="multipart/form-data">
-    @* <div class="form-group">
-        <label asp-for="StaffCode"></label>
-        <input asp-for="StaffCode" class="form-control" />
-        <span asp-validation-for="StaffCode" class="text-danger"></span>
-    </div> *@
+    <!-- Validation summary -->
+    <div asp-validation-summary="All" class="text-danger"></div>
 
+    <!-- Email -->
     <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+        <label asp-for="EmailAddress"></label>
+        <input asp-for="EmailAddress" class="form-control" />
+        <span asp-validation-for="EmailAddress" class="text-danger"></span>
     </div>
 
+    <!-- Password -->
     <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
+    <!-- Phone Number -->
     <div class="form-group">
         <label asp-for="PhoneNumber"></label>
         <input asp-for="PhoneNumber" class="form-control" />
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
 
+    <!-- Role -->
     <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" type="password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
+        <label asp-for="Role"></label>
+        <input asp-for="Role" class="form-control" />
+        <span asp-validation-for="Role" class="text-danger"></span>
     </div>
 
+    <!-- Staff Name -->
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <!-- Address -->
     <div class="form-group">
         <label asp-for="Address"></label>
         <input asp-for="Address" class="form-control" />
         <span asp-validation-for="Address" class="text-danger"></span>
     </div>
 
+    <!-- Salary -->
     <div class="form-group">
         <label asp-for="Salary"></label>
-        <input asp-for="Salary" class="form-control" />
+        <input asp-for="Salary" type="number" class="form-control" />
         <span asp-validation-for="Salary" class="text-danger"></span>
     </div>
 
+    <!-- Shift Time -->
     <div class="form-group">
         <label asp-for="ShiftTime"></label>
-        <input asp-for="ShiftTime" class="form-control" type="time" />
+        <input asp-for="ShiftTime" class="form-control" />
         <span asp-validation-for="ShiftTime" class="text-danger"></span>
     </div>
 
+    <!-- Profile Image -->
     <div class="form-group">
         <label asp-for="ProfileImage"></label>
-        <input asp-for="ProfileImage" class="form-control" type="file" />
+        <input asp-for="ProfileImage" type="file" class="form-control" />
         <span asp-validation-for="ProfileImage" class="text-danger"></span>
     </div>
 
+    <!-- Status -->
     <div class="form-group">
         <label asp-for="Status"></label>
         <select asp-for="Status" class="form-control">
@@ -70,6 +90,11 @@
         <span asp-validation-for="Status" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-success">Create</button>
-    <a asp-action="Index" class="btn btn-secondary">Back</a>
+    <button type="submit" class="btn btn-primary">Add Staff</button>
 </form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

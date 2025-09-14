@@ -24,12 +24,12 @@ namespace Car_Rental_Management.Controllers
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            await _service.AddCustomerAsync(viewModel);
+            await _service.CreateCustomerAsync(viewModel);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public IActionResult Register()
+        public async Task<IActionResult> Index()
         {
             return View();
         }

@@ -1,65 +1,127 @@
-﻿<!DOCTYPE html>
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Car_Rental_Management</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"] - KTS CarRental</title>
 
-    <link rel="stylesheet" href="~/Car_Rental_Management.styles.css" asp-append-version="true" />
+    <!-- Bootstrap & FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+
+    <!-- AOS (Animate on Scroll) -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/about.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Contact.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Car.css" asp-append-version="true" />
+  
+
 </head>
 <body>
+    <!-- Navbar -->
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Car_Rental_Management</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="AddCar" asp-action="AddCar">Add Car Detiles</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="booking" asp-action="booking">Bookings</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="Paymentdetails">Payment managment</a>
-                        </li>
-                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Driver" asp-action="CreateDriver">CreateDriver</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Staff" asp-action="Create">Add Staff</a>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
+        <nav class="navbar container-fluid">
+            <div class="logo">KTS</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero" class="nav-link">Home</a></li>
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="#cars" class="nav-link">Cars</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a asp-controller="Customer" asp-action="Register" class="btn-login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    <!-- Main Content -->
+    <main role="main" class="flex-grow-1">
+        @RenderBody()
+    </main>
 
+    <!-- Footer -->
+    @await Html.PartialAsync("_Footer", model: null)
 
+    <!-- Scripts -->
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 
-    
+    <script>
+                document.addEventListener("DOMContentLoaded", function () {
+            // Select all modals
+            var modals = document.querySelectorAll('.modal');
+
+            modals.forEach(function (modal) {
+                modal.addEventListener('shown.bs.modal', function () {
+                    // Find carousel inside modal
+                    var carousel = modal.querySelector('.carousel');
+                    if (carousel) {
+                        var bsCarousel = new bootstrap.Carousel(carousel, {
+                            interval: 2000, // auto slide every 2 sec
+                            ride: 'carousel', // start automatically
+                            pause: false, // don’t pause on hover
+                            wrap: true     // loop infinitely
+                        });
+                    }
+                });
+
+                modal.addEventListener('hidden.bs.modal', function () {
+                    // Stop autoplay when modal closes
+                    var carousel = modal.querySelector('.carousel');
+                    if (carousel) {
+                        var bsCarousel = bootstrap.Carousel.getInstance(carousel);
+                        if (bsCarousel) {
+                            bsCarousel.pause();
+                        }
+                    }
+                });
+            });
+        });
+
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById("menuBtn");
+        const navLinks = document.getElementById("navLinks");
+        menuBtn.addEventListener("click", () => {
+            navLinks.classList.toggle("active");
+        });
+
+        // Active Nav Link on Scroll
+        const sections = document.querySelectorAll("section");
+        const navItems = document.querySelectorAll(".nav-links a");
+
+        window.addEventListener("scroll", () => {
+            let current = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    current = section.getAttribute("id");
+                }
+            });
+
+            navItems.forEach((link) => {
+                link.classList.remove("active");
+                if (link.getAttribute("href") === "#" + current) {
+                    link.classList.add("active");
+                }
+            });
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

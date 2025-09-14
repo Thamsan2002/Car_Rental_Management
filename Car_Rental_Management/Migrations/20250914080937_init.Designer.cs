@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Car_Rental_Management.Migrations
 {
     [DbContext(typeof(ApplicationDbcontext))]
-    [Migration("20250914052522_init")]
+    [Migration("20250914080937_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -163,6 +163,10 @@ namespace Car_Rental_Management.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -212,7 +216,8 @@ namespace Car_Rental_Management.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Staffs");
                 });
@@ -269,8 +274,8 @@ namespace Car_Rental_Management.Migrations
             modelBuilder.Entity("Car_Rental_Management.Models.Staff", b =>
                 {
                     b.HasOne("Car_Rental_Management.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Staff")
+                        .HasForeignKey("Car_Rental_Management.Models.Staff", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -279,8 +284,9 @@ namespace Car_Rental_Management.Migrations
 
             modelBuilder.Entity("Car_Rental_Management.Models.User", b =>
                 {
-                    b.Navigation("Driver")
-                        .IsRequired();
+                    b.Navigation("Driver");
+
+                    b.Navigation("Staff");
                 });
 #pragma warning restore 612, 618
         }

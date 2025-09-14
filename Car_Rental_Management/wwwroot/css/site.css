@@ -1,3 +1,4 @@
+
 /* Navbar */
 header {
     background-color: #002366;
@@ -31,14 +32,28 @@ header {
         color: white;
         text-decoration: none;
         font-weight: bold;
+        position: relative;
     }
+
+        .nav-links a::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #FFD700;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
 
         .nav-links a:hover,
         .nav-links a.btn-login:hover {
             color: #FFD700;
         }
 
-/* Mobile menu button */
 .mobile-menu-btn {
     display: none;
     background: none;
@@ -48,7 +63,6 @@ header {
     cursor: pointer;
 }
 
-/* Responsive Navbar */
 @media (max-width: 768px) {
     .nav-links {
         position: fixed;

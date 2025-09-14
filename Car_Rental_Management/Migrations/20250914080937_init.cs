@@ -6,11 +6,36 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Car_Rental_Management.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Cars",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Make = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Year = table.Column<int>(type: "int", nullable: false),
+                    PlateNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Seats = table.Column<int>(type: "int", nullable: true),
+                    Transmission = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FuelType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Mileage = table.Column<int>(type: "int", nullable: true),
+                    PricePerDay = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    IsAvailable = table.Column<bool>(type: "bit", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImagePaths = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cars", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
@@ -82,19 +107,19 @@ namespace Car_Rental_Management.Migrations
                 name: "Staffs",
                 columns: table => new
                 {
-                    staffId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StaffCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProfileImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Salary = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ProfileImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ShiftTime = table.Column<TimeSpan>(type: "time", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Staffs", x => x.staffId);
+                    table.PrimaryKey("PK_Staffs", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Staffs_Users_UserId",
                         column: x => x.UserId,
@@ -124,6 +149,9 @@ namespace Car_Rental_Management.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Cars");
+
             migrationBuilder.DropTable(
                 name: "Customers");
 

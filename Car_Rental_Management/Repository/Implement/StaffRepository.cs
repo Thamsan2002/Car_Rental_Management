@@ -14,33 +14,53 @@ namespace Car_Rental_Management.Repository.Implement
             _context = context;
         }
 
-        public async Task<Staff?> GetByIdAsync(Guid id)
-        {
-            return await _context.Staffs.Include(s => s.User).FirstOrDefaultAsync(s => s.staffId == id);
-        }
-
-        public async Task<IEnumerable<Staff>> GetAllAsync()
-        {
-            return await _context.Staffs.Include(s => s.User).ToListAsync();
-        }
-
-        public async Task<Staff> AddAsync(Staff staff)
+        // Add Staff to DB
+        public async Task<Staff?> AddAsync(Staff staff)
         {
             await _context.Staffs.AddAsync(staff);
             await _context.SaveChangesAsync();
             return staff;
         }
 
-        public async Task<Staff> UpdateAsync(Staff staff)
+        // Get staff by StaffCode
+        public async Task<Staff?> GetByStaffCodeAsync(string staffCode)
         {
-            _context.Staffs.Update(staff);
-            await _context.SaveChangesAsync();
-            return staff;
+            return await _context.Staffs
+                                 .Include(s => s.User) // Include related user info
+                                 .FirstOrDefaultAsync(s => s.StaffCode == staffCode);
         }
 
-        public async Task DeleteAsync(Staff staff)
+        // Get all staff
+        public async Task<List<Staff>> GetAllAsync()
         {
-            _context.Staffs.Remove(staff);
+            return await _context.Staffs
+                                 .Include(s => s.User) // Include related user info
+                                 .ToListAsync();
+        }
+
+        // Get by Id
+        public async Task<Staff?> GetByIdAsync(Guid id)
+        {
+            return await _context.Staffs
+                                 .Include(s => s.User) // Include related user info
+                                 .FirstOrDefaultAsync(s => s.Id == id);
+        }
+
+        // Delete by Id
+        public async Task DeleteByIdAsync(Guid id)
+        {
+            var staff = await _context.Staffs.FindAsync(id);
+            if (staff != null)
+            {
+                _context.Staffs.Remove(staff);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        // Update staff
+        public async Task UpdateAsync(Staff staff)
+        {
+            _context.Staffs.Update(staff);
             await _context.SaveChangesAsync();
         }
     }
