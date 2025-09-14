@@ -22,7 +22,7 @@ namespace Car_Rental_Management.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Car_Rental_Management.Models.Car", b =>
+            modelBuilder.Entity("Car_Rental_Management.Models.Admin", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -48,11 +48,9 @@ namespace Car_Rental_Management.Migrations
 
             modelBuilder.Entity("Car_Rental_Management.Models.Car", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Color")
                         .IsRequired()
@@ -62,10 +60,6 @@ namespace Car_Rental_Management.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Features")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -251,7 +245,7 @@ namespace Car_Rental_Management.Migrations
 
             modelBuilder.Entity("Car_Rental_Management.Models.User", b =>
                 {
-                    b.Property<Guid>("userId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -271,7 +265,7 @@ namespace Car_Rental_Management.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("userId");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });

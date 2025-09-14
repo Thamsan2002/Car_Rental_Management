@@ -27,7 +27,10 @@ namespace Car_Rental_Management.Controllers
             await _service.CreateCustomerAsync(viewModel);
             return RedirectToAction("Index");
         }
-
+        public IActionResult Register()
+        {
+            return View();
+        }
         [HttpGet]
         public async Task<IActionResult> Index()
         {

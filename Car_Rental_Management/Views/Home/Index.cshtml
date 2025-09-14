@@ -82,82 +82,59 @@
 <!-- About Section -->
 @await Html.PartialAsync("_About", model: null)
 
+<!-- Car Section -->
+
 <section id="cars" class="car-list">
     <div class="container">
-        <h2>Available Cars</h2>
+        <h2 class="mb-4">Available Cars</h2>
         <div class="row">
             @foreach (var car in Model)
             {
                 <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <!-- Show first image -->
-                        <img src="~/images/@(car.ImageUrls?.FirstOrDefault() ?? "noimage.jpg")" alt="@car.Model" class="card-img-top" />
+                    <div class="car-card card">
+                        <img src="@(car.ImageUrls?.FirstOrDefault() ?? "/uploads/images/noimage.jpg")"
+                             class="card-img-top" alt="@car.Model" />
 
                         <div class="card-body">
                             <h5 class="card-title">@car.Make @car.Model (@car.Year)</h5>
                             <p><strong>Price:</strong> @car.Price?.ToString("C")</p>
 
-                            <!-- Book Now -->
                             <a asp-controller="Booking" asp-action="Booking" asp-route-id="@car.Id" class="btn btn-primary">Book Now</a>
-
-                            <!-- Details (Modal trigger) -->
-                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#carModal_@car.Id">
-                                Details
-                            </button>
+                            <button class="btn btn-info" onclick="openCarPopup('@car.Id')">Details</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Car Details Modal -->
-                <div class="modal fade" id="carModal_@car.Id" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">@car.Make @car.Model Details</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
+               
+                <div class="car-popup" id="carPopup_@car.Id">
+                    <div class="car-popup-content">
+                        <span class="close-btn" onclick="closeCarPopup('@car.Id')">&times;</span>
+                        @* <button class="btn btn-secondary mb-3" onclick="closeCarPopup('@car.Id')">Back</button> *@
 
-                                <!-- Image Slider -->
-                                <div id="carousel_@car.Id" class="carousel slide" data-bs-ride="carousel">
-                                    <div class="carousel-inner">
-                                        @{
-                                            int index = 0;
-                                            foreach (var img in car.ImageUrls ?? new List<string>())
-                                            {
-                                                <div class="carousel-item @(index == 0 ? "active" : "")">
-                                                    <img src="~/images/@img" class="d-block w-100" alt="Car image" />
-                                                </div>
-                                                index++;
-                                            }
-                                        }
-                                    </div>
-                                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel_@car.Id" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon"></span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carousel_@car.Id" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon"></span>
-                                    </button>
-                                </div>
+                      
+                        <div class="image-slider" id="slider_@car.Id" data-index="0">
+                            @foreach (var img in car.ImageUrls ?? new List<string>())
+                            {
+                                <img src="@img" alt="Car image" class="Animation" />
+                            }
+                            <button class="prev" onclick="prevSlide('@car.Id')">&#10094;</button>
+                            <button class="next" onclick="nextSlide('@car.Id')">&#10095;</button>
+                        </div>
 
-                                <!-- Car Details -->
-                                <div class="mt-3">
-                                    <p><strong>Make:</strong> @car.Make</p>
-                                    <p><strong>Model:</strong> @car.Model</p>
-                                    <p><strong>Year:</strong> @car.Year</p>
-                                    <p><strong>Seats:</strong> @car.Seats</p>
-                                    <p><strong>Transmission:</strong> @car.Transmission</p>
-                                    <p><strong>Fuel:</strong> @car.Fuel</p>
-                                    <p><strong>Mileage:</strong> @car.Mileage</p>
-                                    <p><strong>Price:</strong> @car.Price?.ToString("C")</p>
-                                    <p><strong>Color:</strong> @car.Color</p>
-                                    <p><strong>Description:</strong> @car.Description</p>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <a asp-controller="Booking" asp-action="Booking" asp-route-id="@car.Id" class="btn btn-success">Book Now</a>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
+                     
+                        <div class="car-details mt-3">
+                            <p><strong>Make:</strong> @car.Make</p>
+                            <p><strong>Model:</strong> @car.Model</p>
+                            <p><strong>Year:</strong> @car.Year</p>
+                            <p><strong>Seats:</strong> @car.Seats</p>
+                            <p><strong>Transmission:</strong> @car.Transmission</p>
+                            <p><strong>Fuel:</strong> @car.Fuel</p>
+                            <p><strong>Mileage:</strong> @car.Mileage</p>
+                            <p><strong>Price:</strong> @car.Price?.ToString("C")</p>
+                            <p><strong>Color:</strong> @car.Color</p>
+                            <p><strong>Description:</strong> @car.Description</p>
+
+                            <a asp-controller="Booking" asp-action="Booking" asp-route-id="@car.Id" class="btn btn-success mt-2">Book Now</a>
                         </div>
                     </div>
                 </div>
@@ -165,7 +142,6 @@
         </div>
     </div>
 </section>
-
 
 @await Html.PartialAsync("_Contact", model: null)
 
@@ -177,10 +153,10 @@
         document.addEventListener("DOMContentLoaded", function () {
             AOS.init({
                 duration: 1000,
-                once: false  // <-- Animation triggers every time you scroll
+                once: false  
             });
 
-            // Hero Slider Logic
+            // Hero Slider Home/Image
             const slides = document.querySelectorAll(".slide");
             let current = 0;
 
@@ -192,5 +168,75 @@
 
             setInterval(nextSlide, 5000);
         });
+
+        //car Animation 
+
+
+         function openCarPopup(carId) {
+            document.getElementById(`carPopup_${carId}`).style.display = 'block';
+        }
+
+        function closeCarPopup(carId) {
+            document.getElementById(`carPopup_${carId}`).style.display = 'none';
+        }
+
+        class CarSlider {
+            constructor(carId, autoSlideDelay = 3000) {
+                this.slider = document.getElementById(`slider_${carId}`);
+                this.slides = this.slider.querySelectorAll('.Animation'); // Direct Animation elements
+                this.currentSlide = 0;
+                this.slideInterval = null;
+                this.autoSlideDelay = autoSlideDelay;
+
+                this.prevBtn = this.slider.querySelector('.prev');
+                this.nextBtn = this.slider.querySelector('.next');
+
+                this.prevBtn.addEventListener('click', () => this.prevSlide());
+                this.nextBtn.addEventListener('click', () => this.nextSlide());
+
+                this.showSlide(this.currentSlide);
+                this.startAutoSlide();
+            }
+
+            showSlide(index) {
+                this.slides.forEach((slide, i) => {
+                    slide.style.display = i === index ? 'block' : 'none';
+                });
+                this.currentSlide = index;
+            }
+
+            nextSlide() {
+                const nextIndex = (this.currentSlide + 1) % this.slides.length;
+                this.showSlide(nextIndex);
+                this.restartAutoSlide();
+            }
+
+            prevSlide() {
+                const prevIndex = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
+                this.showSlide(prevIndex);
+                this.restartAutoSlide();
+            }
+
+            startAutoSlide() {
+                this.slideInterval = setInterval(() => this.nextSlide(), this.autoSlideDelay);
+            }
+
+            stopAutoSlide() {
+                if (this.slideInterval) {
+                    clearInterval(this.slideInterval);
+                    this.slideInterval = null;
+                }
+            }
+
+            restartAutoSlide() {
+                this.stopAutoSlide();
+                this.startAutoSlide();
+            }
+        }
+
+        @foreach (var car in Model)
+        {
+                <text>new CarSlider("@car.Id", 3000);</text>
+        }
     </script>
 }
