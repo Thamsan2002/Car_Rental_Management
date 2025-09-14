@@ -13,10 +13,13 @@ namespace Car_Rental_Management.Controllers
         {
             _carService = carService;
         }
-        public IActionResult Details()
+
+        public async Task<IActionResult> Details()
         {
-            return View();
+            var cars = await _carService.GetAllCarsAsync();
+            return View(cars);
         }
+
         [HttpGet]
         public IActionResult AddCar()
         {
@@ -26,23 +29,63 @@ namespace Car_Rental_Management.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCar(CarViewModel carViewModel)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(carViewModel); // Re-render form with validation errors
-            //}
+            if (!ModelState.IsValid)
+                return View(carViewModel);
 
             var result = await _carService.AddCarAsync(carViewModel);
 
             if (result)
             {
                 TempData["SuccessMessage"] = "Car added successfully!";
-                return RedirectToAction("CarList"); // or wherever you want
+                return RedirectToAction("Details");
+            }
+
+            ModelState.AddModelError("", "Something went wrong while saving the car.");
+            return View(carViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var car = await _carService.GetCarByIdAsync(id);
+            if (car == null) return NotFound();
+
+            return View(car);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(CarViewModel carViewModel)
+        {
+            if (!ModelState.IsValid)
+                return View(carViewModel);
+
+            var result = await _carService.UpdateCarAsync(carViewModel);
+
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Car updated successfully!";
+                return RedirectToAction("Details");
+            }
+
+            ModelState.AddModelError("", "Something went wrong while updating the car.");
+            return View(carViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _carService.DeleteCarAsync(id);
+
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Car deleted successfully!";
             }
             else
             {
-                ModelState.AddModelError("", "Something went wrong while saving the car.");
-                return View(carViewModel);
+                TempData["ErrorMessage"] = "Failed to delete car.";
             }
+
+            return RedirectToAction("Details");
         }
     }
 }

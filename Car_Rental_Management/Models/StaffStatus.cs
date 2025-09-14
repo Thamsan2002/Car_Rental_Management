@@ -2,9 +2,8 @@
 {
     public enum StaffStatus
     {
-        Active = 1,
-        Inactive = 2,
-        OnLeave = 3,
-        Terminated = 4
+        Active,
+        Inactive,
+        Suspended
     }
 }
