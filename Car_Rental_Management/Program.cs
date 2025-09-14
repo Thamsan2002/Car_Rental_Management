@@ -17,6 +17,8 @@ internal class Program
         builder.Services.AddScoped<ICarRepository, CarRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+        builder.Services.AddScoped<IAdminService, AdminService>();
+        builder.Services.AddScoped<IAdminrepository, Addminrepository>();
         builder.Services.AddDbContext<ApplicationDbcontext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Car")));
 

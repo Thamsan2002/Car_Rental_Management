@@ -16,7 +16,7 @@ namespace Car_Rental_Management.Controllers
             _staffService = staffService;
         }
 
-        // List all staff
+      
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -24,7 +24,7 @@ namespace Car_Rental_Management.Controllers
             return View(staffList);
         }
 
-        // View staff details
+        
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
@@ -35,14 +35,14 @@ namespace Car_Rental_Management.Controllers
             return View(staffDto);
         }
 
-        // Create staff (GET)
+       
         [HttpGet]
         public IActionResult Create()
         {
             return View(new Staffviewmodel());
         }
 
-        // Create staff (POST)
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Staffviewmodel vm)
@@ -54,7 +54,7 @@ namespace Car_Rental_Management.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //  Edit staff (GET)
+        
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -67,7 +67,7 @@ namespace Car_Rental_Management.Controllers
             return View(vm);
         }
 
-        //  Edit staff (POST)
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, Staffviewmodel vm)
@@ -88,7 +88,7 @@ namespace Car_Rental_Management.Controllers
             }
         }
 
-        // 🔹 Delete staff
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Guid id)

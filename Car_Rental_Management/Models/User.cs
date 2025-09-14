@@ -5,7 +5,7 @@ namespace Car_Rental_Management.Models
     public class User
     {
         [Key]
-        public Guid userId { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
         public string Email { get; set; } = string.Empty;

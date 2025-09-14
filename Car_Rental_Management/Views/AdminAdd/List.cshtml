@@ -1,0 +1,37 @@
+﻿@model List<Car_Rental_Management.Dtos.AdminDto>
+
+<h2>Admin List</h2>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var admin in Model)
+        {
+            <tr>
+                <td>@admin.Name</td>
+                <td>@admin.Address</td>
+                <td>@admin.Email</td>
+                <td>@admin.PhoneNumber</td>
+                <td>@admin.Role</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@admin.Id" class="btn btn-primary btn-sm">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@admin.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Are you sure you want to delete this admin?');">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
