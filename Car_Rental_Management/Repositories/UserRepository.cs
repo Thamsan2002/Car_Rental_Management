@@ -21,7 +21,7 @@ namespace Car_Rental_Management.Repositories
             {
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
-                return user.Id; // always returns Guid
+                return user.userId; // always returns Guid
             }
             catch (Exception ex)
             {
@@ -76,8 +76,8 @@ namespace Car_Rental_Management.Repositories
             {
                 return await _context.Users
                     .FirstOrDefaultAsync(u =>
-                        u.EmailAddress != null &&
-                        u.EmailAddress.Equals(email, StringComparison.OrdinalIgnoreCase));
+                        u.Email != null &&
+                        u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
             }
             catch (Exception ex)
             {
