@@ -89,6 +89,7 @@ namespace Car_Rental_Management.Migrations
                     LicenseNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LicenseExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Experience = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VehicleType = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -141,7 +142,8 @@ namespace Car_Rental_Management.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Staffs_UserId",
                 table: "Staffs",
-                column: "UserId");
+                column: "UserId",
+                unique: true);
         }
 
         /// <inheritdoc />

@@ -1,6 +1,7 @@
-﻿using Car_Rental_Management.Models;
-using Car_Rental_Management.Dtos;
+﻿using Car_Rental_Management.Dtos;
+using Car_Rental_Management.Models;
 using Car_Rental_Management.viewmodel;
+using Car_Rental_Management.ViewModel;
 
 namespace Car_Rental_Management.Mapper
 {
@@ -61,7 +62,7 @@ namespace Car_Rental_Management.Mapper
                 EmailAddress = staff.User?.Email ?? string.Empty,
                 PhoneNumber = staff.User?.PhoneNumber ?? string.Empty,
                 Role = staff.User?.Role ?? string.Empty,
-               
+
             };
         }
 

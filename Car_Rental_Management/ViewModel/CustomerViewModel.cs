@@ -14,7 +14,7 @@ namespace Car_Rental_Management.ViewModel
         [Required]
         [MinLength(6, ErrorMessage = "Password must be at least 6 characters.")]
         public string Password { get; set; }
-        
+
 
         [Required(ErrorMessage = "Please select your gender.")]
         public string Gender { get; set; }
