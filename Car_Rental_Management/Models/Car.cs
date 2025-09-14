@@ -2,7 +2,7 @@
 {
     public class Car
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Make { get; set; }
         public string Model { get; set; }
@@ -16,7 +16,7 @@
         public bool IsAvailable { get; set; }
         public string Color { get; set; }
         public string Description { get; set; }
-        public string Features { get; set; } // Comma-separated list
+
         public List<string> ImagePaths { get; set; }
         public DateTime CreatedAt { get; set; }
     }
