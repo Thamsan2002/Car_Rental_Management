@@ -66,10 +66,11 @@ namespace Car_Rental_Management.Service.Implement
         public async Task<AdminDto> GetAdminByIdAsync(Guid id)
         {
             var admin = await _adminRepo.GetByIdAsync(id);
-            if (admin == null) return null;
+            if (admin == null) throw new Exception("Admin not found");
 
             return AdminMapper.ToDto(admin);
         }
+
         public async Task DeleteAdminAsync(Guid id)
         {
             // Fetch admin from repo

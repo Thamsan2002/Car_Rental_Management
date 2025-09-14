@@ -1,4 +1,5 @@
 ﻿using Car_Rental_Management.Dtos;
+using Car_Rental_Management.Mapper;
 using Car_Rental_Management.Service.Interface;
 using Car_Rental_Management.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -55,8 +56,9 @@ namespace Car_Rental_Management.Controllers
             var adminVm = await _adminService.GetAdminByIdAsync(id); // returns AdminViewModel
             if (adminVm == null)
                 return NotFound();
+            var vm = AdminMapper.ToViewModel(adminVm);
 
-            return View(adminVm);
+            return View(vm);
         }
 
         // POST: Admin/Edit/{id} → handle update

@@ -10,6 +10,8 @@ namespace Car_Rental_Management.Service.Interface
         Task UpdateAdminAsync(Guid adminId, Adminviewmodel vm);
         Task<List<AdminDto>> GetAllAdminsAsync();
         Task<AdminDto> GetAdminByIdAsync(Guid id);
+
+
         Task DeleteAdminAsync(Guid Id);
 
     }

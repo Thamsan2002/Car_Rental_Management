@@ -52,5 +52,18 @@ namespace Car_Rental_Management.Mapper
                 Role = admin.User.Role
             };
         }
+        // DTO → ViewModel (for edit form load)
+        public static Adminviewmodel ToViewModel(AdminDto dto)
+        {
+            return new Adminviewmodel
+            {
+                Id = dto.Id,
+                Name = dto.Name,
+                Address = dto.Address,
+                Email = dto.Email,
+                PhoneNumber = dto.PhoneNumber,
+                Role = dto.Role
+            };
+        }
     }
 }
