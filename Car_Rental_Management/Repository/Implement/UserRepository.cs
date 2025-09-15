@@ -31,7 +31,7 @@ namespace Car_Rental_Management.Repository.Implement
         }
 
 
-        public async Task<User> GetByEmailAndPhoneAsync(string email, string phone)
+        public async Task<bool> IsEmailOrPhoneExistAsync(string email, string phone)
         {
             //return await _context.Users
             //    .Join(_context.Drivers,
@@ -42,7 +42,8 @@ namespace Car_Rental_Management.Repository.Implement
             //    .Select(x => x.User)
             //    .FirstOrDefaultAsync();
             return await _context.Users
-                                .FirstOrDefaultAsync(u => u.Email == email || u.PhoneNumber == phone);
+                .AnyAsync(u => (u.Email == email && u.PhoneNumber == phone) || u.Email == email || u.PhoneNumber == phone);
+
         }
         public async Task<User?> GetByPhoneAsync(string phoneNumber)
         {

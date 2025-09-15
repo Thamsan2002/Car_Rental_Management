@@ -22,8 +22,8 @@ namespace Car_Rental_Management.Service.Implement
         public async Task<string> CreateCustomerAsync(CustomerViewModel viewModel)
         {
 
-            var existingUser = await _userRepository.GetByEmailAndPhoneAsync(viewModel.Email, viewModel.Phonenumber);
-            if (existingUser != null)
+            var existingUser = await _userRepository.IsEmailOrPhoneExistAsync(viewModel.Email, viewModel.Phonenumber);
+            if (!existingUser)
             {
                 return "User already exists with this email!";
             }

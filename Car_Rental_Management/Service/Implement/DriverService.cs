@@ -21,9 +21,9 @@ namespace Car_Rental_Management.Service.Implement
 
         public async Task<string> CreateDriverAsync(DriverViewModel viewModel)
         {
-            var existingUser = await _userRepository.GetByEmailAndPhoneAsync(viewModel.Email, viewModel.EmergencyContact);
+            var existingUser = await _userRepository.IsEmailOrPhoneExistAsync(viewModel.Email, viewModel.EmergencyContact);
 
-            if (existingUser != null)
+            if (existingUser)
             {
                 return "Driver already exists with this email and phone number!";
             }
