@@ -43,7 +43,6 @@ namespace Car_Rental_Management.ViewModel
         [Required, MinLength(6)]
         public string Password { get; set; }
 
-        [Required, Phone]
-        public string PhoneNumber { get; set; }
+        
     }
 }

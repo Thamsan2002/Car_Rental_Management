@@ -23,8 +23,8 @@ namespace Car_Rental_Management.Service.Implement
             
 
             // Duplicate check
-            var existingUser = await _userRepo.GetByEmailAndPhoneAsync(vm.Email, vm.PhoneNumber);
-            if (existingUser != null)
+            var existingUser = await _userRepo.IsEmailOrPhoneExistAsync(vm.Email, vm.PhoneNumber);
+            if (existingUser)
                 throw new InvalidOperationException("User with this email or phone number already exists.");
 
             // Map ViewModel → User
@@ -52,7 +52,7 @@ namespace Car_Rental_Management.Service.Implement
             AdminMapper.UpdateAdminModel(admin, vm);
 
             // Save changes to User table
-            await _userRepo.UpdateAsync(admin.User);
+            //await _userRepo.UpdateAsync(admin.User);
 
             // Save changes to Admin table
             await _adminRepo.UpdateAdminAsync(admin);

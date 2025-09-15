@@ -1,0 +1,73 @@
+﻿body {
+    background-color: #f0f2f8;
+}
+
+/* Sidebar */
+.sidebar {
+    height: 100vh;
+    background: linear-gradient(180deg, #0C959C, #0A7075, #032F30);
+    color: white;
+    padding: 20px;
+}
+
+    .sidebar h2 {
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
+
+    .sidebar a {
+        display: block;
+        color: white;
+        padding: 12px 15px;
+        border-radius: 8px;
+        text-decoration: none;
+        margin-bottom: 8px;
+        transition: all 0.3s ease;
+        background: rgba(0,0,0,0.2);
+    }
+
+        .sidebar a:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateX(5px);
+        }
+
+/* Car card */
+.car-card {
+    background: white;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(12,149,156,0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .car-card strong {
+        color: #032F30;
+    }
+
+.badge-available {
+    background: #0C959C;
+    color: white;
+}
+
+.badge-unavailable {
+    background: #032F30;
+    color: white;
+}
+
+/* Modal */
+.modal-header {
+    background: linear-gradient(90deg, #0C959C, #0A7075, #032F30);
+    color: white;
+}
+
+.modal-title {
+    font-weight: bold;
+}
+
+/* Footer Gradient */
+.footer-gradient {
+    background: linear-gradient(90deg,#0C959C,#0A7075,#032F30);
+}
