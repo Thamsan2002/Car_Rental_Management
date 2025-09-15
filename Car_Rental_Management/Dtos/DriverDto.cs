@@ -14,6 +14,5 @@
         public string LicenseExpiryDate { get; set; }
         public string Experience { get; set; }
         public string VehicleType { get; set; }
-        
     }
 }

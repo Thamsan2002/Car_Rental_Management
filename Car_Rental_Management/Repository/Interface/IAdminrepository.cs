@@ -9,5 +9,6 @@ namespace Car_Rental_Management.Repository.Interface
         Task UpdateAdminAsync(Admin admin);
         Task<List<Admin>> GetAllAsync();
         Task DeleteAdminAsync(Guid id);
+        Task<Admin?> GetByUserIdAsync(Guid userId);
     }
 }

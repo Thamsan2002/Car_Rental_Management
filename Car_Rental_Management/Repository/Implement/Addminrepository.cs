@@ -58,6 +58,12 @@ namespace Car_Rental_Management.Repository.Implement
 
             
         }
+        public async Task<Admin?> GetByUserIdAsync(Guid userId)
+        {
+            return await _context.Admins
+                                 .Include(a => a.User) 
+                                 .FirstOrDefaultAsync(a => a.UserId == userId);
+        }
 
     }
 }

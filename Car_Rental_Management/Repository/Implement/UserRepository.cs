@@ -50,6 +50,13 @@ namespace Car_Rental_Management.Repository.Implement
             return await _context.Users
                                  .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
         }
+        public async Task<User?> GetByEmailOrPhoneAsync(string emailOrPhone, string password)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(u =>
+                    (u.Email == emailOrPhone || u.PhoneNumber == emailOrPhone)
+                    && u.Password == password);
+        }
 
 
 
