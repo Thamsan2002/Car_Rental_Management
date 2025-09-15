@@ -17,15 +17,40 @@ namespace Car_Rental_Management.Repository.Implement
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            return user.userId;
+            return user.Id;
+        }
+        public async Task<User?> GetByIdAsync(Guid id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
+
+        public async Task UpdateAsync(User user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
         }
 
 
         public async Task<bool> IsEmailOrPhoneExistAsync(string email, string phone)
         {
+            //return await _context.Users
+            //    .Join(_context.Drivers,
+            //          u => u.userId,
+            //          d => d.UserId,
+            //          (u, d) => new { User = u, Driver = d })
+            //    .Where(x => x.User.Email == email && x.Driver.EmergencyContact == phone)
+            //    .Select(x => x.User)
+            //    .FirstOrDefaultAsync();
             return await _context.Users
                 .AnyAsync(u => (u.Email == email && u.PhoneNumber == phone) || u.Email == email || u.PhoneNumber == phone);
+
         }
+        public async Task<User?> GetByPhoneAsync(string phoneNumber)
+        {
+            return await _context.Users
+                                 .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
+        }
+
 
 
     }

@@ -41,6 +41,8 @@ namespace Car_Rental_Management.Models
         [Required]
         public string Experience { get; set; }
 
+        public string Role { get; set; } = "Driver";
+
         [Required]
         public string VehicleType { get; set; }
     }

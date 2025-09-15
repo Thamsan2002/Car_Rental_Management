@@ -14,11 +14,9 @@ namespace Car_Rental_Management.Repository.Implement
             _context = context;
         }
 
-        public async Task<Driver> AddAsync(Driver driver)
+        public async Task<Driver?> GetByIdAsync(Guid id)
         {
-            _context.Drivers.Add(driver);
-            await _context.SaveChangesAsync();
-            return driver;
+            return await _context.Drivers.Include(d => d.User).FirstOrDefaultAsync(d => d.Id == id);
         }
 
         public async Task<IEnumerable<Driver>> GetAllAsync()
@@ -26,18 +24,23 @@ namespace Car_Rental_Management.Repository.Implement
             return await _context.Drivers.Include(d => d.User).ToListAsync();
         }
 
-
-        public async Task<Driver> GetByIdAsync(Guid id)
+        public async Task<Driver> AddAsync(Driver driver)
         {
-            return await _context.Drivers
-                .Include(d => d.User)   // Email fetch panna User join pannum
-                .FirstOrDefaultAsync(d => d.Id == id);
-
+            _context.Drivers.Add(driver);
+            await _context.SaveChangesAsync();
+            return driver;
         }
 
-        public async Task UpdateAsync(Driver driver)
+        public async Task<Driver> UpdateAsync(Driver driver)
         {
             _context.Drivers.Update(driver);
+            await _context.SaveChangesAsync();
+            return driver;
+        }
+
+        public async Task DeleteAsync(Driver driver)
+        {
+            _context.Drivers.Remove(driver);
             await _context.SaveChangesAsync();
         }
     }

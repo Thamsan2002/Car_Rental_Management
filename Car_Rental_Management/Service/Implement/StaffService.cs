@@ -5,6 +5,7 @@ using Car_Rental_Management.Models;
 using Car_Rental_Management.Repository.Interface;
 using Car_Rental_Management.Service.Interface;
 using Car_Rental_Management.viewmodel;
+using Car_Rental_Management.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace Car_Rental_Management.Services
             var savedUserId = await _userRepo.AddAsync(userModel);
             if (savedUserId == Guid.Empty)
                 throw new Exception("Failed to save user record.");
-            
+
             // Map ViewModel -> Staff model using your mapper
             var staffModel = Staffmapper.ToStaffModel(vm);
             staffModel.UserId = savedUserId;

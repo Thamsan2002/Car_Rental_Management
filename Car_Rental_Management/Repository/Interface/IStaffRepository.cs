@@ -11,6 +11,6 @@ namespace Car_Rental_Management.Repository.Interface
         Task<Staff?> GetByIdAsync(Guid id);
         Task DeleteByIdAsync(Guid id);
         Task UpdateAsync(Staff staff);
-      
+
     }
 }

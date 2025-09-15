@@ -4,10 +4,10 @@ namespace Car_Rental_Management.Repository.Interface
 {
     public interface IDriverRepository
     {
-        Task<Driver> AddAsync(Driver driver);
+        Task<Driver?> GetByIdAsync(Guid id);
         Task<IEnumerable<Driver>> GetAllAsync();
-        Task<Driver> GetByIdAsync(Guid id);
-        Task UpdateAsync(Driver driver);
-
+        Task<Driver> AddAsync(Driver driver);
+        Task<Driver> UpdateAsync(Driver driver);
+        Task DeleteAsync(Driver driver);
     }
 }

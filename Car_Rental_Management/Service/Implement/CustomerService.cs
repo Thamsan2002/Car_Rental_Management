@@ -1,4 +1,5 @@
-﻿using Car_Rental_Management.Mapper;
+﻿
+using Car_Rental_Management.Mapper;
 using Car_Rental_Management.Models;
 using Car_Rental_Management.Repository.Interface;
 using Car_Rental_Management.Service.Interface;
@@ -8,7 +9,7 @@ namespace Car_Rental_Management.Service.Implement
 {
     public class CustomerService : ICustomerService
     {
-         
+
         private readonly IUserRepository _userRepository;
         private readonly ICustomerRepository _customerRepository;
 
