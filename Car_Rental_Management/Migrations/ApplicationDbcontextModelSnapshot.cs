@@ -236,8 +236,7 @@ namespace Car_Rental_Management.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Staffs");
                 });
@@ -305,19 +304,12 @@ namespace Car_Rental_Management.Migrations
             modelBuilder.Entity("Car_Rental_Management.Models.Staff", b =>
                 {
                     b.HasOne("Car_Rental_Management.Models.User", "User")
-                        .WithOne("Staff")
-                        .HasForeignKey("Car_Rental_Management.Models.Staff", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Car_Rental_Management.Models.User", b =>
-                {
-                    b.Navigation("Driver");
-
-                    b.Navigation("Staff");
                 });
 #pragma warning restore 612, 618
         }

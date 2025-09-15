@@ -23,8 +23,8 @@ namespace Car_Rental_Management.Service.Implement
             
 
             // Duplicate check
-            var existingUser = await _userRepo.GetByEmailAndPhoneAsync(vm.Email, vm.PhoneNumber);
-            if (existingUser != null)
+            var existingUser = await _userRepo.IsEmailOrPhoneExistAsync(vm.Email, vm.PhoneNumber);
+            if (existingUser)
                 throw new InvalidOperationException("User with this email or phone number already exists.");
 
             // Map ViewModel → User
