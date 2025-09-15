@@ -1,90 +1,84 @@
-﻿/* Car section */
-#cars {
-    padding: 60px 0;
-    background: #f9f9f9;
+﻿/* Car card */
+.car-card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.3s;
 }
 
-    #cars h2 {
-        text-align: center;
-        margin-bottom: 40px;
-        font-size: 2rem;
-        font-weight: bold;
-        color: #333;
+    .car-card:hover {
+        transform: translateY(-5px);
     }
 
-/* Card styling */
-.card {
-    border: none;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+.car-popup {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 9999;
+    overflow-y: auto;
+}
+
+.car-popup-content {
     background: #fff;
-}
-
-    .card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.15);
-    }
-
-    .card img {
-        height: 220px;
-        object-fit: cover;
-    }
-
-    /* Buttons */
-    .card .btn {
-        margin-right: 8px;
-        border-radius: 25px;
-        padding: 6px 16px;
-        font-size: 0.9rem;
-    }
-
-/* Modal styling */
-.modal-content {
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.2);
-}
-
-.modal-header {
-    background: #007bff;
-    color: white;
-    border-bottom: none;
-}
-
-.modal-title {
-    font-weight: bold;
-    font-size: 1.3rem;
-}
-
-.modal-body {
+    margin: 50px auto;
     padding: 20px;
-    background: #fdfdfd;
-}
-
-/* Carousel */
-.carousel-inner img {
+    width: 90%;
+    max-width: 900px;
     border-radius: 15px;
+    position: relative;
+}
+
+
+.car-popup .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.image-slider {
+    position: relative;
+    width: 100%;
     max-height: 400px;
+    overflow: hidden;
+}
+
+.Animation {
+    width: 100%;
+    height: 400px;
     object-fit: cover;
+    display: none;
+    border-radius: 10px;
 }
 
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    background-color: rgba(0,0,0,0.5);
-    border-radius: 50%;
-    padding: 10px;
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border: none;
+    font-size: 24px;
+    padding: 5px 12px;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
-/* Car details inside modal */
-.modal-body p {
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+.car-details p {
     margin: 5px 0;
-    font-size: 0.95rem;
-    color: #444;
-}
-
-.modal-footer {
-    border-top: none;
-    padding: 15px 20px;
 }
