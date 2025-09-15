@@ -45,7 +45,7 @@ internal class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Driver}/{action=CreateDriver}/{id?}");
+            pattern: "{controller=Home}/{action=LoginCustomer}/{id?}");
 
         app.Run();
     }
