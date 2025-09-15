@@ -1,1 +1,242 @@
-﻿
+﻿@model List<Car_Rental_Management.Dtos.CarDto>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- Hero Slider Section -->
+<section id="home" class="hero">
+    <div class="slider">
+        <!-- Slide 1 -->
+        <div class="slide active">
+            <img src="~/images/car3.jpg" alt="Car 1" />
+            <div class="slide-text">
+                <h1>Drive Your Dream Car</h1>
+                <p>Premium Cars at Affordable Prices</p>
+                <a asp-action="Booking" asp-controller="Booking" class="btn">Book Now</a>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide">
+            <img src="~/images/car2.jpg" alt="Car 2" />
+            <div class="slide-text">
+                <h1>Luxury & Comfort</h1>
+                <p>Experience the best ride</p>
+                <a asp-action="Index" asp-controller="Car" class="btn">View Cars</a>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide">
+            <img src="~/images/car.jpg" alt="Car 3" />
+            <div class="slide-text">
+                <h1>Easy Booking</h1>
+                <p>Book online in seconds</p>
+                <a asp-action="Register" asp-controller="Customer" class="btn">Get Started</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Clients Section -->
+<section id="clients" class="clients">
+    <img src="~/images/logo01.jpg" alt="Brand 1" />
+    <img src="~/images/logo02.jpg" alt="Brand 2" />
+    <img src="~/images/logo03.jpg" alt="Brand 3" />
+    <img src="~/images/logo02.jpg" alt="Brand 2" />
+    <img src="~/images/logo01.jpg" alt="Brand 3" />
+    <img src="~/images/logo03.jpg" alt="Brand 3" />
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-5" style="background:#f8f8f8;">
+    <div class="container">
+        <h2 class="text-center mb-5" data-aos="fade-down">Why Choose KTS?</h2>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="zoom-in">
+                <div class="feature-box">
+                    <i class="fas fa-car"></i>
+                    <h4>Wide Selection</h4>
+                    <p>From economy to luxury, we offer a wide range of cars to suit your needs.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+                <div class="feature-box">
+                    <i class="fas fa-tags"></i>
+                    <h4>Affordable Pricing</h4>
+                    <p>Transparent pricing with no hidden fees. Rent with confidence.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="400">
+                <div class="feature-box">
+                    <i class="fas fa-headset"></i>
+                    <h4>24/7 Support</h4>
+                    <p>Our support team is here to help you anytime, anywhere.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+@await Html.PartialAsync("_About", model: null)
+
+<!-- Car Section -->
+
+<section id="cars" class="car-list">
+    <div class="container">
+        <h2 class="mb-4">Available Cars</h2>
+        <div class="row">
+            @foreach (var car in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="car-card card">
+                        <img src="@(car.ImageUrls?.FirstOrDefault() ?? "/uploads/images/noimage.jpg")"
+                             class="card-img-top" alt="@car.Model" />
+
+                        <div class="card-body">
+                            <h5 class="card-title">@car.Make @car.Model (@car.Year)</h5>
+                            <p><strong>Price:</strong> @car.Price?.ToString("C")</p>
+
+                            <a asp-controller="Booking" asp-action="Booking" asp-route-id="@car.Id" class="btn btn-primary">Book Now</a>
+                            <button class="btn btn-info" onclick="openCarPopup('@car.Id')">Details</button>
+                        </div>
+                    </div>
+                </div>
+
+               
+                <div class="car-popup" id="carPopup_@car.Id">
+                    <div class="car-popup-content">
+                        <span class="close-btn" onclick="closeCarPopup('@car.Id')">&times;</span>
+                        @* <button class="btn btn-secondary mb-3" onclick="closeCarPopup('@car.Id')">Back</button> *@
+
+                      
+                        <div class="image-slider" id="slider_@car.Id" data-index="0">
+                            @foreach (var img in car.ImageUrls ?? new List<string>())
+                            {
+                                <img src="@img" alt="Car image" class="Animation" />
+                            }
+                            <button class="prev" onclick="prevSlide('@car.Id')">&#10094;</button>
+                            <button class="next" onclick="nextSlide('@car.Id')">&#10095;</button>
+                        </div>
+
+                     
+                        <div class="car-details mt-3">
+                            <p><strong>Make:</strong> @car.Make</p>
+                            <p><strong>Model:</strong> @car.Model</p>
+                            <p><strong>Year:</strong> @car.Year</p>
+                            <p><strong>Seats:</strong> @car.Seats</p>
+                            <p><strong>Transmission:</strong> @car.Transmission</p>
+                            <p><strong>Fuel:</strong> @car.Fuel</p>
+                            <p><strong>Mileage:</strong> @car.Mileage</p>
+                            <p><strong>Price:</strong> @car.Price?.ToString("C")</p>
+                            <p><strong>Color:</strong> @car.Color</p>
+                            <p><strong>Description:</strong> @car.Description</p>
+
+                            <a asp-controller="Booking" asp-action="Booking" asp-route-id="@car.Id" class="btn btn-success mt-2">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@await Html.PartialAsync("_Contact", model: null)
+
+
+@section Scripts {
+    <!-- AOS Animation Script -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            AOS.init({
+                duration: 1000,
+                once: false  
+            });
+
+            // Hero Slider Home/Image
+            const slides = document.querySelectorAll(".slide");
+            let current = 0;
+
+            function nextSlide() {
+                slides[current].classList.remove("active");
+                current = (current + 1) % slides.length;
+                slides[current].classList.add("active");
+            }
+
+            setInterval(nextSlide, 5000);
+        });
+
+        //car Animation 
+
+
+         function openCarPopup(carId) {
+            document.getElementById(`carPopup_${carId}`).style.display = 'block';
+        }
+
+        function closeCarPopup(carId) {
+            document.getElementById(`carPopup_${carId}`).style.display = 'none';
+        }
+
+        class CarSlider {
+            constructor(carId, autoSlideDelay = 3000) {
+                this.slider = document.getElementById(`slider_${carId}`);
+                this.slides = this.slider.querySelectorAll('.Animation'); // Direct Animation elements
+                this.currentSlide = 0;
+                this.slideInterval = null;
+                this.autoSlideDelay = autoSlideDelay;
+
+                this.prevBtn = this.slider.querySelector('.prev');
+                this.nextBtn = this.slider.querySelector('.next');
+
+                this.prevBtn.addEventListener('click', () => this.prevSlide());
+                this.nextBtn.addEventListener('click', () => this.nextSlide());
+
+                this.showSlide(this.currentSlide);
+                this.startAutoSlide();
+            }
+
+            showSlide(index) {
+                this.slides.forEach((slide, i) => {
+                    slide.style.display = i === index ? 'block' : 'none';
+                });
+                this.currentSlide = index;
+            }
+
+            nextSlide() {
+                const nextIndex = (this.currentSlide + 1) % this.slides.length;
+                this.showSlide(nextIndex);
+                this.restartAutoSlide();
+            }
+
+            prevSlide() {
+                const prevIndex = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
+                this.showSlide(prevIndex);
+                this.restartAutoSlide();
+            }
+
+            startAutoSlide() {
+                this.slideInterval = setInterval(() => this.nextSlide(), this.autoSlideDelay);
+            }
+
+            stopAutoSlide() {
+                if (this.slideInterval) {
+                    clearInterval(this.slideInterval);
+                    this.slideInterval = null;
+                }
+            }
+
+            restartAutoSlide() {
+                this.stopAutoSlide();
+                this.startAutoSlide();
+            }
+        }
+
+        @foreach (var car in Model)
+        {
+                <text>new CarSlider("@car.Id", 3000);</text>
+        }
+    </script>
+}

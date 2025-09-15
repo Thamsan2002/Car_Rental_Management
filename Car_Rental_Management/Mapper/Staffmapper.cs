@@ -1,6 +1,7 @@
-﻿using Car_Rental_Management.Models;
-using Car_Rental_Management.Dtos;
+﻿using Car_Rental_Management.Dtos;
+using Car_Rental_Management.Models;
 using Car_Rental_Management.viewmodel;
+using Car_Rental_Management.ViewModel;
 
 namespace Car_Rental_Management.Mapper
 {
@@ -27,10 +28,10 @@ namespace Car_Rental_Management.Mapper
         {
             return new User
             {
-                //EmailAddress = vm.EmailAddress,
-                //Password = vm.Password,
-                //PhoneNumber = vm.PhoneNumber,
-                //Role = vm.Role
+                Email = vm.EmailAddress,
+                Password = vm.Password,
+                PhoneNumber = vm.PhoneNumber,
+                Role = vm.Role
             };
         }
 
@@ -58,10 +59,10 @@ namespace Car_Rental_Management.Mapper
                 ProfileImage = staff.ProfileImage,
                 Salary = staff.Salary,
                 ShiftTime = staff.ShiftTime,
-                //EmailAddress = staff.User?.EmailAddress ?? string.Empty,
-                //PhoneNumber = staff.User?.PhoneNumber ?? string.Empty,
-                //Role = staff.User?.Role ?? string.Empty,
-               
+                EmailAddress = staff.User?.Email ?? string.Empty,
+                PhoneNumber = staff.User?.PhoneNumber ?? string.Empty,
+                Role = staff.User?.Role ?? string.Empty,
+
             };
         }
 
@@ -80,10 +81,10 @@ namespace Car_Rental_Management.Mapper
         // Update existing user from ViewModel
         public static void UpdateUserModel(User user, Staffviewmodel vm)
         {
-            //user.EmailAddress = vm.EmailAddress;
-            //user.Password = vm.Password;
-            //user.PhoneNumber = vm.PhoneNumber;
-            //user.Role = vm.Role;
+            user.Email = vm.EmailAddress;
+            user.Password = vm.Password;
+            user.PhoneNumber = vm.PhoneNumber;
+            user.Role = vm.Role;
         }
 
         // Detail DTO → ViewModel (edit form)

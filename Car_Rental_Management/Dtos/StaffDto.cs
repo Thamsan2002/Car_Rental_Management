@@ -9,6 +9,6 @@ namespace Car_Rental_Management.Dtos
         public string Name { get; set; }
         public StaffStatus Status { get; set; }
     }
-   
+
 
 }

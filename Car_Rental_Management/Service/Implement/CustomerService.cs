@@ -1,4 +1,5 @@
-﻿using Car_Rental_Management.Mapper;
+﻿
+using Car_Rental_Management.Mapper;
 using Car_Rental_Management.Models;
 using Car_Rental_Management.Repository.Interface;
 using Car_Rental_Management.Service.Interface;
@@ -8,7 +9,7 @@ namespace Car_Rental_Management.Service.Implement
 {
     public class CustomerService : ICustomerService
     {
-         
+
         private readonly IUserRepository _userRepository;
         private readonly ICustomerRepository _customerRepository;
 
@@ -21,8 +22,8 @@ namespace Car_Rental_Management.Service.Implement
         public async Task<string> CreateCustomerAsync(CustomerViewModel viewModel)
         {
 
-            var existingUser = await _userRepository.GetByEmailAsync(viewModel.Email);
-            if (existingUser != null)
+            var existingUser = await _userRepository.IsEmailOrPhoneExistAsync(viewModel.Email, viewModel.Phonenumber);
+            if (!existingUser)
             {
                 return "User already exists with this email!";
             }
@@ -31,7 +32,7 @@ namespace Car_Rental_Management.Service.Implement
             var user = Customermapper.ToUser(viewModel);
             var createdUser = await _userRepository.AddAsync(user);
 
-            var customer = Customermapper.ToCustomer(viewModel, createdUser.userId);
+            var customer = Customermapper.ToCustomer(viewModel, createdUser);
             await _customerRepository.AddAsync(customer);
 
             return "Customer created successfully!";

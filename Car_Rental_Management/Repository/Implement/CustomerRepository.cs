@@ -14,6 +14,23 @@ namespace Car_Rental_Management.Repository.Implement
             _context = context;
         }
 
+        // Get single customer by Id
+        public async Task<Customer?> GetByIdAsync(Guid id)
+        {
+            return await _context.Customers
+                                 .Include(c => c.User)
+                                 .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        // Get all customers
+        public async Task<IEnumerable<Customer>> GetAllAsync()
+        {
+            return await _context.Customers
+                                 .Include(c => c.User)
+                                 .ToListAsync();
+        }
+
+        // Add new customer
         public async Task<Customer> AddAsync(Customer customer)
         {
             _context.Customers.Add(customer);
@@ -21,10 +38,19 @@ namespace Car_Rental_Management.Repository.Implement
             return customer;
         }
 
-        public async Task<IEnumerable<Customer>> GetAllAsync()
+        // Update existing customer
+        public async Task<Customer> UpdateAsync(Customer customer)
         {
-            return await _context.Customers.Include(d => d.User).ToListAsync();
+            _context.Customers.Update(customer);
+            await _context.SaveChangesAsync();
+            return customer;
         }
 
+        // Delete customer
+        public async Task DeleteAsync(Customer customer)
+        {
+            _context.Customers.Remove(customer);
+            await _context.SaveChangesAsync();
+        }
     }
 }

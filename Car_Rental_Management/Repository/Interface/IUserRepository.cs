@@ -4,7 +4,12 @@ namespace Car_Rental_Management.Repository.Interface
 {
     public interface IUserRepository
     {
-        Task<User> GetByEmailAsync(string email);
-        Task<User> AddAsync(User user);
+
+        Task<Guid> AddAsync(User user);
+        //Task<User?> GetByIdAsync(Guid id);
+        //Task UpdateAsync(User user);
+        Task<bool> IsEmailOrPhoneExistAsync(string email, string phone);
+
+
     }
 }
