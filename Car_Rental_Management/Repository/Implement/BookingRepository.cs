@@ -1,0 +1,33 @@
+﻿using Car_Rental_Management.Data;
+using Car_Rental_Management.Models;
+using Car_Rental_Management.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
+
+namespace Car_Rental_Management.Repository.Implement
+{
+    public class BookingRepository:IBookingRepository
+    {
+        private readonly ApplicationDbcontext _context;
+
+        public BookingRepository(ApplicationDbcontext context)
+        {
+            _context = context;
+        }
+
+        public async Task CreateAsync(Booking booking)
+        {
+            await _context.Bookings.AddAsync(booking);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Booking>> GetAllAsync()
+        {
+            return await _context.Bookings.ToListAsync();
+        }
+
+        public async Task<Booking> GetByIdAsync(Guid id)
+        {
+            return await _context.Bookings.FindAsync(id);
+        }
+    }
+}

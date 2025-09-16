@@ -1,4 +1,5 @@
 ﻿using Car_Rental_Management.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Car_Rental_Management.Repository.Interface
 {
@@ -12,8 +13,8 @@ namespace Car_Rental_Management.Repository.Interface
         Task<User?> GetByPhoneAsync(string phoneNumber);
         Task<User?> GetCustomerByLoginAsync(string emailOrPhone, string password);
 
-
-
+        Task<User?> GetByEmailOrPhoneAsync(string emailOrPhone, string password);
+     
 
 
     }
