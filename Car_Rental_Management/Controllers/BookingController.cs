@@ -1,5 +1,7 @@
 ﻿using Car_Rental_Management.Dtos;
+using Car_Rental_Management.Mapper;
 using Car_Rental_Management.Repository.Interface;
+using Car_Rental_Management.Service.Implement;
 using Car_Rental_Management.Service.Interface;
 using Car_Rental_Management.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -103,6 +105,119 @@ namespace Car_Rental_Management.Controllers
             var bookings = await _bookingService.GetBookingsByCustomerIdAsync(customerId);
             return View(bookings);
         }
+        [HttpGet]
+        public async Task<IActionResult> Booking()
+        {
+            var cars = await _carRepo.GetAllAsync();
+            var drivers = await _driverRepo.GetAllAsync();
+
+            var model = new BookingFormViewModel
+            {
+                Cars = CarMapper.ToDtoList(cars),
+                Drivers = drivers.Select(d => new DriverDto
+                {
+                    Id = d.Id,
+                    Name = d.Name
+                    // Fee ignore for now
+                }).ToList()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Booking(BookingFormViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                // reload cars & drivers
+                var cars = await _carRepo.GetAllAsync();
+                var drivers = await _driverRepo.GetAllAsync();
+
+                model.Cars = CarMapper.ToDtoList(cars);
+                model.Drivers = drivers.Select(d => new DriverDto
+                {
+                    Id = d.Id,
+                    Name = d.Name
+                }).ToList();
+
+                return View(model);
+            }
+
+            int totalDays = (model.EndDate - model.StartDate).Days + 1;
+            if (totalDays <= 0)
+            {
+                ModelState.AddModelError("", "End Date must be after Start Date.");
+                var cars = await _carRepo.GetAllAsync();
+                var drivers = await _driverRepo.GetAllAsync();
+
+                model.Cars = CarMapper.ToDtoList(cars);
+                model.Drivers = drivers.Select(d => new DriverDto
+                {
+                    Id = d.Id,
+                    Name = d.Name
+                }).ToList();
+
+                return View(model);
+            }
+
+            var selectedCar = (await _carRepo.GetAllAsync()).FirstOrDefault(c => c.Id == model.CarId);
+            if (selectedCar == null)
+            {
+                ModelState.AddModelError("", "Selected car not found.");
+                var cars = await _carRepo.GetAllAsync();
+                var drivers = await _driverRepo.GetAllAsync();
+
+                model.Cars = CarMapper.ToDtoList(cars);
+                model.Drivers = drivers.Select(d => new DriverDto
+                {
+                    Id = d.Id,
+                    Name = d.Name
+                }).ToList();
+
+                return View(model);
+            }
+
+            decimal carPrice = selectedCar.PricePerDay ?? 0;
+
+            model.TotalPrice = carPrice * totalDays; // driver fee ignore
+
+            try
+            {
+                // Map BookingFormViewModel -> BookingViewmodel
+                var booking = new BookingViewmodel
+                {
+                    CarId = model.CarId,
+                    DriverId = model.DriverId,
+                    BookingType = model.BookingType,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    TotalPrice = model.TotalPrice
+                };
+
+                await _bookingService.CreateBookingAsync(booking);
+
+                TempData["Message"] = "Booking confirmed!";
+                return RedirectToAction("Payment", "Payment", new { bookingId = model.CarId });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+
+                var cars = await _carRepo.GetAllAsync();
+                var drivers = await _driverRepo.GetAllAsync();
+                model.Cars = CarMapper.ToDtoList(cars);
+                model.Drivers = drivers.Select(d => new DriverDto
+                {
+                    Id = d.Id,
+                    Name = d.Name
+                }).ToList();
+
+                return View(model);
+            }
+        }
+
     }
 }
 

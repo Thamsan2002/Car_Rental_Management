@@ -1,216 +1,110 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Booking Form</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f4f6f9;
-        }
+﻿@model Car_Rental_Management.ViewModel.BookingFormViewModel
 
-        .card {
-            border-radius: 15px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white text-center">
+            <h3 class="mb-0">Book a Car</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="Booking" method="post" class="p-3">
 
-            .card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            }
+                <!-- Car Dropdown -->
+                <div class="mb-3">
+                    <label asp-for="CarId" class="form-label fw-bold">Select Car</label>
+                    <select asp-for="CarId" class="form-select" id="carSelect" onchange="calculateTotal()">
+                        <option value="">-- Select a Car --</option>
+                        @foreach (var car in Model.Cars)
+                        {
+                            <option value="@car.Id" data-price="@car.Price">
+                                @car.Make @car.Model (@car.Color) - LKR @car.Price per day
+                            </option>
+                        }
+                    </select>
+                </div>
 
-        .form-header {
-            background: linear-gradient(90deg, #0d6efd, #6f42c1);
-            color: white;
-            font-weight: bold;
-            border-radius: 15px 15px 0 0;
-        }
-
-        .btn-gradient {
-            background: linear-gradient(90deg, #0d6efd, #6f42c1);
-            color: white;
-            font-weight: bold;
-            transition: background 0.3s, transform 0.2s;
-        }
-
-            .btn-gradient:hover {
-                background: linear-gradient(90deg, #6f42c1, #0d6efd);
-                transform: translateY(-2px);
-            }
-
-        .form-control:focus, .form-select:focus {
-            box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.25);
-            border-color: #0d6efd;
-        }
-
-        .text-purple {
-            color: #6f42c1 !important;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container mt-5">
-        <div class="card shadow p-4 border-0">
-            <div class="card-header form-header text-center p-3">
-                Car Booking Form
-            </div>
-            <div class="card-body p-4">
-
-                <!-- Driver Selection -->
-                <div class="mb-4">
-                    <label class="form-label fw-bold">Select Option</label><br>
+                <!-- Booking Type -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Booking Type</label><br />
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="driveOption" id="ownDrive" onclick="toggleForms()" checked>
-                        <label class="form-check-label text-primary fw-semibold" for="ownDrive">Own Drive</label>
+                        <input type="radio" asp-for="BookingType" value="WithoutDriver" class="form-check-input" checked onchange="toggleDriverDiv()" />
+                        <label class="form-check-label">Without Driver</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="driveOption" id="withDriver" onclick="toggleForms()">
-                        <label class="form-check-label text-purple fw-semibold" for="withDriver">With Driver</label>
+                        <input type="radio" asp-for="BookingType" value="WithDriver" class="form-check-input" onchange="toggleDriverDiv()" />
+                        <label class="form-check-label">With Driver</label>
                     </div>
                 </div>
 
-                <!-- Own Drive Form -->
-                <div id="ownDriveForm">
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Full Name</label>
-                        <input type="text" class="form-control" placeholder="Enter Full Name">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Email Address</label>
-                        <input type="email" class="form-control" placeholder="Enter Email">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Contact Number</label>
-                        <input type="tel" class="form-control" placeholder="Enter Contact Number">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Car Type</label>
-                        <select class="form-select">
-                            <option value="">-- Select Car --</option>
-                            <option>Sedan</option>
-                            <option>SUV</option>
-                            <option>Hatchback</option>
-                            <option>Luxury</option>
-                        </select>
-                    </div>
+                <!-- Driver Selection (fee ignored) -->
+                <div class="mb-3" id="driverDiv" style="display:none;">
+                    <label class="form-label fw-bold">Select Driver</label>
+                    <select class="form-select">
+                        <option value="">-- Select Driver --</option>
+                        @* Future driver list *@
+                        @* @foreach (var driver in Model.Drivers) {
+                            <option value="@driver.Id">@driver.Name</option>
+                        } *@
+                    </select>
+                </div>
 
-                    <!-- Start Date & Time -->
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Start Date</label>
-                            <input type="date" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Start Time</label>
-                            <input type="time" class="form-control">
-                        </div>
+                <!-- Dates -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="StartDate" class="form-label fw-bold">Start Date</label>
+                        <input asp-for="StartDate" type="date" class="form-control" id="startDate" onchange="calculateTotal()" />
                     </div>
-
-                    <!-- End Date & Time -->
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">End Date</label>
-                            <input type="date" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">End Time</label>
-                            <input type="time" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Duration (Hours/Days)</label>
-                        <input type="number" class="form-control" placeholder="Enter duration">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Payment Method</label>
-                        <select class="form-select">
-                            <option value="">-- Select Payment Method --</option>
-                            <option>Cash</option>
-                            <option>Credit/Debit Card</option>
-                            <option>Online Payment</option>
-                        </select>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="EndDate" class="form-label fw-bold">End Date</label>
+                        <input asp-for="EndDate" type="date" class="form-control" id="endDate" onchange="calculateTotal()" />
                     </div>
                 </div>
 
-
-                <!-- With Driver Form -->
-                <div id="withDriverForm" style="display:none;">
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Full Name</label>
-                        <input type="text" class="form-control" placeholder="Enter Full Name">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Email Address</label>
-                        <input type="email" class="form-control" placeholder="Enter Email">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Contact Number</label>
-                        <input type="tel" class="form-control" placeholder="Enter Contact Number">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Car Type</label>
-                        <select class="form-select">
-                            <option value="">-- Select Car --</option>
-                            <option>Sedan</option>
-                            <option>SUV</option>
-                            <option>Hatchback</option>
-                            <option>Luxury</option>
-                        </select>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Pickup Date & Time</label>
-                            <input type="datetime-local" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Pickup Location</label>
-                            <input type="text" class="form-control" placeholder="Enter Pickup Location">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Drop Date & Time</label>
-                            <input type="datetime-local" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Drop Location</label>
-                            <input type="text" class="form-control" placeholder="Enter Drop Location">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Payment Method</label>
-                        <select class="form-select">
-                            <option value="">-- Select Payment Method --</option>
-                            <option>Cash</option>
-                            <option>Credit/Debit Card</option>
-                            <option>Online Payment</option>
-                        </select>
-                    </div>
+                <!-- Total Price -->
+                <div class="mb-3">
+                    <label asp-for="TotalPrice" class="form-label fw-bold">Total Price</label>
+                    <input asp-for="TotalPrice" type="text" class="form-control text-success fw-bold" id="totalPrice" readonly />
                 </div>
 
-                <div class="text-center">
-                    <button class="btn btn-gradient px-4">Book Now</button>
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success w-50 me-2">Confirm Booking</button>
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary w-50">Cancel</a>
                 </div>
-
-            </div>
+            </form>
         </div>
     </div>
+</div>
 
+@section Scripts {
     <script>
-        function toggleForms() {
-            const own = document.getElementById('ownDrive').checked;
-            document.getElementById('ownDriveForm').style.display = own ? 'block' : 'none';
-            document.getElementById('withDriverForm').style.display = own ? 'none' : 'block';
+        function toggleDriverDiv() {
+            const withDriver = document.querySelector('input[name="BookingType"]:checked').value === "WithDriver";
+            document.getElementById('driverDiv').style.display = withDriver ? 'block' : 'none';
         }
+
+        function calculateTotal() {
+            const carSelect = document.getElementById('carSelect');
+            const selectedCarOption = carSelect.options[carSelect.selectedIndex];
+            const carPrice = selectedCarOption ? parseFloat(selectedCarOption.getAttribute('data-price') || 0) : 0;
+
+            const startDateVal = document.getElementById('startDate').value;
+            const endDateVal = document.getElementById('endDate').value;
+            const startDate = startDateVal ? new Date(startDateVal) : null;
+            const endDate = endDateVal ? new Date(endDateVal) : null;
+
+            let totalDays = 0;
+            if (startDate && endDate && endDate >= startDate) {
+                totalDays = Math.ceil((endDate - startDate) / (1000*60*60*24)) + 1;
+            }
+
+            const totalPrice = carPrice * totalDays;
+            document.getElementById('totalPrice').value = totalPrice
+                ? totalPrice.toLocaleString('en-US', { style: 'currency', currency: 'LKR', minimumFractionDigits: 0 })
+                : '';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleDriverDiv();
+        });
     </script>
-
-    <!-- Footer -->
-    <footer class="bg-primary text-white text-center py-2 mt-4">
-        <small class="fw-bold">© 2025 - Car_Rental_Management - Privacy</small>
-    </footer>
-
-</body>
-</html>
+}
