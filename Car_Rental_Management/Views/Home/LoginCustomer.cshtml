@@ -1,6 +1,7 @@
 ﻿@model List<Car_Rental_Management.Dtos.CarDto>
 
 @{
+    Layout = "_CustomerLayout";
     ViewData["Title"] = "Home";
 }
 
@@ -49,6 +50,46 @@
     <img src="~/images/logo03.jpg" alt="Brand 3" />
 </section>
 
+<!-- Offers Carousel Section -->
+<section id="offers" class="offers py-5" style="background:#fff8e1;">
+    <div class="container">
+        <h3 class="text-center mb-4">🔥 Special Offers</h3>
+        <div id="offersCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="offer-card text-center p-4 rounded shadow-sm" style="background:#fffbe6;">
+                        <h4>Weekend Special: Rent 1 Day, Get 10% Off!</h4>
+                        <p>Book your dream car this weekend and enjoy exclusive discounts.</p>
+                        <a asp-controller="Booking" asp-action="Booking" class="btn btn-warning">Book Now</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="offer-card text-center p-4 rounded shadow-sm" style="background:#ffe6e6;">
+                        <h4>Luxury Ride: 15% Off for First Booking</h4>
+                        <p>Experience premium cars at a discounted rate for your first booking.</p>
+                        <a asp-controller="Booking" asp-action="Booking" class="btn btn-warning">Book Now</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="offer-card text-center p-4 rounded shadow-sm" style="background:#e6f7ff;">
+                        <h4>Midweek Madness: Flat LKR 500 Off</h4>
+                        <p>Rent any car from Monday to Wednesday and save instantly.</p>
+                        <a asp-controller="Booking" asp-action="Booking" class="btn btn-warning">Book Now</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="offer-card text-center p-4 rounded shadow-sm" style="background:#fff0e6;">
+                        <h4>Long Trip Offer: Free Extra Day</h4>
+                        <p>Book for 3 days or more and get 1 extra day free!</p>
+                        <a asp-controller="Booking" asp-action="Booking" class="btn btn-warning">Book Now</a>
+                    </div>
+                </div>
+            </div>
+
+          
+        </div>
+    </div>
+</section>
 
 
 <!-- Car Section -->
@@ -237,7 +278,15 @@
 
         @foreach (var car in Model)
         {
-                    <text>new CarSlider("@car.Id", 3000);</text>
+                        <text>new CarSlider("@car.Id", 3000);</text>
         }
+
+
+                var offersCarousel = document.querySelector('#offersCarousel');
+        var carousel = new bootstrap.Carousel(offersCarousel, {
+            interval: 4000,  // 4 seconds per slide
+            ride: 'carousel'
+        });
+
     </script>
 }

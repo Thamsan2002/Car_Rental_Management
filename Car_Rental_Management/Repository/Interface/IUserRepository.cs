@@ -15,5 +15,6 @@ namespace Car_Rental_Management.Repository.Interface
 
 
 
+
     }
 }

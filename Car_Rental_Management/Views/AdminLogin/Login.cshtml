@@ -1,0 +1,44 @@
+﻿@model Car_Rental_Management.ViewModel.AdminLoginViewmodel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Admin Login";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Admin Login</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Display Error Message -->
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["Error"]
+                        </div>
+                    }
+
+                    <form asp-action="Login" method="post">
+                        <div class="mb-3">
+                            <label asp-for="EmailOrPhone" class="form-label"></label>
+                            <input asp-for="EmailOrPhone" class="form-control" />
+
+
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label"></label>
+                            <input asp-for="Password" class="form-control" />
+
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <small>&copy; 2025 Car Rental </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
