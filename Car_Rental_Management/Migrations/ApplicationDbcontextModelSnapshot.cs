@@ -121,6 +121,10 @@ namespace Car_Rental_Management.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DrivingLicenseNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -141,8 +145,6 @@ namespace Car_Rental_Management.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Customers");
                 });
@@ -270,17 +272,6 @@ namespace Car_Rental_Management.Migrations
                 });
 
             modelBuilder.Entity("Car_Rental_Management.Models.Admin", b =>
-                {
-                    b.HasOne("Car_Rental_Management.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Car_Rental_Management.Models.Customer", b =>
                 {
                     b.HasOne("Car_Rental_Management.Models.User", "User")
                         .WithMany()

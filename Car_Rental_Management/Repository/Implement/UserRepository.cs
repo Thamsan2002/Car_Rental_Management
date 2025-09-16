@@ -33,14 +33,7 @@ namespace Car_Rental_Management.Repository.Implement
 
         public async Task<bool> IsEmailOrPhoneExistAsync(string email, string phone)
         {
-            //return await _context.Users
-            //    .Join(_context.Drivers,
-            //          u => u.userId,
-            //          d => d.UserId,
-            //          (u, d) => new { User = u, Driver = d })
-            //    .Where(x => x.User.Email == email && x.Driver.EmergencyContact == phone)
-            //    .Select(x => x.User)
-            //    .FirstOrDefaultAsync();
+
             return await _context.Users
                 .AnyAsync(u => (u.Email == email && u.PhoneNumber == phone) || u.Email == email || u.PhoneNumber == phone);
 
@@ -49,6 +42,15 @@ namespace Car_Rental_Management.Repository.Implement
         {
             return await _context.Users
                                  .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
+        }
+
+        public async Task<User?> GetCustomerByLoginAsync(string emailOrPhone, string password)
+        {
+            return await _context.Users
+                .Where(u => u.Role == "Customer" &&
+                            u.Password == password &&
+                            (u.Email == emailOrPhone || u.PhoneNumber == emailOrPhone))
+                .FirstOrDefaultAsync();
         }
 
 

@@ -14,16 +14,6 @@ namespace Car_Rental_Management.Repository.Implement
             _context = context;
         }
 
-        public async Task<Driver?> GetByIdAsync(Guid id)
-        {
-            return await _context.Drivers.Include(d => d.User).FirstOrDefaultAsync(d => d.Id == id);
-        }
-
-        public async Task<IEnumerable<Driver>> GetAllAsync()
-        {
-            return await _context.Drivers.Include(d => d.User).ToListAsync();
-        }
-
         public async Task<Driver> AddAsync(Driver driver)
         {
             _context.Drivers.Add(driver);
@@ -31,11 +21,20 @@ namespace Car_Rental_Management.Repository.Implement
             return driver;
         }
 
-        public async Task<Driver> UpdateAsync(Driver driver)
+        public async Task<List<Driver>> GetAllAsync()
+        {
+            return await _context.Drivers.Include(d => d.User).ToListAsync();
+        }
+
+        public async Task<Driver?> GetByIdAsync(Guid id)
+        {
+            return await _context.Drivers.Include(d => d.User).FirstOrDefaultAsync(d => d.Id == id);
+        }
+
+        public async Task UpdateAsync(Driver driver)
         {
             _context.Drivers.Update(driver);
             await _context.SaveChangesAsync();
-            return driver;
         }
 
         public async Task DeleteAsync(Driver driver)
@@ -43,5 +42,6 @@ namespace Car_Rental_Management.Repository.Implement
             _context.Drivers.Remove(driver);
             await _context.SaveChangesAsync();
         }
+
     }
 }

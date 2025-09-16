@@ -5,7 +5,8 @@ namespace Car_Rental_Management.Service.Interface
 {
     public interface ICustomerService
     {
-        Task<string> CreateCustomerAsync(CustomerViewModel viewModel);
-        Task<IEnumerable<Customer>> GetAllCustomersAsync();
+        Task<(bool isSuccess, string errorMessage, Guid? customerId)> RegisterCustomerAsync(CustomerRegisterViewModel model);
+        Task<User?> LoginCustomerAsync(CustomerLoginViewModel model);
+        Task<String> RegisterUserAsync(CustomerSignupViewmodel model);
     }
 }

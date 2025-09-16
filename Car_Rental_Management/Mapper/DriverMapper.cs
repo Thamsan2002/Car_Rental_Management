@@ -12,16 +12,19 @@ namespace Car_Rental_Management.Mapper
             return new User
             {
                 Email = vm.Email,
+                PhoneNumber = vm.PhoneNumber,
                 Password = vm.Password,
-                PhoneNumber =vm.PhoneNumber,
                 Role = "Driver"
             };
         }
 
-        public static Driver ToDriver(DriverViewModel vm, Guid userId)
+        public static Driver ToDriver(DriverViewModel vm, User user)
         {
             return new Driver
             {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                User = user,
                 Name = vm.Name,
                 EmergencyContact = vm.EmergencyContact,
                 Nic = vm.Nic,
@@ -30,62 +33,43 @@ namespace Car_Rental_Management.Mapper
                 LicenseNumber = vm.LicenseNumber,
                 LicenseExpiryDate = vm.LicenseExpiryDate,
                 Experience = vm.Experience,
-                VehicleType = vm.VehicleType,
-                UserId = userId
-            };
-        }
-        public static DriverViewModel ToViewModel(DriverDto dto)
-        {
-            return new DriverViewModel
-            {
-                Name = dto.Name,
-                Email = dto.Email,
-                EmergencyContact = dto.EmergencyContact,
-                Nic = dto.Nic,
-                Gender = dto.Gender,
-                Address = dto.Address,
-                LicenseNumber = dto.LicenseNumber,
-                LicenseExpiryDate = DateTime.Parse(dto.LicenseExpiryDate),
-                Experience = dto.Experience,
-                VehicleType = dto.VehicleType
+                VehicleType = vm.VehicleType
             };
         }
 
-        public static DriverDto ToDto(Driver driver)
+        public static DriverDto ToDriverDto(Driver driver)
         {
             return new DriverDto
             {
                 Id = driver.Id,
                 Name = driver.Name,
-                Email = driver.User.Email,
+                PhoneNumber = driver.User.PhoneNumber,
                 EmergencyContact = driver.EmergencyContact,
                 Nic = driver.Nic,
                 Gender = driver.Gender,
                 Address = driver.Address,
                 LicenseNumber = driver.LicenseNumber,
-                LicenseExpiryDate = driver.LicenseExpiryDate.ToString("yyyy-MM-dd"),
+                LicenseExpiryDate = driver.LicenseExpiryDate,
                 Experience = driver.Experience,
-                VehicleType = driver.VehicleType
+                VehicleType = driver.VehicleType,
+                Email = driver.User.Email
             };
         }
 
-        public static void MapViewModelToEntity(DriverViewModel viewModel, Driver driver)
+        public static void UpdateDriverFromViewModel(Driver driver, DriverViewModel vm)
         {
-            driver.Name = viewModel.Name;
-            driver.EmergencyContact = viewModel.EmergencyContact;
-            driver.Nic = viewModel.Nic;
-            driver.Gender = viewModel.Gender;
-            driver.Address = viewModel.Address;
-            driver.LicenseNumber = viewModel.LicenseNumber;
-            driver.LicenseExpiryDate = viewModel.LicenseExpiryDate;
-            driver.Experience = viewModel.Experience;
-            driver.VehicleType = viewModel.VehicleType;
-
-            if (driver.User != null)
-            {
-                driver.User.Email = viewModel.Email;
-                driver.User.Password = viewModel.Password;
-            }
+            driver.Name = vm.Name;
+            driver.EmergencyContact = vm.EmergencyContact;
+            driver.Nic = vm.Nic;
+            driver.Gender = vm.Gender;
+            driver.Address = vm.Address;
+            driver.LicenseNumber = vm.LicenseNumber;
+            driver.LicenseExpiryDate = vm.LicenseExpiryDate;
+            driver.Experience = vm.Experience;
+            driver.VehicleType = vm.VehicleType;
+            driver.User.PhoneNumber = vm.PhoneNumber;
+            driver.User.Email = vm.Email;
+            driver.User.Password = vm.Password;
         }
     }
 }

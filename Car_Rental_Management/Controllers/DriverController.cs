@@ -39,15 +39,26 @@ namespace Car_Rental_Management.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var driverDto = await _service.GetDriverByIdAsync(id);
-            if (driverDto == null)
-                return NotFound();
+            var driver = await _service.GetDriverByIdAsync(id);
+            if (driver == null) return NotFound();
 
-
-            var viewModel = DriverMapper.ToViewModel(driverDto);
-            return View(viewModel);
+            var vm = new DriverViewModel
+            {
+                Id = driver.Id,
+                Name = driver.Name,
+                PhoneNumber = driver.PhoneNumber,
+                EmergencyContact = driver.EmergencyContact,
+                Nic = driver.Nic,
+                Gender = driver.Gender,
+                Address = driver.Address,
+                LicenseNumber = driver.LicenseNumber,
+                LicenseExpiryDate = driver.LicenseExpiryDate,
+                Experience = driver.Experience,
+                VehicleType = driver.VehicleType,
+                Email = driver.Email
+            };
+            return View(vm);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Edit(DriverViewModel viewModel)
@@ -55,9 +66,19 @@ namespace Car_Rental_Management.Controllers
             if (!ModelState.IsValid)
                 return View(viewModel);
 
-            await _service.UpdateDriverAsync(viewModel);
+            var result = await _service.UpdateDriverAsync(viewModel);
+            TempData["Message"] = result;
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _service.DeleteDriverAsync(id);
+            TempData["Message"] = result;
+            return RedirectToAction("Index");
+        }
+
 
     }
 }
