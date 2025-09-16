@@ -1,7 +1,9 @@
-﻿@model List<Car_Rental_Management.Dtos.CarDto>
+﻿@* Customer page *@
+
+ @model List<Car_Rental_Management.Dtos.CarDto>
 
 @{
-    Layout = "_CustomerLayout";
+    // Layout = "_CustomerLayout";
     ViewData["Title"] = "Home";
 }
 
@@ -86,7 +88,7 @@
                 </div>
             </div>
 
-          
+
         </div>
     </div>
 </section>
@@ -278,7 +280,7 @@
 
         @foreach (var car in Model)
         {
-                        <text>new CarSlider("@car.Id", 3000);</text>
+                            <text>new CarSlider("@car.Id", 3000);</text>
         }
 
 
@@ -290,3 +292,4 @@
 
     </script>
 }
+

@@ -8,5 +8,9 @@ namespace Car_Rental_Management.Controllers
         {
             return View();
         }
+        public IActionResult Payment()
+        {
+            return View();
+        }
     }
 }

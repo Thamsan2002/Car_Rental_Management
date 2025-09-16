@@ -19,6 +19,12 @@ namespace Car_Rental_Management.Service.Implement
             _userRepository = userRepository;
             _customerRepository = customerRepository;
         }
+
+
+        public async Task<Customer> GetByIdAsync(Guid customerId)
+        {
+            return await _customerRepository.GetByIdAsync(customerId);
+        }
         public async Task<String> RegisterUserAsync(CustomerSignupViewmodel model)
         {
             // Check if email or phone already exists

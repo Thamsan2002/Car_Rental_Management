@@ -50,9 +50,7 @@ namespace Car_Rental_Management.Controllers
         public async Task<IActionResult> Login(CustomerLoginViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
 
             var user = await _customerService.LoginCustomerAsync(model);
 
@@ -62,12 +60,12 @@ namespace Car_Rental_Management.Controllers
                 return View(model);
             }
 
-            // Store user temporarily
-            TempData["FullName"] = user;
-            // ✅ Success → Redirect to Home/Index
+            // ✅ Store essential info in Session
+            HttpContext.Session.SetString("UserId", user.Id.ToString());
+            HttpContext.Session.SetString("UserEmail", user.Email);
+
             return RedirectToAction("Index", "Home");
         }
-
 
         [HttpGet]
         public IActionResult Register()
