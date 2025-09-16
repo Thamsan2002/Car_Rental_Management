@@ -92,5 +92,23 @@ namespace Car_Rental_Management.Controllers
             ViewBag.CustomerId = customerId;
             return View("Login");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            var userIdStr = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdStr))
+                return RedirectToAction("Login");
+
+            var userId = Guid.Parse(userIdStr);
+
+            var customer = await _customerService.GetCustomerByUserIdAsync(userId);
+
+            if (customer == null)
+                return RedirectToAction("Register");
+
+            return View(customer);
+        }
+
     }
 }

@@ -9,5 +9,7 @@ namespace Car_Rental_Management.Service.Interface
         Task<User?> LoginCustomerAsync(CustomerLoginViewModel model);
         Task<String> RegisterUserAsync(CustomerSignupViewmodel model);
         Task<Customer> GetByIdAsync(Guid customerId);
+        Task<CustomerRegisterViewModel?> GetCustomerByUserIdAsync(Guid userId);
+
     }
 }

@@ -22,12 +22,27 @@ namespace Car_Rental_Management.Repository.Implement
 
         public async Task<List<Booking>> GetAllAsync()
         {
-            return await _context.Bookings.ToListAsync();
+            return await _context.Bookings
+                .Include(b => b.Customer)
+                .Include(b => b.car)
+                .ToListAsync();
         }
 
         public async Task<Booking> GetByIdAsync(Guid id)
         {
-            return await _context.Bookings.FindAsync(id);
+            return await _context.Bookings
+                .Include(b => b.Customer)
+                .Include(b => b.car)
+                .FirstOrDefaultAsync(b => b.Id == id);
+        }
+
+        public async Task<List<Booking>> GetByCustomerIdAsync(Guid customerId)
+        {
+            return await _context.Bookings
+                .Include(b => b.Customer)
+                .Include(b => b.car)
+                .Where(b => b.CustomerId == customerId)
+                .ToListAsync();
         }
     }
 }

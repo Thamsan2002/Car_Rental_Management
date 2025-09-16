@@ -26,7 +26,7 @@ namespace Car_Rental_Management.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Booking(Guid id)
+        public async Task<IActionResult> Create(Guid id)   // id = CarId
         {
             var userId = HttpContext.Session.GetString("UserId");
             if (string.IsNullOrEmpty(userId))
@@ -37,7 +37,7 @@ namespace Car_Rental_Management.Controllers
             if (customer == null)
                 return RedirectToAction("Register", "Customer");
 
-            // Id check for car
+            // Car check
             var car = await _carRepo.GetByIdAsync(id);
             if (car == null)
                 return RedirectToAction("Index", "Home");
@@ -54,17 +54,15 @@ namespace Car_Rental_Management.Controllers
                 //Drivers = await _driverRepo.GetAllAsync()
             };
 
-            return View(model); 
+            return View(model);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Booking(BookingViewmodel model)
+        public async Task<IActionResult> Create(BookingViewmodel model)
         {
             if (!ModelState.IsValid) return View(model);
 
-            // Calculate total before save
             int totalDays = (model.EndDate - model.StartDate).Days + 1;
             decimal driverFee = 0;
 
@@ -89,5 +87,22 @@ namespace Car_Rental_Management.Controllers
                 return View(model);
             }
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> AllBookings()
+        {
+            var bookings = await _bookingService.GetAllBookingsAsync();
+            return View(bookings);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> MyBookings(Guid customerId)
+        {
+            var bookings = await _bookingService.GetBookingsByCustomerIdAsync(customerId);
+            return View(bookings);
+        }
     }
 }
+

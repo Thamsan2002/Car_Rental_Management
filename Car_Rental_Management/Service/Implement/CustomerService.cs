@@ -80,5 +80,25 @@ namespace Car_Rental_Management.Service.Implement
             var addedCustomer = await _customerRepository.AddCustomerAsync(customer);
             return (true, string.Empty, addedCustomer.Id);
         }
+
+        public async Task<CustomerRegisterViewModel?> GetCustomerByUserIdAsync(Guid userId)
+        {
+            var customer = await _customerRepository.GetByUserIdAsync(userId);
+            if (customer == null) return null;
+
+            // Map Model → ViewModel
+            return new CustomerRegisterViewModel
+            {
+                UserId = customer.UserId,
+                FullName = customer.FullName,
+           
+                Address = customer.Address,
+                Phonenumber = customer.Phonenumber,
+                Gender = customer.Gender,
+                NationalIdentityCard = customer.NationalIdentityCard,
+                DrivingLicenseNumber = customer.DrivingLicenseNumber
+            };
+        }
+
     }
 }

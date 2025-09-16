@@ -11,5 +11,6 @@ namespace Car_Rental_Management.Service.Interface
         Task<CarDto?> GetCarByIdAsync(Guid id);
         Task<bool> UpdateCarAsync(CarViewModel model);
         Task<bool> DeleteCarAsync(Guid id);
+
     }
 }
