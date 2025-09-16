@@ -8,7 +8,7 @@ namespace Car_Rental_Management.ViewModel
 
         [Required]
         public string Name { get; set; }
-      
+
         [Required(ErrorMessage = "( personal phone number )Emergency contact number is required.")]
         public string PhoneNumber { get; set; }
 
@@ -43,6 +43,6 @@ namespace Car_Rental_Management.ViewModel
         [Required, MinLength(6)]
         public string Password { get; set; }
 
-        
+
     }
 }
