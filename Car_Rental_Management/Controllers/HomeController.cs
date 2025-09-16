@@ -16,15 +16,19 @@ namespace Car_Rental_Management.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var cars = await _carService.GetAllCarsAsync(); // CarService call
-            return View(cars); // Index view ku list pass pannuthu
+            var cars = await _carService.GetAllCarsAsync();
+            return View(cars); 
         }
         public IActionResult About()
         {
             return View();
         }
 
-       
+        public async Task<IActionResult> LoginCustomer()
+        {
+            var cars = await _carService.GetAllCarsAsync(); 
+            return View(cars); 
+        }
         public IActionResult Contact()
         {
             return View();

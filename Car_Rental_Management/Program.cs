@@ -46,7 +46,8 @@ internal class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Admin}/{action=Dashboard}/{id?}");
+            pattern: "{controller=Home}/{action=LoginCustomer}/{id?}");
+
 
         app.Run();
     }
