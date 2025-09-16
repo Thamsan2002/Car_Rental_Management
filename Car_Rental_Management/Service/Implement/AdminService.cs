@@ -52,7 +52,7 @@ namespace Car_Rental_Management.Service.Implement
             AdminMapper.UpdateAdminModel(admin, vm);
 
             // Save changes to User table
-            await _userRepo.UpdateAsync(admin.User);
+            //await _userRepo.UpdateAsync(admin.User);
 
             // Save changes to Admin table
             await _adminRepo.UpdateAdminAsync(admin);

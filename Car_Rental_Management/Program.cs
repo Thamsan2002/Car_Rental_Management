@@ -19,6 +19,7 @@ internal class Program
         builder.Services.AddScoped<IDriverRepository, DriverRepository>();
         builder.Services.AddScoped<IAdminService, AdminService>();
         builder.Services.AddScoped<IAdminrepository, Addminrepository>();
+        builder.Services.AddScoped<IAdminLoginService, AdminLoginService>();
         builder.Services.AddDbContext<ApplicationDbcontext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Car")));
 
@@ -45,7 +46,7 @@ internal class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Driver}/{action=CreateDriver}/{id?}");
+            pattern: "{controller=Admin}/{action=Dashboard}/{id?}");
 
         app.Run();
     }
