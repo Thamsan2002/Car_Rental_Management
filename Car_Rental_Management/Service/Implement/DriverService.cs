@@ -21,51 +21,52 @@ namespace Car_Rental_Management.Service.Implement
 
         public async Task<string> CreateDriverAsync(DriverViewModel viewModel)
         {
-            var existingUser = await _userRepository.IsEmailOrPhoneExistAsync(viewModel.Email, viewModel.EmergencyContact);
+            var existingUser = await _userRepository.IsEmailOrPhoneExistAsync(viewModel.Email, viewModel.PhoneNumber);
 
             if (existingUser)
-            {
-                return "Driver already exists with this email and phone number!";
-            }
+                return "Driver already exists with this email or phone number!";
 
-            // Create User
             var user = DriverMapper.ToUser(viewModel);
-            var createdUser = await _userRepository.AddAsync(user);
+            var createdUserId = await _userRepository.AddAsync(user);
 
-            // Create Driver
-            var driver = DriverMapper.ToDriver(viewModel, createdUser);
+            var driver = DriverMapper.ToDriver(viewModel, user);
             await _driverRepository.AddAsync(driver);
 
             return "Driver created successfully!";
         }
 
-        public async Task<IEnumerable<DriverDto>> GetAllDriversAsync()
+        public async Task<List<DriverDto>> GetAllDriversAsync()
         {
             var drivers = await _driverRepository.GetAllAsync();
-            return drivers.Select(DriverMapper.ToDto);
+            return drivers.Select(DriverMapper.ToDriverDto).ToList();
         }
 
-        public async Task<DriverDto> GetDriverByIdAsync(Guid id)
+        public async Task<DriverDto?> GetDriverByIdAsync(Guid id)
         {
             var driver = await _driverRepository.GetByIdAsync(id);
-            if (driver == null)
-                return null;
-
-            return DriverMapper.ToDto(driver);
+            return driver == null ? null : DriverMapper.ToDriverDto(driver);
         }
 
-
-        public async Task UpdateDriverAsync(DriverViewModel viewModel)
+        public async Task<string> UpdateDriverAsync(DriverViewModel viewModel)
         {
-            // Fetch existing driver
             var driver = await _driverRepository.GetByIdAsync(viewModel.Id);
-            if (driver == null)
-                throw new Exception("Driver not found!");
+            if (driver == null) return "Driver not found!";
 
-            DriverMapper.MapViewModelToEntity(viewModel, driver);
-
-            // Save changes
+            DriverMapper.UpdateDriverFromViewModel(driver, viewModel);
             await _driverRepository.UpdateAsync(driver);
+            await _userRepository.UpdateAsync(driver.User);
+
+            return "Driver updated successfully!";
+        }
+
+        public async Task<string> DeleteDriverAsync(Guid id)
+        {
+            var driver = await _driverRepository.GetByIdAsync(id);
+            if (driver == null) return "Driver not found!";
+
+            await _driverRepository.DeleteAsync(driver);
+            await _userRepository.UpdateAsync(driver.User); // optional: handle user deletion separately
+            return "Driver deleted successfully!";
         }
 
     }
