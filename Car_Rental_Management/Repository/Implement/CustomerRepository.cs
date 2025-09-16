@@ -14,29 +14,21 @@ namespace Car_Rental_Management.Repository.Implement
             _context = context;
         }
 
-        // Get single customer by Id
-        public async Task<Customer?> GetByIdAsync(Guid id)
-        {
-            return await _context.Customers
-                                 .Include(c => c.User)
-                                 .FirstOrDefaultAsync(c => c.Id == id);
-        }
+        //// Get single customer by Id
+        //public async Task<Customer?> GetByIdAsync(Guid id)
+        //{
+        //    return await _context.Customers
+        //                         .Include(c => c.User)
+        //                         .FirstOrDefaultAsync(c => c.Id == id);
+        //}
 
-        // Get all customers
-        public async Task<IEnumerable<Customer>> GetAllAsync()
-        {
-            return await _context.Customers
-                                 .Include(c => c.User)
-                                 .ToListAsync();
-        }
-
-        // Add new customer
-        public async Task<Customer> AddAsync(Customer customer)
-        {
-            _context.Customers.Add(customer);
-            await _context.SaveChangesAsync();
-            return customer;
-        }
+        //// Get all customers
+        //public async Task<IEnumerable<Customer>> GetAllAsync()
+        //{
+        //    return await _context.Customers
+        //                         .Include(c => c.User)
+        //                         .ToListAsync();
+        //}
 
         // Update existing customer
         public async Task<Customer> UpdateAsync(Customer customer)
@@ -51,6 +43,21 @@ namespace Car_Rental_Management.Repository.Implement
         {
             _context.Customers.Remove(customer);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsCustomerExistsAsync(string nic, string drivingLicense, string phone)
+        {
+            return await _context.Customers.AnyAsync(c =>
+                c.NationalIdentityCard == nic ||
+                c.DrivingLicenseNumber == drivingLicense ||
+                c.Phonenumber == phone);
+        }
+
+        public async Task<Customer> AddCustomerAsync(Customer customer)
+        {
+            _context.Customers.Add(customer);
+            await _context.SaveChangesAsync();
+            return customer;
         }
     }
 }

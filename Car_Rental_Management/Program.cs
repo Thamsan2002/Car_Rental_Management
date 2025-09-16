@@ -17,6 +17,8 @@ internal class Program
         builder.Services.AddScoped<ICarRepository, CarRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+        builder.Services.AddScoped<ICustomerService, CustomerService>();
+        builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
         builder.Services.AddScoped<IAdminService, AdminService>();
         builder.Services.AddScoped<IAdminrepository, Addminrepository>();
         builder.Services.AddScoped<IAdminLoginService, AdminLoginService>();
@@ -46,7 +48,7 @@ internal class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=LoginCustomer}/{id?}");
+            pattern: "{controller=Customer}/{action=Register}/{id?}");
 
 
         app.Run();

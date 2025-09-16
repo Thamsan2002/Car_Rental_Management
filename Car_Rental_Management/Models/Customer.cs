@@ -13,17 +13,15 @@ namespace Car_Rental_Management.Models
         public Guid UserId { get; set; }
 
         [Required]
-        public User User { get; set; }
-
-        [Required]
         public string FullName { get; set; }
 
         [Required]
         public string Gender { get; set; }
 
+        public string NationalIdentityCard { get; set; }
 
         [Required]
-        public string NationalIdentityCard { get; set; }
+        public string DrivingLicenseNumber { get; set; }
 
         [Required]
         [Phone]

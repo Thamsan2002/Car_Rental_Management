@@ -10,7 +10,7 @@ namespace Car_Rental_Management.Service.Implement
 {
     public class DriverService : IDriverService
     {
-        private readonly IUserRepository _userRepository;
+         private readonly IUserRepository _userRepository;
         private readonly IDriverRepository _driverRepository;
 
         public DriverService(IUserRepository userRepository, IDriverRepository driverRepository)
