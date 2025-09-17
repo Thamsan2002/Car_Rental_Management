@@ -42,6 +42,11 @@ namespace Car_Rental_Management.Repository.Implement
             _context.Drivers.Remove(driver);
             await _context.SaveChangesAsync();
         }
+        public async Task<int> GetDriverCountAsync()
+        {
+            return await _context.Drivers.CountAsync();
+        }
+
 
     }
 }

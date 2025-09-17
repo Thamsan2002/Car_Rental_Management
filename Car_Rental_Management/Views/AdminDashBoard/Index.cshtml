@@ -1,0 +1,96 @@
+﻿@model Car_Rental_Management.Dtos.AdminDashBoardDto
+
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Admin Dashboard";
+}
+<div class="container mt-4">
+    <h3>Admin Dashboard</h3>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="stat-card p-3 bg-primary text-white">
+                <div class="stat-label">Staffs</div>
+                <div class="stat-number">@Model.StaffCount</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card p-3 bg-success text-white">
+                <div class="stat-label">Customers</div>
+                <div class="stat-number">@Model.CustomerCount</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card p-3 bg-warning text-dark">
+                <div class="stat-label">Total Cars</div>
+                <div class="stat-number">@Model.CarCount</div>
+                <div>Available: @Model.AvailableCarCount</div>
+                <div>Unavailable: @Model.UnavailableCarCount</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="stat-card p-3 bg-danger text-white">
+                <div class="stat-label">Drivers</div>
+                <div class="stat-number">@Model.DriverCount</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-box mb-4">
+        <canvas id="summaryChart" height="220"></canvas>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('summaryChart').getContext('2d');
+
+        const labels = ['Staffs', 'Customers', 'Drivers', 'Total Cars', 'Available Cars', 'Unavailable Cars'];
+        const values = [
+    @Model.StaffCount,
+    @Model.CustomerCount,
+    @Model.DriverCount,
+    @Model.CarCount,
+    @Model.AvailableCarCount,
+    @Model.UnavailableCarCount
+            ];
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Count',
+                    data: values,
+                    backgroundColor: [
+                        'rgba(13,110,253,0.8)',
+                        'rgba(25,135,84,0.8)',
+                        'rgba(220,53,69,0.85)',
+                        'rgba(255,193,7,0.85)',
+                        'rgba(23,162,184,0.85)',
+                        'rgba(108,117,125,0.85)'
+                    ],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: 'System Summary' }
+                },
+                scales: {
+                    y: { beginAtZero: true, ticks: { precision: 0 } }
+                }
+            }
+        });
+    });
+</script>

@@ -70,5 +70,10 @@ namespace Car_Rental_Management.Repository.Implement
             await _context.SaveChangesAsync();
             return customer;
         }
+        public async Task<int> GetCustomerCountAsync()
+        {
+            return await _context.Customers.CountAsync();
+        }
+
     }
 }
