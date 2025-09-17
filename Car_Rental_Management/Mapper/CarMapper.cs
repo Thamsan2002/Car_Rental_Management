@@ -47,5 +47,11 @@ namespace Car_Rental_Management.Mapper
                 ImageUrls = c.ImagePaths
             };
         }
+     
+
+        public static List<CarDto> ToDtoList(List<Car> cars)
+        {
+            return cars.Select(c => ToCarDto(c)).ToList();
+        }
     }
 }

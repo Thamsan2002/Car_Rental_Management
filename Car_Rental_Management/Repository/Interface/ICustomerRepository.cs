@@ -10,6 +10,7 @@ namespace Car_Rental_Management.Repository.Interface
         Task<Customer> AddCustomerAsync(Customer customer);
         Task<Customer> UpdateAsync(Customer customer);
         Task DeleteAsync(Customer customer);
+        Task<Customer?> GetByUserIdAsync(Guid userId);
 
         Task<Customer> GetByIdAsync(Guid customerId);
     }

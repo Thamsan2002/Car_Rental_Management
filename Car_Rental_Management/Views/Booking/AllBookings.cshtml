@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Car_Rental_Management.ViewModel.BookingViewmodel>
+
+<div class="container my-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-primary text-white text-center py-3 rounded-top">
+            <h2 class="mb-0">All Bookings</h2>
+        </div>
+
+        <div class="card-body p-4">
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center" role="alert">
+                    <i class="bi bi-info-circle"></i> No bookings found.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">Customer ID</th>
+                                <th scope="col">Car</th>
+                                <th scope="col">Start Date</th>
+                                <th scope="col">End Date</th>
+                                <th scope="col">Total Price (LKR)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var booking in Model)
+                            {
+                                <tr>
+                                    <td>@booking.CustomerId</td>
+                                    <td class="fw-bold">@booking.CarMake @booking.CarModel</td>
+                                    <td>@booking.StartDate.ToString("dd MMM yyyy")</td>
+                                    <td>@booking.EndDate.ToString("dd MMM yyyy")</td>
+                                    <td class="text-success fw-bold">@booking.TotalPrice.ToString("N0")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

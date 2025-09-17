@@ -28,5 +28,9 @@ namespace Car_Rental_Management.Controllers
 
             return View(cars);
         }
+        public IActionResult Privacy()
+        {
+            return View();
+        }
     }
 }

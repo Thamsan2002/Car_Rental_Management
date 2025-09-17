@@ -6,6 +6,7 @@ namespace Car_Rental_Management.ViewModel
     {
         public Guid CustomerId { get; set; }
         public Guid CarId { get; set; }
+     
         public string BookingType { get; set; } 
         public Guid? DriverId { get; set; }
         public DateTime StartDate { get; set; }

@@ -21,14 +21,11 @@ namespace Car_Rental_Management.Service.Implement
 
         public async Task CreateBookingAsync(BookingViewmodel dto)
         {
-            // Validation
             if (dto.CustomerId == Guid.Empty) throw new Exception("Customer ID missing");
             if (dto.CarId == Guid.Empty) throw new Exception("Car ID missing");
             if (dto.StartDate >= dto.EndDate) throw new Exception("Invalid date range");
 
-            // Map DTO → Model
             var model = BookingMapper.ToModel(dto);
-
             await _repo.CreateAsync(model);
         }
 
@@ -39,7 +36,6 @@ namespace Car_Rental_Management.Service.Implement
 
             var dto = BookingMapper.ToDto(booking);
 
-            // Load car details
             var car = await _carRepo.GetByIdAsync(booking.CarId);
             if (car != null)
             {
@@ -50,10 +46,19 @@ namespace Car_Rental_Management.Service.Implement
                 dto.CarImage = car.ImagePaths?.FirstOrDefault() ?? "/uploads/images/noimage.jpg";
             }
 
-            //// Load drivers
-            //dto.Drivers = await _driverRepo.GetAllAsync();
-
             return dto;
+        }
+
+        public async Task<List<BookingViewmodel>> GetAllBookingsAsync()
+        {
+            var bookings = await _repo.GetAllAsync();
+            return bookings.Select(BookingMapper.ToDto).ToList();
+        }
+
+        public async Task<List<BookingViewmodel>> GetBookingsByCustomerIdAsync(Guid customerId)
+        {
+            var bookings = await _repo.GetByCustomerIdAsync(customerId);
+            return bookings.Select(BookingMapper.ToDto).ToList();
         }
     }
 }

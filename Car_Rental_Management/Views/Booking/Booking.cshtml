@@ -1,70 +1,92 @@
-﻿@model Car_Rental_Management.ViewModel.BookingViewmodel
-@{
-    ViewData["Title"] = "Book Car";
-}
+﻿@model Car_Rental_Management.ViewModel.BookingFormViewModel
 
-<h2>Booking for @Model.CarMake @Model.CarModel</h2>
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white text-center">
+            <h3 class="mb-0">Book a Car</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="Booking" method="post" class="p-3">
 
-<div class="row">
-    <div class="col-md-6">
-        <img src="@Model.CarImage" class="img-fluid mb-3" />
-        <p><strong>Color:</strong> @Model.CarColor</p>
-        <p><strong>Price/Day:</strong> LKR @Model.CarPricePerDay:N0</p>
-    </div>
+                <!-- Car Dropdown -->
+                <div class="mb-3">
+                    <label asp-for="CarId" class="form-label fw-bold">Select Car</label>
+                    <select asp-for="CarId" class="form-select" id="carSelect" onchange="calculateTotal()">
+                        <option value="">-- Select a Car --</option>
+                        @foreach (var car in Model.Cars)
+                        {
+                            <option value="@car.Id" data-price="@car.Price">
+                                @car.Make @car.Model (@car.Color) - LKR @car.Price per day
+                            </option>
+                        }
+                    </select>
+                </div>
 
-    <div class="col-md-6">
-        <form asp-action="Booking" method="post">
-            <input type="hidden" asp-for="CustomerId" />
-            <input type="hidden" asp-for="CarId" />
+                <!-- Booking Type -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Booking Type</label><br />
+                    <div class="form-check form-check-inline">
+                        <input type="radio" asp-for="BookingType" value="WithoutDriver" class="form-check-input" checked onchange="toggleDriverDiv()" />
+                        <label class="form-check-label">Without Driver</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" asp-for="BookingType" value="WithDriver" class="form-check-input" onchange="toggleDriverDiv()" />
+                        <label class="form-check-label">With Driver</label>
+                    </div>
+                </div>
 
-            <div class="mb-3">
-                <label>Booking Type</label><br />
-                <input type="radio" asp-for="BookingType" value="WithoutDriver" checked onchange="toggleDriverSelect()" /> Without Driver
-                <input type="radio" asp-for="BookingType" value="WithDriver" onchange="toggleDriverSelect()" /> With Driver
-            </div>
+                <!-- Driver Selection (fee ignored) -->
+                <div class="mb-3" id="driverDiv" style="display:none;">
+                    <label class="form-label fw-bold">Select Driver</label>
+                    <select class="form-select">
+                        <option value="">-- Select Driver --</option>
+                        @* Future driver list *@
+                        @* @foreach (var driver in Model.Drivers) {
+                            <option value="@driver.Id">@driver.Name</option>
+                        } *@
+                    </select>
+                </div>
 
-            <div class="mb-3" id="driverSelectDiv" style="display:none;">
-                <label>Select Driver</label>
-                <select asp-for="DriverId" class="form-control" id="driverSelect" onchange="calculateTotal()">
-                    <option value="">Select</option>
-                    @* @foreach (var driver in Model.Drivers)
-                    {
-                        <option value="@driver.Id" data-fee="@driver.FeePerDay">@driver.Name - LKR @driver.FeePerDay:N0 per day</option>
-                    } *@
-                </select>
-            </div>
+                <!-- Dates -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="StartDate" class="form-label fw-bold">Start Date</label>
+                        <input asp-for="StartDate" type="date" class="form-control" id="startDate" onchange="calculateTotal()" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="EndDate" class="form-label fw-bold">End Date</label>
+                        <input asp-for="EndDate" type="date" class="form-control" id="endDate" onchange="calculateTotal()" />
+                    </div>
+                </div>
 
-            <div class="mb-3">
-                <label>Start Date</label>
-                <input asp-for="StartDate" type="date" class="form-control" id="startDate" onchange="calculateTotal()" />
-            </div>
+                <!-- Total Price -->
+                <div class="mb-3">
+                    <label asp-for="TotalPrice" class="form-label fw-bold">Total Price</label>
+                    <input asp-for="TotalPrice" type="text" class="form-control text-success fw-bold" id="totalPrice" readonly />
+                </div>
 
-            <div class="mb-3">
-                <label>End Date</label>
-                <input asp-for="EndDate" type="date" class="form-control" id="endDate" onchange="calculateTotal()" />
-            </div>
-
-            <div class="mb-3">
-                <label>Total Price</label>
-                <input asp-for="TotalPrice" type="text" class="form-control" id="totalPrice" readonly />
-            </div>
-
-            <button type="submit" class="btn btn-success">Confirm Booking</button>
-            <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Cancel</a>
-        </form>
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success w-50 me-2">Confirm Booking</button>
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary w-50">Cancel</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     <script>
-        function toggleDriverSelect() {
+        function toggleDriverDiv() {
             const withDriver = document.querySelector('input[name="BookingType"]:checked').value === "WithDriver";
-            document.getElementById('driverSelectDiv').style.display = withDriver ? 'block' : 'none';
-            calculateTotal();
+            document.getElementById('driverDiv').style.display = withDriver ? 'block' : 'none';
         }
 
         function calculateTotal() {
-            const carPrice = @Model.CarPricePerDay;
+            const carSelect = document.getElementById('carSelect');
+            const selectedCarOption = carSelect.options[carSelect.selectedIndex];
+            const carPrice = selectedCarOption ? parseFloat(selectedCarOption.getAttribute('data-price') || 0) : 0;
+
             const startDateVal = document.getElementById('startDate').value;
             const endDateVal = document.getElementById('endDate').value;
             const startDate = startDateVal ? new Date(startDateVal) : null;
@@ -72,22 +94,17 @@
 
             let totalDays = 0;
             if (startDate && endDate && endDate >= startDate) {
-                totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+                totalDays = Math.ceil((endDate - startDate) / (1000*60*60*24)) + 1;
             }
 
-            let driverFee = 0;
-            if (document.querySelector('input[name="BookingType"]:checked').value === "WithDriver") {
-                const driverSelect = document.getElementById('driverSelect');
-                const selectedOption = driverSelect.options[driverSelect.selectedIndex];
-                driverFee = selectedOption ? parseFloat(selectedOption.getAttribute('data-fee') || 0) : 0;
-            }
-
-            const total = (carPrice + driverFee) * totalDays;
-            document.getElementById('totalPrice').value = total.toLocaleString('en-US', { style: 'currency', currency: 'LKR', minimumFractionDigits: 0 });
+            const totalPrice = carPrice * totalDays;
+            document.getElementById('totalPrice').value = totalPrice
+                ? totalPrice.toLocaleString('en-US', { style: 'currency', currency: 'LKR', minimumFractionDigits: 0 })
+                : '';
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            calculateTotal();
+            toggleDriverDiv();
         });
     </script>
 }

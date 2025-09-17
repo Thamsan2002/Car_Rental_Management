@@ -60,7 +60,8 @@
                               
                             </li>
                             <li><a class="dropdown-item mt-2" asp-controller="Customer" asp-action="Profile">My Profile</a></li>
-                            <li><a class="dropdown-item" asp-controller="Customer" asp-action="Bookings">View Bookings</a></li>
+                            <li><a class="dropdown-item" asp-controller="Booking" asp-action="MyBookings">View Bookings</a></li>
+                            <li><a class="dropdown-item" asp-controller="Home" asp-action="Privacy">Privacy </a></li>
                             <li><hr class="dropdown-divider" /></li>
                             <li>
                                 <form method="post" asp-controller="Customer" asp-action="Logout" class="d-inline">
@@ -70,8 +71,8 @@
                         }
                         else
                         {
-                            <li><a class="dropdown-item" asp-controller="Customer" asp-action="Login">Login</a></li>
-                            <li><a class="dropdown-item" asp-controller="Customer" asp-action="SignUp">Sign Up</a></li>
+                            <li><a class="dropdown-item" asp-controller="Customer" asp-action="SignUp">Login</a></li>
+                            <li><a class="dropdown-item" asp-controller="Customer" asp-action="Logout">Sign Up</a></li>
                         }
                     </ul>
 

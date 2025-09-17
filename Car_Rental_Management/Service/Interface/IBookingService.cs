@@ -7,5 +7,7 @@ namespace Car_Rental_Management.Service.Interface
     {
         Task CreateBookingAsync(BookingViewmodel dto);
         Task<BookingViewmodel> GetBookingDtoByIdAsync(Guid id);
+        Task<List<BookingViewmodel>> GetAllBookingsAsync();
+        Task<List<BookingViewmodel>> GetBookingsByCustomerIdAsync(Guid customerId);
     }
 }

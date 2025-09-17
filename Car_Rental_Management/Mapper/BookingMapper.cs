@@ -6,33 +6,38 @@ namespace Car_Rental_Management.Mapper
 {
     public class BookingMapper
     {
-        public static Booking ToModel(BookingViewmodel dto)
-        {
-            return new Booking
+            public static Booking ToModel(BookingViewmodel dto)
             {
-                Id = Guid.NewGuid(),
-                CustomerId = dto.CustomerId,
-                CarId = dto.CarId,
-                BookingType = dto.BookingType,
-                DriverId = dto.DriverId,
-                StartDate = dto.StartDate,
-                EndDate = dto.EndDate,
-                TotalPrice = dto.TotalPrice
-            };
-        }
+                return new Booking
+                {
+                    Id = Guid.NewGuid(),
+                    CustomerId = dto.CustomerId,
+                    CarId = dto.CarId,
+                    BookingType = dto.BookingType,
+                    DriverId = dto.DriverId,
+                    StartDate = dto.StartDate,
+                    EndDate = dto.EndDate,
+                    TotalPrice = dto.TotalPrice
+                };
+            }
 
-        public static BookingViewmodel ToDto(Booking model)
-        {
-            return new BookingViewmodel
+            public static BookingViewmodel ToDto(Booking model)
             {
-                CustomerId = model.CustomerId,
-                CarId = model.CarId,
-                BookingType = model.BookingType,
-                DriverId = model.DriverId,
-                StartDate = model.StartDate,
-                EndDate = model.EndDate,
-                TotalPrice = model.TotalPrice
-            };
-        }
+                return new BookingViewmodel
+                {
+                    CustomerId = model.CustomerId,
+                    CarId = model.CarId,
+                    BookingType = model.BookingType,
+                    DriverId = model.DriverId,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    TotalPrice = model.TotalPrice,
+                    CarMake = model.car?.Make,
+                    CarModel = model.car?.Model,
+                    CarColor = model.car?.Color,
+                    CarPricePerDay = model.car?.PricePerDay ?? 0,
+                    CarImage = model.car?.ImagePaths?.FirstOrDefault() ?? "/uploads/images/noimage.jpg"
+                };
+            }
     }
 }

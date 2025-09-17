@@ -1,6 +1,59 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Privacy Policy</h3>
+                </div>
+                <div class="card-body">
+                    <p>Hello <strong>@ViewBag.UserName</strong>,</p>
+
+                    <p>
+                        Welcome to our car rental service. Your privacy is important to us.
+                        We collect only the necessary information to provide you with the best experience.
+                    </p>
+
+                    <div class="mb-4">
+                        <h5>Information We Collect</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Name, email (used for login)</li>
+                            <li class="list-group-item">Booking details</li>
+                            <li class="list-group-item">Payment information</li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5>How We Use Your Information</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Process bookings</li>
+                            <li class="list-group-item">Communicate updates or offers</li>
+                            <li class="list-group-item">Improve our service</li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5>Security</h5>
+                        <p>
+                            We take your security seriously and store your data safely.
+                        </p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5>Conditions</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Guest users cannot view this page.</li>
+                            <li class="list-group-item">Only registered customers can access privacy details.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

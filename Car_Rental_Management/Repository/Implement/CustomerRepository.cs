@@ -13,6 +13,10 @@ namespace Car_Rental_Management.Repository.Implement
         {
             _context = context;
         }
+        public async Task<Customer?> GetByUserIdAsync(Guid userId)
+        {
+            return await _context.Customers.FirstOrDefaultAsync(c => c.UserId == userId);
+        }
 
         //// Get single customer by Id
         //public async Task<Customer?> GetByIdAsync(Guid id)
