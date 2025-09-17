@@ -74,9 +74,20 @@ namespace Car_Rental_Management.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(CustomerRegisterViewModel model)
+        public async Task<IActionResult> Register(CustomerRegisterViewModel model, Guid? userId)
         {
-            model.UserId = Guid.NewGuid(); // Assign a new GUID for UserId
+
+            // ✅ If userId is not passed, try to get from session
+            if (userId == null || userId == Guid.Empty)
+            {
+                var sessionUserId = HttpContext.Session.GetString("UserId");
+                if (!string.IsNullOrWhiteSpace(sessionUserId))
+                    userId = Guid.Parse(sessionUserId);
+            }
+
+            // ✅ Assign UserId to model
+            model.UserId = (Guid)userId;
+
             //if (!ModelState.IsValid)
             //    return View(model);
 

@@ -31,7 +31,7 @@ namespace Car_Rental_Management.Controllers
         public async Task<IActionResult> Create(Guid id)   // id = CarId
         {
             var userId = HttpContext.Session.GetString("UserId");
-            if (string.IsNullOrEmpty(userId))
+            if (string.IsNullOrWhiteSpace(userId))
                 return RedirectToAction("Login", "Customer");
 
             var customerGuid = Guid.Parse(userId);
@@ -42,7 +42,7 @@ namespace Car_Rental_Management.Controllers
             // Car check
             var car = await _carRepo.GetByIdAsync(id);
             if (car == null)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home", new { userId = userId });
 
             var model = new BookingViewmodel
             {
