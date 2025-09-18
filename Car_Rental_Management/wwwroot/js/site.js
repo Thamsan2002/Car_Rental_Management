@@ -53,3 +53,61 @@ window.onclick = function (event) {
         }
     }
 }
+
+
+
+
+//About js
+    
+document.addEventListener("DOMContentLoaded", function () {
+    const counters = document.querySelectorAll(".stat-number");
+
+    const options = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.5 // 50% visible
+    };
+
+    const startCount = (counter) => {
+        counter.innerText = "0"; // reset before counting
+        const updateCount = () => {
+            const target = +counter.getAttribute("data-target");
+            const count = +counter.innerText.replace(/,/g, '');
+            const increment = target / 500; // slow speed
+
+            if (count < target) {
+                counter.innerText = Math.ceil(count + increment).toLocaleString();
+                setTimeout(updateCount, 15);
+            } else {
+                counter.innerText = target.toLocaleString() + "+";
+            }
+        };
+        updateCount();
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                startCount(entry.target);
+                // do not unobserve → will animate every time visible
+            }
+        });
+    }, options);
+
+    counters.forEach(counter => {
+        observer.observe(counter);
+    });
+});
+
+
+
+//Nav bar
+ 
+window.addEventListener("scroll", function () {
+    const navbar = document.querySelector("nav.navbar");
+    if (window.scrollY > 20) {
+        navbar.classList.add("scrolled");
+    } else {
+        navbar.classList.remove("scrolled");
+    }
+});

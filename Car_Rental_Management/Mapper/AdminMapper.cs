@@ -12,7 +12,7 @@ namespace Car_Rental_Management.Mapper
             user.Id = Guid.NewGuid();
             user.Email = vm.Email;
             user.PhoneNumber = vm.PhoneNumber;
-            user.Password = vm.Password;
+            user.PasswordHash = vm.Password;
             user.Role = vm.Role;
             return user;
         }
@@ -36,7 +36,7 @@ namespace Car_Rental_Management.Mapper
                 admin.User.PhoneNumber = vm.PhoneNumber;
                 if (!string.IsNullOrEmpty(vm.Password))
                 {
-                    admin.User.Password = vm.Password;
+                    admin.User.PasswordHash = vm.Password;
                 }
             }
         }

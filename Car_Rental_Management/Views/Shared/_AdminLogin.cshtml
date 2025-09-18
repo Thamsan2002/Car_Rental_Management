@@ -1,0 +1,202 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Car Rental</title>
+    <style>
+        :root {
+            --primary-color: #076B66;
+            --secondary-color: #0D1f23;
+            --dark-color: #0d1f23;
+            --light-color: #ffffff;
+            --highlight-color: #cbf1f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: url('/images/car02.cs.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+     
+
+        header {
+            background: rgba(13, 31, 35, 0.85);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+            header h1 {
+                font-size: 28px;
+                font-weight: bold;
+                letter-spacing: 2px;
+                color: var(--primary-color);
+            }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+        }
+
+            nav ul li a {
+                text-decoration: none;
+                color: var(--light-color);
+                font-weight: 500;
+                transition: 0.3s;
+            }
+
+                nav ul li a:hover {
+                    color: var(--highlight-color);
+                }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* Login Card - Black Glass Effect */
+        .card {
+            background: rgba(0, 0, 0, 0.6); /* Black with transparency */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            color: var(--light-color);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+            .card h3 {
+                text-align: center;
+                margin-bottom: 25px;
+                color: var(--highlight-color);
+                font-size: 24px;
+                font-weight: 700;
+                letter-spacing: 1.2px;
+            }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: var(--light-color);
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light-color);
+            outline: none;
+            transition: 0.3s;
+        }
+
+            input:focus {
+                background: rgba(255, 255, 255, 0.2);
+                border: 1px solid var(--highlight-color);
+            }
+
+        button {
+            width: 100%;
+            background: var(--primary-color);
+            color: var(--light-color);
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            button:hover {
+                background: var(--highlight-color);
+                color: var(--dark-color);
+            }
+
+        .alert {
+            padding: 10px;
+            background: #e74c3c;
+            color: #fff;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        footer {
+            background: rgba(13, 31, 35, 0.9);
+            text-align: center;
+            padding: 15px;
+            color: var(--light-color);
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        /* Animations */
+       @@keyframes fadeIn {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Car Rental</h1>
+        <nav>
+            <ul>
+                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                <li><a href="/AdminLogin/Login">Admin</a></li>
+                <li><a href="/Customer/Login">Customer</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Car Rental. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

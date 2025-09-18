@@ -1,4 +1,4 @@
-﻿@* Views/Shared/_Footer.cshtml *@
+﻿<!-- Footer -->
 <footer class="footer">
     <div class="container footer-grid">
         <!-- Brand Info -->
@@ -28,8 +28,6 @@
             <a href="#features">About</a>
             <a href="#cars">Cars</a>
             <a href="#contact">Contact</a>
-         
-        
         </div>
     </div>
 
@@ -39,6 +37,14 @@
 </footer>
 
 <!-- WhatsApp Floating Button -->
-<a href="https://wa.me/94771234567" target="_blank" class="whatsapp-float">
+<a class="chatbutton" onclick="openWhatsApp()" target="_blank">
     <i class="fab fa-whatsapp"></i>
 </a>
+
+<script>
+    function openWhatsApp() {
+        var phoneNumber = '+94766213930';
+        var whatsAppURL = 'https://wa.me/' + phoneNumber;
+        window.open(whatsAppURL, '_blank');
+    }
+</script>

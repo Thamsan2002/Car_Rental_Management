@@ -1,21 +1,23 @@
 ﻿using Car_Rental_Management.Models;
-using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 
 namespace Car_Rental_Management.Repository.Interface
 {
     public interface IUserRepository
     {
-
         Task<Guid> AddAsync(User user);
         Task<User?> GetByIdAsync(Guid id);
         Task UpdateAsync(User user);
         Task<bool> IsEmailOrPhoneExistAsync(string email, string phone);
         Task<User?> GetByPhoneAsync(string phoneNumber);
-        Task<User?> GetCustomerByLoginAsync(string emailOrPhone, string password);
 
-        Task<User?> GetByEmailOrPhoneAsync(string emailOrPhone, string password);
-     
+        // 🔹 Add this method in interface
+        Task<User?> GetByEmailOrPhoneAsync(string emailOrPhone);
 
+        Task<User?> GetCustomerByLoginAsync(string emailOrPhone);
 
+        Task<User?> GetByRoleAsync(string role);
+      
     }
 }
