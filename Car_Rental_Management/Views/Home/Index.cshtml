@@ -183,7 +183,9 @@
 @await Html.PartialAsync("_Contact", model: null)
 
 
-
+@section Scripts {
+    <script src="/js/Home.js"></script>
+}
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function(){

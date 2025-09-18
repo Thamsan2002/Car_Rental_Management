@@ -14,7 +14,12 @@ namespace Car_Rental_Management.Repository.Interface
         Task<User?> GetCustomerByLoginAsync(string emailOrPhone, string password);
 
         Task<User?> GetByEmailOrPhoneAsync(string emailOrPhone, string password);
-     
+        User? GetById(Guid userId);
+
+        // Update user details
+        void Update(User user);
+       
+
 
 
     }

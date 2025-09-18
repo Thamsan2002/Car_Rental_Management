@@ -26,7 +26,9 @@ internal class Program
         builder.Services.AddScoped<IBookingRepository, BookingRepository>();
         builder.Services.AddScoped<IAdminDashBoardService, AdminDashBoardService>();
         builder.Services.AddScoped<IStaffRepository, StaffRepository>();
-        
+        builder.Services.AddScoped<IUserService, UserService>();
+
+
 
         // ✅ DbContext
         builder.Services.AddDbContext<ApplicationDbcontext>(options =>
@@ -69,7 +71,7 @@ internal class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=AdminDashBoard}/{action=Index}/{id?}");
+            pattern: "{controller=User}/{action=EditProfile}/{id?}");
 
         app.Run();
     }

@@ -59,6 +59,18 @@ namespace Car_Rental_Management.Repository.Implement
                             (u.Email == emailOrPhone || u.PhoneNumber == emailOrPhone))
                 .FirstOrDefaultAsync();
         }
+        // Fetch user by Id
+        public User? GetById(Guid userId)
+        {
+            return _context.Users.FirstOrDefault(u => u.Id == userId);
+        }
+
+        // Update user details (email, phone, password)
+        public void Update(User user)
+        {
+            _context.Users.Update(user);
+            _context.SaveChanges();
+        }
 
 
 
