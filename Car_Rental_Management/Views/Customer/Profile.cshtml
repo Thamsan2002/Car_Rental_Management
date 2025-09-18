@@ -6,17 +6,69 @@
 <!-- Bootstrap Icons CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
+<style>
+    body {
+        background-color: #0D1F23;
+        color: #FFFFFF;
+    }
+
+    .card {
+        background-color: #132E35;
+        border: 1px solid #2D4A50;
+        color: #FFFFFF;
+    }
+
+    .card-header {
+        background-color: #698180;
+        color: #FFFFFF;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .card-body {
+        color: #FFFFFF;
+    }
+
+    .card-title {
+        color: #FFFFFF;
+        font-weight: 600;
+    }
+
+    .profile-avatar i {
+        color: #698180;
+    }
+
+    .card-footer {
+        text-align: center;
+        background-color: #132E35;
+        border-top: 1px solid #2D4A50;
+    }
+
+    .btn-primary {
+        background-color: #698180;
+        border-color: #698180;
+        color: #FFFFFF;
+        font-weight: bold;
+    }
+
+        .btn-primary:hover {
+            background-color: #5A636A;
+            border-color: #5A636A;
+            color: #FFFFFF;
+        }
+</style>
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white text-center">
+                <div class="card-header">
                     <h3 class="mb-0">My Profile</h3>
                 </div>
                 <div class="card-body text-center">
                     <!-- Avatar Icon using Bootstrap Icon -->
                     <div class="profile-avatar mb-3">
-                        <i class="bi bi-person-circle" style="font-size: 6rem; width: 25%; display: inline-block; color:#0d6efd;"></i>
+                        <i class="bi bi-person-circle" style="font-size: 6rem; display: inline-block;"></i>
                     </div>
 
                     <h4 class="card-title">@Model.FullName</h4>

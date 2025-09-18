@@ -13,7 +13,7 @@ namespace Car_Rental_Management.Mapper
             {
                 Email = vm.Email,
                 PhoneNumber = vm.PhoneNumber,
-                Password = vm.Password,
+                PasswordHash = vm.Password,
                 Role = "Driver"
             };
         }
@@ -69,7 +69,7 @@ namespace Car_Rental_Management.Mapper
             driver.VehicleType = vm.VehicleType;
             driver.User.PhoneNumber = vm.PhoneNumber;
             driver.User.Email = vm.Email;
-            driver.User.Password = vm.Password;
+            driver.User.PasswordHash = vm.Password;
         }
     }
 }

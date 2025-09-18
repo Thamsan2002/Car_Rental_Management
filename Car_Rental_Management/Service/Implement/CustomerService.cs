@@ -41,7 +41,7 @@ namespace Car_Rental_Management.Service.Implement
                 Id = Guid.NewGuid(),
                 Email = model.Email,
                 PhoneNumber = model.PhoneNumber,
-                Password = model.Password,
+                PasswordHash = model.Password,
                 Role = model.Role,
                 
             };
@@ -53,7 +53,8 @@ namespace Car_Rental_Management.Service.Implement
 
         public async Task<User?> LoginCustomerAsync(CustomerLoginViewModel model)
         {
-            return await _userRepository.GetCustomerByLoginAsync(model.EmailOrPhone, model.Password);
+            //return await _userRepository.GetCustomerByLoginAsync(model.EmailOrPhone, model.Password);
+            return await _userRepository.GetCustomerByLoginAsync(model.EmailOrPhone);
         }
 
         public async Task<(bool isSuccess, string errorMessage, Guid? customerId)> RegisterCustomerAsync(CustomerRegisterViewModel model)
