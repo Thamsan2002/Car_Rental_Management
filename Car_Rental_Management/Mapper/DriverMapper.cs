@@ -1,23 +1,26 @@
 ﻿using Car_Rental_Management.Dtos;
 using Car_Rental_Management.Models;
 using Car_Rental_Management.ViewModel;
-using System.ComponentModel.DataAnnotations;
+using System;
+using BCrypt.Net;
 
 namespace Car_Rental_Management.Mapper
 {
     public class DriverMapper
     {
+        // Map ViewModel → User (hash password)
         public static User ToUser(DriverViewModel vm)
         {
             return new User
             {
                 Email = vm.Email,
                 PhoneNumber = vm.PhoneNumber,
-                PasswordHash = vm.Password,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(vm.Password),
                 Role = "Driver"
             };
         }
 
+        // Map ViewModel → Driver entity with linked User
         public static Driver ToDriver(DriverViewModel vm, User user)
         {
             return new Driver
@@ -37,6 +40,7 @@ namespace Car_Rental_Management.Mapper
             };
         }
 
+        // Map Driver → DTO for display
         public static DriverDto ToDriverDto(Driver driver)
         {
             return new DriverDto
@@ -56,6 +60,7 @@ namespace Car_Rental_Management.Mapper
             };
         }
 
+        // Update Driver entity from ViewModel (hash password if changed)
         public static void UpdateDriverFromViewModel(Driver driver, DriverViewModel vm)
         {
             driver.Name = vm.Name;
@@ -67,9 +72,37 @@ namespace Car_Rental_Management.Mapper
             driver.LicenseExpiryDate = vm.LicenseExpiryDate;
             driver.Experience = vm.Experience;
             driver.VehicleType = vm.VehicleType;
+
             driver.User.PhoneNumber = vm.PhoneNumber;
             driver.User.Email = vm.Email;
-            driver.User.PasswordHash = vm.Password;
+
+            // Only hash password if it's not empty (optional password change)
+            if (!string.IsNullOrWhiteSpace(vm.Password))
+            {
+                driver.User.PasswordHash = BCrypt.Net.BCrypt.HashPassword(vm.Password);
+            }
         }
+
+        // DriverMapper class la add pannunga
+        public static DriverViewModel ToViewModel(DriverDto dto)
+        {
+            return new DriverViewModel
+            {
+                Id = dto.Id,
+                Name = dto.Name,
+                PhoneNumber = dto.PhoneNumber,
+                EmergencyContact = dto.EmergencyContact,
+                Nic = dto.Nic,
+                Gender = dto.Gender,
+                Address = dto.Address,
+                LicenseNumber = dto.LicenseNumber,
+                LicenseExpiryDate = dto.LicenseExpiryDate,
+                Experience = dto.Experience,
+                VehicleType = dto.VehicleType,
+                Email = dto.Email,
+                Password = "" 
+            };
+        }
+
     }
 }

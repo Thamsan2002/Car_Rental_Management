@@ -118,12 +118,12 @@
 
                 <a class="@(currentController == "AddCar" ? "active" : "")" asp-controller="AddCar" asp-action="Details">🚗 Car Management</a>
                 <a class="@(currentController == "Customer" ? "active" : "")" asp-controller="Customer" asp-action="Register">👥 Customer Management</a>
-                <a class="@(currentController == "Staff" ? "active" : "")" asp-controller="Staff" asp-action="Create">🧑‍💼 Staff Management</a>
+                <a class="@(currentController == "AdminLogin" ? "active" : "")" asp-controller="Driver" asp-action="Index">🔑 Driver Management</a>
+                <a class="@(currentController == "Staff" ? "active" : "")" asp-controller="Staff" asp-action="Index">🧑‍💼 Staff Management</a>
                 <a class="@(currentController == "Booking" ? "active" : "")" asp-controller="Booking" asp-action="AllBookings">📅 Booking Management</a>
                 <a class="@(currentController == "Payment" ? "active" : "")" asp-controller="Payment" asp-action="PaymentDetails">💳 Payment Management</a>
-                <a class="@(currentController == "Admin" ? "active" : "")" asp-controller="Admin" asp-action="Dashboard">⚙️ Settings</a>
-                <a class="@(currentController == "AdminLogin" ? "active" : "")" asp-controller="AdminLogin" asp-action="Login">🔑 AdminLogin</a>
-                <a class="@(currentController == "AdminAdd" ? "active" : "")" asp-controller="AdminAdd" asp-action="Add">➕ AdminAdd</a>
+                <a class="@(currentController == "Admin" ? "active" : "")" asp-controller="User" asp-action="EditProfile">⚙️ Settings</a>
+                <a class="@(currentController == "AdminAdd" ? "active" : "")" asp-controller="Admin" asp-action="List">➕ AdminAdd</a>
             </nav>
 
             <!-- Main Content -->

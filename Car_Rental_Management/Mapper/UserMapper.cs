@@ -12,7 +12,7 @@ namespace Car_Rental_Management.Mapper
                 Id = userId,          // assign logged-in user ID
                 PhoneNumber = vm.PhoneNumber,
                 Email = vm.Email,
-                Password = vm.NewPassword  // service will check if empty and preserve old password
+                PasswordHash = vm.NewPassword  // service will check if empty and preserve old password
             };
         }
         //public static UserViewModel ToViewModel(User user)

@@ -16,64 +16,62 @@ namespace Car_Rental_Management.Controllers
             _staffService = staffService;
         }
 
-      
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var staffList = await _staffService.GetAllStaffAsync(); // DTO from service
+            var staffList = await _staffService.GetAllStaffAsync();
             return View(staffList);
         }
 
-        
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
             var staffDto = await _staffService.GetStaffByIdAsync(id);
-            if (staffDto == null)
-                return NotFound();
+            if (staffDto == null) return NotFound();
 
             return View(staffDto);
         }
 
-       
         [HttpGet]
         public IActionResult Create()
         {
             return View(new Staffviewmodel());
         }
 
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Staffviewmodel vm)
         {
-            if (!ModelState.IsValid)
-                return View(vm);
+            if (!ModelState.IsValid) return View(vm);
 
-            await _staffService.AddStaffAsync(vm);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _staffService.AddStaffAsync(vm);
+                TempData["Success"] = "Staff added successfully!";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(vm);
+            }
         }
 
-        
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
             var staffDto = await _staffService.GetStaffByIdAsync(id);
-            if (staffDto == null)
-                return NotFound();
+            if (staffDto == null) return NotFound();
 
-            // Use mapper to create ViewModel
             var vm = Staffmapper.ToViewModel(staffDto);
             return View(vm);
         }
 
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, Staffviewmodel vm)
         {
-            if (!ModelState.IsValid)
-                return View(vm);
+            if (!ModelState.IsValid) return View(vm);
 
             try
             {
@@ -88,7 +86,6 @@ namespace Car_Rental_Management.Controllers
             }
         }
 
-      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Guid id)

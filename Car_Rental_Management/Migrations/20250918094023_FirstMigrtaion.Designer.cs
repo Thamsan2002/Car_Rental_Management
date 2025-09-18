@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Car_Rental_Management.Migrations
 {
     [DbContext(typeof(ApplicationDbcontext))]
-    [Migration("20250918041601_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20250918094023_FirstMigrtaion")]
+    partial class FirstMigrtaion
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

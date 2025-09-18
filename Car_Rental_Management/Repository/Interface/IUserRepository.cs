@@ -13,14 +13,17 @@ namespace Car_Rental_Management.Repository.Interface
         Task<User?> GetByPhoneAsync(string phoneNumber);
 
         Task<User?> GetByEmailOrPhoneAsync(string emailOrPhone, string password);
-        User? GetById(Guid userId);
 
         // Update user details
         void Update(User user);
-       
 
+        // IUserRepository
+        Task<User?> GetByEmailOrPhoneAsync(string emailOrPhone);
 
         Task<User?> GetByRoleAsync(string role);
-      
+        Task<User?> GetCustomerByLoginAsync(string emailOrPhone);
+
+        User? GetById(Guid userId);
+
     }
 }

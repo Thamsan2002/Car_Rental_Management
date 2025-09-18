@@ -79,8 +79,10 @@
 </style>
 
 <div class="container mt-5">
-    <form asp-action="CreateDriver" method="post" class="driver-form">
-        <h2>Add Driver</h2>
+    <form asp-action="Edit" method="post" class="driver-form">
+        <h2>Edit Driver</h2>
+
+        <input type="hidden" asp-for="Id" />
 
         <label asp-for="Name"></label>
         <input asp-for="Name" />
@@ -91,7 +93,7 @@
         <span asp-validation-for="Email" class="text-danger"></span>
 
         <label asp-for="Password"></label>
-        <input asp-for="Password" type="password" />
+        <input asp-for="Password" type="password" placeholder="Leave blank to keep current" />
         <span asp-validation-for="Password" class="text-danger"></span>
 
         <label asp-for="EmergencyContact"></label>
@@ -109,9 +111,9 @@
         <label asp-for="Gender"></label>
         <select asp-for="Gender">
             <option value="">-- Select Gender --</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
+            <option value="Male" selected="@Model.Gender == " Male"">Male</option>
+            <option value="Female" selected="@Model.Gender == " Female"">Female</option>
+            <option value="Other" selected="@Model.Gender == " Other"">Other</option>
         </select>
         <span asp-validation-for="Gender" class="text-danger"></span>
 
@@ -135,6 +137,6 @@
         <input asp-for="VehicleType" />
         <span asp-validation-for="VehicleType" class="text-danger"></span>
 
-        <button type="submit">Add Driver</button>
+        <button type="submit">Update Driver</button>
     </form>
 </div>

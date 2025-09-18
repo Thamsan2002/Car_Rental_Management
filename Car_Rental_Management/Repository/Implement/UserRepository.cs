@@ -3,8 +3,9 @@ using Car_Rental_Management.Models;
 using Car_Rental_Management.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace Car_Rental_Management.Repository.Implement
 {
@@ -35,6 +36,12 @@ namespace Car_Rental_Management.Repository.Implement
             await _context.SaveChangesAsync();
         }
 
+        public void Update(User user)
+        {
+            _context.Users.Update(user);
+            _context.SaveChanges();
+        }
+
         public async Task<bool> IsEmailOrPhoneExistAsync(string email, string phone)
         {
             return await _context.Users.AnyAsync(u => u.Email == email || u.PhoneNumber == phone);
@@ -45,29 +52,33 @@ namespace Car_Rental_Management.Repository.Implement
             return await _context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
         }
 
+        public async Task<User?> GetByEmailOrPhoneAsync(string emailOrPhone, string password)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == emailOrPhone || u.PhoneNumber == emailOrPhone);
+
+            if (user == null) return null;
+
+            bool verified = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+            return verified ? user : null;
+        }
+
         public async Task<User?> GetByEmailOrPhoneAsync(string emailOrPhone)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == emailOrPhone || u.PhoneNumber == emailOrPhone);
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == emailOrPhone || u.PhoneNumber == emailOrPhone);
         }
 
         public async Task<User?> GetCustomerByLoginAsync(string emailOrPhone)
         {
             return await _context.Users
-                .Where(u => u.Role == "Customer" &&
-                            (u.Email == emailOrPhone || u.PhoneNumber == emailOrPhone))
+                .Where(u => u.Role == "Customer" && (u.Email == emailOrPhone || u.PhoneNumber == emailOrPhone))
                 .FirstOrDefaultAsync();
         }
-        // Fetch user by Id
+
         public User? GetById(Guid userId)
         {
             return _context.Users.FirstOrDefault(u => u.Id == userId);
-        }
-
-        // Update user details (email, phone, password)
-        public void Update(User user)
-        {
-            _context.Users.Update(user);
-            _context.SaveChanges();
         }
 
         public async Task<User?> GetByRoleAsync(string role)

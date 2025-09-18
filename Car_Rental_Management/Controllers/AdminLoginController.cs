@@ -21,10 +21,14 @@ namespace Car_Rental_Management.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string emailOrPhone, string password)
         {
-            bool isValid = await _adminLoginService.VerifyAdminLoginAsync(emailOrPhone, password);
+            var user = await _adminLoginService.VerifyAdminLoginAsync(emailOrPhone, password);
 
-            if (isValid)
+            if (user != null)
             {
+                // Store user info in session
+                HttpContext.Session.SetString("AdminEmail", user.Email);
+                HttpContext.Session.SetString("AdminRole", user.Role);
+
                 return RedirectToAction("Dashboard", "Admin");
             }
             else
