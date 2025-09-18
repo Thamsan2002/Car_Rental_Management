@@ -1,0 +1,96 @@
+﻿@model Car_Rental_Management.ViewModel.UserViewModel
+
+
+
+<h2 class="text-center mb-4" data-aos="fade-down">Edit Your Profile</h2>
+
+@* @if (ViewBag.Message != null)
+{
+    <div class="alert alert-success text-center" data-aos="fade-in">@ViewBag.Message</div>
+} *@
+
+<div class="card mx-auto p-4 shadow-lg" style="max-width:600px; border-radius:20px; background:linear-gradient(145deg, #ffffff, #f3f3f3);">
+    <form asp-action="EditProfile" method="post" data-aos="fade-up" data-aos-duration="1000">
+        <div class="form-floating mb-3">
+            <input asp-for="Email" class="form-control" placeholder="Email" />
+            <label asp-for="Email">Email</label>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="PhoneNumber" class="form-control" placeholder="Phone Number" />
+            <label asp-for="PhoneNumber">Phone Number</label>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="CurrentPassword" type="password" class="form-control" placeholder="Current Password" />
+            <label asp-for="CurrentPassword">Current Password</label>
+            <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+        </div>
+
+      
+
+        <button type="submit" class="btn btn-gradient w-100 mt-3 p-2" 
+                style="background: linear-gradient(90deg, #5e17eb, #a855f7); color:white; font-weight:bold; border-radius:10px; font-size:1.1rem;">
+            Update Profile
+        </button>
+    </form>
+</div>
+
+<!-- Optional Cursor Glow -->
+<div id="cursorGlow"></div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+    <script>
+        AOS.init({ duration: 1200, once: true });
+
+        // Input glow
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', () => input.style.boxShadow = '0 0 10px #5e17eb');
+            input.addEventListener('blur', () => input.style.boxShadow = 'none');
+        });
+
+        // Cursor glow
+        const cursor = document.getElementById('cursorGlow');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.top = e.clientY + 'px';
+            cursor.style.left = e.clientX + 'px';
+        });
+    </script>
+    <style>
+        /* Button hover glow */
+        .btn-gradient:hover {
+            box-shadow: 0 0 20px rgba(94, 23, 235, 0.6), 0 0 40px rgba(94, 23, 235, 0.4);
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+
+        /* Card hover lift */
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        /* Smooth input glow transition */
+        input.form-control {
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Cursor glow style */
+        #cursorGlow {
+            position: fixed;
+            top:0; left:0;
+            width:25px; height:25px;
+            border-radius:50%;
+            pointer-events:none;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(94,23,235,0.6) 0%, rgba(94,23,235,0) 60%);
+            transition: transform 0.05s ease, width 0.1s ease, height 0.1s ease;
+            z-index: 9999;
+        }
+    </style>
+}

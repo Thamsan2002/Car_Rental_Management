@@ -63,5 +63,10 @@ namespace Car_Rental_Management.Repository.Implement
             _context.Staffs.Update(staff);
             await _context.SaveChangesAsync();
         }
+        public async Task<int> GetStaffCountAsync()
+        {
+            return await _context.Staffs.CountAsync();
+        }
+
     }
 }

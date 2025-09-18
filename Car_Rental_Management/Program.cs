@@ -26,11 +26,13 @@ internal class Program
         builder.Services.AddScoped<IAdminLoginService, AdminLoginService>();
         builder.Services.AddScoped<IBookingService, BookingService>();
         builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+        builder.Services.AddScoped<IAdminDashBoardService, AdminDashBoardService>();
+        builder.Services.AddScoped<IStaffRepository, StaffRepository>();
+        builder.Services.AddScoped<IUserService, UserService>();
 
 
 
-
-        // DbContext
+        // ✅ DbContext
         builder.Services.AddDbContext<ApplicationDbcontext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Car")));
 

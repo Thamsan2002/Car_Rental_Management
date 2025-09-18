@@ -18,6 +18,7 @@ namespace Car_Rental_Management.Controllers
         // GET: Admin/Add
         public IActionResult Add()
         {
+
             return View(); // Returns Add.cshtml Razor form
         }
 

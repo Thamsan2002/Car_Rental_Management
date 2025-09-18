@@ -12,10 +12,13 @@ namespace Car_Rental_Management.Repository.Interface
         Task<bool> IsEmailOrPhoneExistAsync(string email, string phone);
         Task<User?> GetByPhoneAsync(string phoneNumber);
 
-        // 🔹 Add this method in interface
-        Task<User?> GetByEmailOrPhoneAsync(string emailOrPhone);
+        Task<User?> GetByEmailOrPhoneAsync(string emailOrPhone, string password);
+        User? GetById(Guid userId);
 
-        Task<User?> GetCustomerByLoginAsync(string emailOrPhone);
+        // Update user details
+        void Update(User user);
+       
+
 
         Task<User?> GetByRoleAsync(string role);
       
