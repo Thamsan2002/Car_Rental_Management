@@ -64,50 +64,39 @@ namespace Car_Rental_Management.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(BookingViewmodel model) 
-        { 
-            return View();
+        public async Task<IActionResult> Create(BookingViewmodel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            try
+            {
+                // Call service to create booking
+                var bookingId = await _bookingService.CreateBookingAsync(model);
+
+                // Redirect to payment page
+                return RedirectToAction("Create", "Driver", new { bookingId });
+            }
+            catch (ArgumentNullException argEx)
+            {
+                ModelState.AddModelError("", argEx.Message);
+            }
+            catch (InvalidOperationException dbEx)
+            {
+                ModelState.AddModelError("", dbEx.Message);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "An unexpected error occurred while creating your booking."+ex);
+                // Optional: log ex here
+                Console.WriteLine(ex);
+            }
+
+            return View(model); // return view with error messages
         }
 
-        //// ✅ Create Booking POST
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create(BookingViewmodel model)
-        //{
-        //    model.DriverId = new Guid("00000000-0000-0000-0000-000000000001"); // default driver
-        //    var userId = HttpContext.Session.GetString("UserId");
-        //    if (string.IsNullOrWhiteSpace(userId))
-        //        return RedirectToAction("Login", "Customer");
-
-        //    var customerGuid = Guid.Parse(userId);
-        //    var customer = await _customerService.GetByIdAsync(customerGuid);
-        //    if (customer == null)
-        //        return RedirectToAction("Register", "Customer");
-
-        //    if (!ModelState.IsValid)
-        //        return View(model);
-
-        //    try
-        //    {
-        //        // ✅ Call BookingService (handles repo + car update)
-        //        //var bookingResult = await _bookingService.CreateBookingAsync(model);
-
-        //        if (!bookingResult.Success)
-        //        {
-        //            ModelState.AddModelError("", bookingResult.Message ?? "Booking failed.");
-        //            return View(model);
-        //        }
-
-        //        // ✅ Success → redirect to Confirmation
-        //        return RedirectToAction("Confirmation", new { id = bookingResult.BookingId });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // log error
-        //        ModelState.AddModelError("", "Something went wrong while booking. Try again.");
-        //        return View(model);
-        //    }
-        //}
 
         //// ✅ All Bookings (for admin)
         //[HttpGet]

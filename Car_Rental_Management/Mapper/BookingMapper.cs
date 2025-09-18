@@ -20,22 +20,22 @@ namespace Car_Rental_Management.Mapper
                 };
             }
 
-            public static BookingViewmodel ToDto(Booking model)
-            {
-                return new BookingViewmodel
-                {
-                    CustomerId = model.CustomerId,
-                    CarId = model.CarId,
-                    BookingType = model.BookingType,
-                    StartDate = model.StartDate,
-                    EndDate = model.EndDate,
-                    TotalPrice = model.TotalPrice,
-                    CarMake = model.car?.Make,
-                    CarModel = model.car?.Model,
-                    CarColor = model.car?.Color,
-                    CarPricePerDay = model.car?.PricePerDay ?? 0,
-                    CarImage = model.car?.ImagePaths?.FirstOrDefault() ?? "/uploads/images/noimage.jpg"
-                };
-            }
+            //public static BookingViewmodel ToDto(Booking model)
+            //{
+            //    return new BookingViewmodel
+            //    {
+            //        CustomerId = model.CustomerId,
+            //        CarId = model.CarId,
+            //        BookingType = model.BookingType,
+            //        StartDate = model.StartDate,
+            //        EndDate = model.EndDate,
+            //        TotalPrice = model.TotalPrice,
+            //        CarMake = model.car?.Make,
+            //        CarModel = model.car?.Model,
+            //        CarColor = model.car?.Color,
+            //        CarPricePerDay = model.car?.PricePerDay ?? 0,
+            //        CarImage = model.car?.ImagePaths?.FirstOrDefault() ?? "/uploads/images/noimage.jpg"
+            //    };
+            //}
     }
 }

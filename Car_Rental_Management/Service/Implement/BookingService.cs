@@ -27,6 +27,38 @@ namespace Car_Rental_Management.Service.Implement
             return await _repo.GetBookingDateRangesByCarAsync(carId);
         }
 
+        public async Task<Guid> CreateBookingAsync(BookingViewmodel model)
+        {
+            if (model == null)
+                throw new ArgumentNullException(nameof(model), "Booking model cannot be null.");
+
+            try
+            {
+                // Map ViewModel to Booking entity
+                var booking = new Booking
+                {
+                    CustomerId = model.CustomerId,
+                    CarId = model.CarId,
+                    DriverId = model.DriverId, // nullable
+                    BookingType = model.BookingType,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    TotalPrice = model.TotalPrice,
+                    CreatedAt = DateTime.Now
+                };
+
+                // Save to database via repository
+                await _repo.CreateAsync(booking);
+
+                return booking.Id;
+            }
+            catch (Exception ex)
+            {
+                // Optional: log the exception here
+                throw new Exception("Failed to create booking. Please try again.", ex);
+            }
+        }
+
 
         //public async Task<BookingViewmodel> CreateBookingAsync(BookingViewmodel dto)
         //{

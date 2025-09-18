@@ -27,6 +27,31 @@ namespace Car_Rental_Management.Repository.Implement
                 .ToListAsync();
         }
 
+        public async Task CreateAsync(Booking booking)
+        {
+            if (booking == null)
+                throw new ArgumentNullException(nameof(booking), "Booking cannot be null.");
+
+            try
+            {
+                _context.Bookings.Add(booking);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException dbEx)
+            {
+                // Log more details for DB issues
+                Console.WriteLine($"Database error: {dbEx.Message}");
+                Console.WriteLine($"Inner Exception: {dbEx.InnerException?.Message}");
+                throw new InvalidOperationException("Error saving booking to the database.", dbEx);
+            }
+            catch (Exception ex)
+            {
+                // General exception handler
+                Console.WriteLine($"Error: {ex.Message}");
+                throw new Exception("An unexpected error occurred while creating the booking.", ex);
+            }
+        }
+
         //public async Task AddAsync(Booking booking)
         //{
         //    _context.Bookings.Add(booking);
