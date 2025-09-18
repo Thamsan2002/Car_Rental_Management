@@ -14,7 +14,6 @@ namespace Car_Rental_Management.Mapper
                     CustomerId = dto.CustomerId,
                     CarId = dto.CarId,
                     BookingType = dto.BookingType,
-                    DriverId = dto.DriverId,
                     StartDate = dto.StartDate,
                     EndDate = dto.EndDate,
                     TotalPrice = dto.TotalPrice
@@ -28,7 +27,6 @@ namespace Car_Rental_Management.Mapper
                     CustomerId = model.CustomerId,
                     CarId = model.CarId,
                     BookingType = model.BookingType,
-                    DriverId = model.DriverId,
                     StartDate = model.StartDate,
                     EndDate = model.EndDate,
                     TotalPrice = model.TotalPrice,

@@ -43,63 +43,67 @@
         font-size: 3rem;
         margin-bottom: 1rem;
         animation: fadeInDown 1s;
+        color: white; /* main heading */
     }
 
     .slide-text p {
         font-size: 1.2rem;
         margin-bottom: 1.5rem;
         animation: fadeInUp 1s;
+        color: rgb(203,241,240); /* subtitle / accent */
     }
 
 /* -------------------------------------
-   Buttons
+   Book Now Button (Home Slider)
 ------------------------------------- */
-.btn {
-    background-color: #FFD700;
-    color: #002366;
+.btn-book {
+    background-color: #076B66FF;
+    color: white;
     padding: 0.8rem 2rem;
-    text-decoration: none;
     font-weight: bold;
     border-radius: 5px;
+    text-decoration: none;
     animation: fadeIn 2s;
-    transition: background 0.3s, transform 0.3s;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 15px rgba(7,107,102,0.4);
 }
 
-    .btn:hover {
-        background-color: #FFC107;
+    .btn-book:hover {
+        background-color: rgb(6,61,59);
         transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(6,61,59,0.5);
     }
 
 /* -------------------------------------
    Features Section
 ------------------------------------- */
 #features {
-    background: #f8f8f8;
+    background: rgb(203,241,240);
 }
 
 .feature-box {
-    background: #f9f5ff;
+    background: rgb(179,212,211);
     padding: 35px;
     border-radius: 20px;
     text-align: center;
     transition: all 0.4s ease;
-    color: #333;
-    border: 2px solid #e0d4ff;
+    color: rgb(6,61,59);
+    border: 2px solid #076B66FF;
 }
 
     .feature-box i {
         font-size: 45px;
-        color: #5e17eb;
-        background: #fff;
+        color: #076B66FF;
+        background: white;
         padding: 20px;
         border-radius: 50%;
         margin-bottom: 20px;
-        border: 2px solid #5e17eb;
+        border: 2px solid #076B66FF;
     }
 
     .feature-box:hover {
         transform: translateY(-10px);
-        box-shadow: 0 15px 25px rgba(94, 23, 235, 0.2);
+        box-shadow: 0 15px 25px rgba(7,107,102,0.2);
     }
 
 /* -------------------------------------
@@ -110,7 +114,7 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    background: #000;
+    background:#000000;
     padding: 20px;
     gap: 20px;
 }
@@ -119,7 +123,7 @@
         width: 80px;
         max-width: 100%;
         height: auto;
-        filter: grayscale(100);
+        filter: grayscale(100%);
         transition: 0.4s;
     }
 
@@ -129,7 +133,7 @@
         }
 
 /* -------------------------------------
-   Animations (Optional for text fade)
+   Animations
 ------------------------------------- */
 @keyframes fadeInDown {
     from {
@@ -181,7 +185,7 @@
         font-size: 1rem;
     }
 
-    .btn {
+    .btn-book {
         padding: 0.6rem 1.2rem;
         font-size: 0.9rem;
     }
@@ -204,7 +208,7 @@
         font-size: 0.8rem;
     }
 
-    .btn {
+    .btn-book {
         padding: 0.5rem 1rem;
         font-size: 0.8rem;
     }

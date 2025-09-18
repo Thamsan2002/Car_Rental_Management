@@ -8,7 +8,6 @@ namespace Car_Rental_Management.ViewModel
         public Guid CarId { get; set; }
      
         public string BookingType { get; set; } 
-        public Guid? DriverId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public decimal TotalPrice { get; set; }
@@ -20,7 +19,7 @@ namespace Car_Rental_Management.ViewModel
         public decimal CarPricePerDay { get; set; }
         public string CarImage { get; set; }
 
-        // Driver list
-        public List<DriverDto> Drivers { get; set; } = new();
+        public decimal DriverFee { get; set; }
+
     }
 }
