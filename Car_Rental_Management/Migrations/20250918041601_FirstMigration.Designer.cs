@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Car_Rental_Management.Migrations
 {
     [DbContext(typeof(ApplicationDbcontext))]
-    [Migration("20250917225702_First")]
-    partial class First
+    [Migration("20250918041601_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -296,7 +296,7 @@ namespace Car_Rental_Management.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

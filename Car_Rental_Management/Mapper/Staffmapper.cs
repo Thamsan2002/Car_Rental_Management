@@ -29,7 +29,7 @@ namespace Car_Rental_Management.Mapper
             return new User
             {
                 Email = vm.EmailAddress,
-                Password = vm.Password,
+                PasswordHash = vm.Password,
                 PhoneNumber = vm.PhoneNumber,
                 Role = vm.Role
             };
@@ -82,7 +82,7 @@ namespace Car_Rental_Management.Mapper
         public static void UpdateUserModel(User user, Staffviewmodel vm)
         {
             user.Email = vm.EmailAddress;
-            user.Password = vm.Password;
+            user.PasswordHash = vm.Password;
             user.PhoneNumber = vm.PhoneNumber;
             user.Role = vm.Role;
         }
