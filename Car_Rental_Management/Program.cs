@@ -24,6 +24,11 @@ internal class Program
         builder.Services.AddScoped<IAdminLoginService, AdminLoginService>();
         builder.Services.AddScoped<IBookingService, BookingService>();
         builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+        builder.Services.AddScoped<IPaymentService, PaymentService>();
+        builder.Services.AddScoped<IStripeService, StripeService>();
+
+        builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+
 
 
         // ✅ DbContext

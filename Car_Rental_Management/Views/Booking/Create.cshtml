@@ -10,43 +10,83 @@
         <img src="@Model.CarImage" class="img-fluid mb-3" />
         <p><strong>Color:</strong> @Model.CarColor</p>
         <p><strong>Price/Day:</strong> LKR @Model.CarPricePerDay:N0</p>
+
+        @* Show driver availability *@
+        @if (!string.IsNullOrEmpty(Model.DriverName))
+        {
+            <p><strong>Available Driver:</strong> @Model.DriverName</p>
+        }
+        else
+        {
+            <p class="text-danger"><strong>No driver available</strong></p>
+        }
     </div>
 
     <div class="col-md-6">
-        <form asp-action="Booking" method="post">
+        <form asp-action="Create" method="post">
             <input type="hidden" asp-for="CustomerId" />
             <input type="hidden" asp-for="CarId" />
 
+            <!-- Car details -->
+            <input type="hidden" asp-for="CarMake" />
+            <input type="hidden" asp-for="CarModel" />
+            <input type="hidden" asp-for="CarColor" />
+            <input type="hidden" asp-for="CarPricePerDay" />
+            <input type="hidden" asp-for="CarImage" />
+
+            <!-- Hidden Booked Periods -->
+            @for (int i = 0; i < Model.BookedPeriods.Count; i++)
+            {
+                <input type="hidden" name="BookedPeriods[@i].Start" value="@Model.BookedPeriods[i].Start" />
+                <input type="hidden" name="BookedPeriods[@i].End" value="@Model.BookedPeriods[i].End" />
+            }
+
             <div class="mb-3">
                 <label>Booking Type</label><br />
-                <input type="radio" asp-for="BookingType" value="WithoutDriver" checked onchange="toggleDriverSelect()" /> Without Driver
-                <input type="radio" asp-for="BookingType" value="WithDriver" onchange="toggleDriverSelect()" /> With Driver
+                <input type="radio" asp-for="BookingType" value="WithoutDriver" checked onchange="toggleDriver()" /> Without Driver
+
+                <input type="radio"
+                       asp-for="BookingType"
+                       value="WithDriver"
+                       onchange="toggleDriver()"
+                       disabled="@(Model.DriverId == null)" /> With Driver
+
+                <span asp-validation-for="BookingType" class="text-danger"></span>
             </div>
 
-            <div class="mb-3" id="driverSelectDiv" style="display:none;">
-                <label>Select Driver</label>
-                <select asp-for="DriverId" class="form-control" id="driverSelect" onchange="calculateTotal()">
-                    <option value="">Select</option>
-                    @* @foreach (var driver in Model.Drivers)
-                    {
-                        <option value="@driver.Id" data-fee="@driver.FeePerDay">@driver.Name - LKR @driver.FeePerDay:N0 per day</option>
-                    } *@
-                </select>
-            </div>
+            <!-- Hidden driver fields -->
+            <input type="hidden" name="DriverId" id="driverId" value="" />
+            <input type="hidden" name="DriverName" id="driverName" value="" />
+
+            <!-- Show selected driver dynamically -->
+            <p id="selectedDriver" class="text-info"></p>
 
             <div class="mb-3">
                 <label>Start Date</label>
                 <input asp-for="StartDate" type="date" class="form-control" id="startDate" onchange="calculateTotal()" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
 
             <div class="mb-3">
                 <label>End Date</label>
                 <input asp-for="EndDate" type="date" class="form-control" id="endDate" onchange="calculateTotal()" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label>Car Fee / Day</label>
+                <input type="text" class="form-control" id="carFee" value="LKR @Model.CarPricePerDay" readonly />
+            </div>
+
+            <div class="mb-3" id="driverFeeDiv" style="display:none;">
+                <label>Driver Fee / Day</label>
+                <input type="text" class="form-control" id="driverFee" value="LKR 2000" readonly />
             </div>
 
             <div class="mb-3">
                 <label>Total Price</label>
-                <input asp-for="TotalPrice" type="text" class="form-control" id="totalPrice" readonly />
+                <input type="text" class="form-control" id="totalPrice" readonly />
+                <input type="hidden" asp-for="TotalPrice" id="hiddenTotalPrice" />
             </div>
 
             <button type="submit" class="btn btn-success">Confirm Booking</button>
@@ -56,37 +96,56 @@
 </div>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
     <script>
-        function toggleDriverSelect() {
-            const withDriver = document.querySelector('input[name="BookingType"]:checked').value === "WithDriver";
-            document.getElementById('driverSelectDiv').style.display = withDriver ? 'block' : 'none';
-            calculateTotal();
-        }
-
         function calculateTotal() {
             const carPrice = @Model.CarPricePerDay;
+            const driverPrice = 2000;
+
             const startDateVal = document.getElementById('startDate').value;
             const endDateVal = document.getElementById('endDate').value;
             const startDate = startDateVal ? new Date(startDateVal) : null;
             const endDate = endDateVal ? new Date(endDateVal) : null;
 
             let totalDays = 0;
-            if (startDate && endDate && endDate >= startDate) {
-                totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+            if (startDate && endDate && endDate > startDate) {
+                totalDays = (endDate - startDate) / (1000 * 60 * 60 * 24);
             }
 
-            let driverFee = 0;
-            if (document.querySelector('input[name="BookingType"]:checked').value === "WithDriver") {
-                const driverSelect = document.getElementById('driverSelect');
-                const selectedOption = driverSelect.options[driverSelect.selectedIndex];
-                driverFee = selectedOption ? parseFloat(selectedOption.getAttribute('data-fee') || 0) : 0;
+            let total = 0;
+            const withDriver = document.querySelector('input[value="WithDriver"]').checked;
+            if (withDriver) {
+                total = (carPrice * totalDays) + (driverPrice * totalDays);
+            } else {
+                total = carPrice * totalDays;
             }
 
-            const total = (carPrice + driverFee) * totalDays;
-            document.getElementById('totalPrice').value = total.toLocaleString('en-US', { style: 'currency', currency: 'LKR', minimumFractionDigits: 0 });
+            document.getElementById('totalPrice').value =
+                "LKR " + total.toLocaleString('en-US', { minimumFractionDigits: 0 });
+
+            document.getElementById('hiddenTotalPrice').value = total;
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        function toggleDriver() {
+            const withDriver = document.querySelector('input[value="WithDriver"]').checked;
+
+            if (withDriver && "@Model.DriverId") {
+                document.getElementById("driverId").value = "@Model.DriverId";
+                document.getElementById("driverName").value = "@Model.DriverName";
+                document.getElementById("selectedDriver").innerText = "Driver: @Model.DriverName";
+                document.getElementById('driverFeeDiv').style.display = 'block';
+            } else {
+                document.getElementById("driverId").value = "";
+                document.getElementById("driverName").value = "";
+                document.getElementById("selectedDriver").innerText = "";
+                document.getElementById('driverFeeDiv').style.display = 'none';
+            }
+
+            calculateTotal();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            toggleDriver();
             calculateTotal();
         });
     </script>

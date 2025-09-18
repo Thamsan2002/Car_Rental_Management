@@ -1,11 +1,34 @@
 ﻿@model IEnumerable<Car_Rental_Management.ViewModel.BookingViewmodel>
 
+@{
+    Layout = null; 
+    var monthlyData = ((IEnumerable<dynamic>)ViewBag.MonthlyData)?.ToList() ?? new List<dynamic>();
+    var carData = ((IEnumerable<dynamic>)ViewBag.CarWiseData)?.ToList() ?? new List<dynamic>();
+}
+
 <div class="container my-5">
+
+    <!-- Charts Section -->
+    <div class="row mb-4 g-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 rounded-4 p-3">
+                <h5 class="text-center mb-3">📊 Monthly Bookings</h5>
+                <canvas id="monthlyChart"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 rounded-4 p-3">
+                <h5 class="text-center mb-3">🚗 Car-wise Bookings</h5>
+                <canvas id="carChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bookings Table -->
     <div class="card shadow-lg border-0 rounded-4">
         <div class="card-header bg-primary text-white text-center py-3 rounded-top">
             <h2 class="mb-0">All Bookings</h2>
         </div>
-
         <div class="card-body p-4">
             @if (!Model.Any())
             {
@@ -44,3 +67,61 @@
         </div>
     </div>
 </div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Monthly Bookings Chart
+    var monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+    new Chart(monthlyCtx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Json.Serialize(monthlyData.Select(x => x.Month))),
+            datasets: [{
+                label: 'Bookings',
+                data: @Html.Raw(Json.Serialize(monthlyData.Select(x => x.Count))),
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: { display: true, text: 'Monthly Bookings Overview', font: { size: 16 } }
+            },
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+    });
+
+    // Car-wise Bookings Chart
+    var carCtx = document.getElementById('carChart').getContext('2d');
+    new Chart(carCtx, {
+        type: 'pie',
+        data: {
+            labels: @Html.Raw(Json.Serialize(carData.Select(x => x.Car))),
+            datasets: [{
+                data: @Html.Raw(Json.Serialize(carData.Select(x => x.Count))),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(255, 159, 64, 0.7)',
+                    'rgba(199, 199, 199, 0.7)'
+                ],
+                borderColor: 'rgba(255,255,255,1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' },
+                title: { display: true, text: 'Car-wise Booking Distribution', font: { size: 16 } }
+            }
+        }
+    });
+</script>

@@ -23,7 +23,7 @@ namespace Car_Rental_Management.Service.Implement
 
         public async Task<Customer> GetByIdAsync(Guid customerId)
         {
-            return await _customerRepository.GetByIdAsync(customerId);
+            return await _customerRepository.GetByUserIdAsync(customerId);
         }
         public async Task<String> RegisterUserAsync(CustomerSignupViewmodel model)
         {
@@ -66,7 +66,7 @@ namespace Car_Rental_Management.Service.Implement
             // Map ViewModel -> Model
             var customer = new Customer
             {
-                UserId = Guid.NewGuid(), // Or link to actual User entity if needed
+                UserId = model.UserId, // Or link to actual User entity if needed
                 FullName = model.FullName,
                 Gender = model.Gender,
                 NationalIdentityCard = model.NationalIdentityCard,

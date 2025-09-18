@@ -9,5 +9,6 @@ namespace Car_Rental_Management.Repository.Interface
         Task<List<Driver>> GetAllAsync();
         Task UpdateAsync(Driver driver);
         Task DeleteAsync(Driver driver);
+        Task<Driver?> GetRandomDriverAsync(Guid? excludeId = null);
     }
 }

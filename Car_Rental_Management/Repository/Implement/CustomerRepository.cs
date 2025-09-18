@@ -36,11 +36,11 @@ namespace Car_Rental_Management.Repository.Implement
 
         // Update existing customer
 
-        public async Task<Customer> GetByIdAsync(Guid customerId)
-        {
-            return await _context.Customers
-                                 .FirstOrDefaultAsync(c => c.Id == customerId);
-        }
+        //public async Task<Customer> GetByIdAsync(Guid customerId)
+        //{
+        //    return await _context.Customers
+        //                         .FirstOrDefaultAsync(c => c.Id == customerId);
+        //}
 
         public async Task<Customer> UpdateAsync(Customer customer)
         {

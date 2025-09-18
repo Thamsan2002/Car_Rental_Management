@@ -31,54 +31,66 @@
 </head>
 <body>
     <header>
-        <nav class="navbar container-fluid">
-            <div class="logo">KTS</div>
-            <ul class="nav-links" id="navLinks">
-                <li><a asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
-                <li><a href="#features" class="nav-link">About</a></li>
-                <li><a href="#cars" class="nav-link">Cars</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#002366;">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold text-white" asp-controller="Home" asp-action="Index">KTS</a>
 
-                <!-- Profile/Login Dropdown -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown"
-                       role="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-user-circle fa-2x me-2"></i>
-                        <span>
-                            @if (!string.IsNullOrEmpty(userId))
-                            {
-                                @userEmail
-                            }
-                                                  
-                        </span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="profileDropdown" style="min-width: 220px;">
-                        @if (!string.IsNullOrEmpty(userId))
-                        {
-                            <li class="dropdown-item mt-2">
-                                <strong>@userEmail</strong><br />
-                              
-                            </li>
-                            <li><a class="dropdown-item mt-2" asp-controller="Customer" asp-action="Profile">My Profile</a></li>
-                            <li><a class="dropdown-item" asp-controller="Booking" asp-action="MyBookings">View Bookings</a></li>
-                            <li><a class="dropdown-item" asp-controller="Home" asp-action="Privacy">Privacy </a></li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li>
-                                <form method="post" asp-controller="Customer" asp-action="Logout" class="d-inline">
-                                    <button type="submit" class="dropdown-item">Logout</button>
-                                </form>
-                            </li>
-                        }
-                        else
-                        {
-                            <li><a class="dropdown-item" asp-controller="Customer" asp-action="SignUp">Login</a></li>
-                            <li><a class="dropdown-item" asp-controller="Customer" asp-action="Logout">Sign Up</a></li>
-                        }
+                <!-- Mobile toggle button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+                        aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Nav items -->
+                <div class="collapse navbar-collapse" id="navMenu">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
+                        <li class="nav-item"><a href="#features" class="nav-link">About</a></li>
+                        <li class="nav-item"><a href="#cars" class="nav-link">Cars</a></li>
+                        <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+
+                        <!-- Profile/Login Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown"
+                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle fa-lg me-2"></i>
+                                <span>
+                                    @if (!string.IsNullOrEmpty(userId))
+                                    {
+                                        @userEmail
+                                    }
+                                    else
+                                    {
+                                        @:Guest
+                                    }
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                @if (!string.IsNullOrEmpty(userId))
+                                {
+                                    <li class="dropdown-item text-center">
+                                        <strong>@userEmail</strong>
+                                    </li>
+                                    <li><a class="dropdown-item" asp-controller="Customer" asp-action="Profile">My Profile</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Booking" asp-action="MyBookings">View Bookings</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li>
+                                        <form method="post" asp-controller="Customer" asp-action="Logout" class="d-inline">
+                                            <button type="submit" class="dropdown-item">Logout</button>
+                                        </form>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li><a class="dropdown-item" asp-controller="Customer" asp-action="SignUp">Login</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Customer" asp-action="SignUp">Sign Up</a></li>
+                                }
+                            </ul>
+                        </li>
                     </ul>
-
-                     
-
-            <button class="mobile-menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+                </div>
+            </div>
         </nav>
     </header>
 
@@ -93,6 +105,6 @@
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    @RenderSection("Scripts", required: false) 
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
