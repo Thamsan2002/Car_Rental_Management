@@ -6,28 +6,25 @@
 
 <style>
     body {
-        background-color: #0D1F23;
-        color: #FFFFFF;
+        background-color: #FFFFFF; /* White background */
+        color: #0D1F23;
         font-family: Arial, sans-serif;
     }
 
-    /* Glass effect card */
     .card {
-        background: rgba(19, 46, 53, 0.8); /* semi-transparent */
-        border: 1px solid rgba(173, 179, 183, 0.3);
-        backdrop-filter: blur(10px);
+        background-color: #FFFFFF;
+        border: 1px solid #2D4A50;
         color: #FFFFFF;
-        border-radius: 15px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     }
 
     .card-header {
-        background: rgba(105, 129, 128, 0.8);
+        background-color: #698180;
         color: #FFFFFF;
         font-weight: bold;
-        border-bottom: 1px solid rgba(173, 179, 183, 0.3);
-        border-radius: 15px 15px 0 0;
         text-align: center;
+        border-radius: 12px 12px 0 0;
     }
 
     .form-label {
@@ -35,11 +32,13 @@
         font-weight: 500;
     }
 
-    .form-control, select, textarea {
-        background-color: rgba(45, 74, 80, 0.7);
+    .form-control,
+    select,
+    textarea {
+        background-color: #2D4A50;
         color: #FFFFFF;
-        border: 1px solid rgba(90, 99, 106, 0.5);
-        border-radius: 10px;
+        border: 1px solid #5A636A;
+        border-radius: 8px;
     }
 
         .form-control::placeholder {
@@ -47,11 +46,13 @@
             opacity: 1;
         }
 
-        .form-control:focus, select:focus, textarea:focus {
-            background-color: rgba(45, 74, 80, 0.9);
+        .form-control:focus,
+        select:focus,
+        textarea:focus {
+            background-color: #2D4A50;
             color: #FFFFFF;
             border-color: #698180;
-            box-shadow: 0 0 10px #698180;
+            box-shadow: 0 0 8px #698180;
             outline: none;
         }
 
@@ -60,16 +61,15 @@
         border-color: #698180;
         color: #FFFFFF;
         font-weight: bold;
-        border-radius: 10px;
+        border-radius: 8px;
         transition: all 0.3s ease;
     }
 
         .btn-success:hover {
             background-color: #5A636A;
             border-color: #5A636A;
-            color: #FFFFFF;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
     .text-danger {
@@ -82,7 +82,7 @@
         <div class="col-md-8">
             <div class="card shadow-sm">
                 <div class="card-header">
-                    <h4>Create Customer</h4>
+                    <h4>profile Registraion</h4>
                 </div>
                 <div class="card-body">
                     <form method="post">
@@ -98,7 +98,6 @@
                                 <option value="">-- Select Gender --</option>
                                 <option>Male</option>
                                 <option>Female</option>
-                                <option>Other</option>
                             </select>
                             <span asp-validation-for="Gender" class="text-danger"></span>
                         </div>
