@@ -1,38 +1,33 @@
 ﻿@model Car_Rental_Management.ViewModel.UserViewModel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
 
+<h2 class="text-center mb-4" data-aos="fade-down" style="color: var(--primary-color);">Edit Your Profile</h2>
 
-
-<h2 class="text-center mb-4" data-aos="fade-down">Edit Your Profile</h2>
-
-@* @if (ViewBag.Message != null)
+@if (ViewBag.Message != null)
 {
-    <div class="alert alert-success text-center" data-aos="fade-in">@ViewBag.Message</div>
-} *@
+    <div style="text-align:center; padding:10px; margin-bottom:15px; background-color: var(--highlight-color); color: var(--secondary-color); border-radius:10px;" data-aos="fade-in">
+        @ViewBag.Message
+    </div>
+}
 
-<div class="card mx-auto p-4 shadow-lg" style="max-width:600px; border-radius:20px; background:linear-gradient(145deg, #ffffff, #f3f3f3);">
+<div class="card" style="max-width:600px; margin:auto; padding:30px; border-radius:20px; background-color: var(--card-color); box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
     <form asp-action="EditProfile" method="post" data-aos="fade-up" data-aos-duration="1000">
-        <div class="form-floating mb-3">
-            <input asp-for="Email" class="form-control" placeholder="Email" />
-            <label asp-for="Email">Email</label>
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
 
-        <div class="form-floating mb-3">
-            <input asp-for="PhoneNumber" class="form-control" placeholder="Phone Number" />
-            <label asp-for="PhoneNumber">Phone Number</label>
-            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-        </div>
+        <label asp-for="Email" style="font-weight:bold; color: var(--secondary-color);"></label>
+        <input asp-for="Email" placeholder="Email" style="width:100%; padding:12px; margin:8px 0 16px 0; border-radius:10px; border:1px solid var(--secondary-color); transition: all 0.3s ease; outline:none;" />
+        <span asp-validation-for="Email" style="color: #e3342f;"></span>
 
-        <div class="form-floating mb-3">
-            <input asp-for="CurrentPassword" type="password" class="form-control" placeholder="Current Password" />
-            <label asp-for="CurrentPassword">Current Password</label>
-            <span asp-validation-for="CurrentPassword" class="text-danger"></span>
-        </div>
+        <label asp-for="PhoneNumber" style="font-weight:bold; color: var(--secondary-color);"></label>
+        <input asp-for="PhoneNumber" placeholder="Phone Number" style="width:100%; padding:12px; margin:8px 0 16px 0; border-radius:10px; border:1px solid var(--secondary-color); transition: all 0.3s ease; outline:none;" />
+        <span asp-validation-for="PhoneNumber" style="color: #e3342f;"></span>
 
-      
+        <label asp-for="CurrentPassword" style="font-weight:bold; color: var(--secondary-color);"></label>
+        <input asp-for="CurrentPassword" type="password" placeholder="Current Password" style="width:100%; padding:12px; margin:8px 0 16px 0; border-radius:10px; border:1px solid var(--secondary-color); transition: all 0.3s ease; outline:none;" />
+        <span asp-validation-for="CurrentPassword" style="color: #e3342f;"></span>
 
-        <button type="submit" class="btn btn-gradient w-100 mt-3 p-2" 
-                style="background: linear-gradient(90deg, #5e17eb, #a855f7); color:white; font-weight:bold; border-radius:10px; font-size:1.1rem;">
+        <button type="submit" style="width:100%; padding:14px; border:none; border-radius:12px; background-color: var(--primary-color); color: var(--light-color); font-weight:bold; font-size:1.1rem; cursor:pointer; transition: all 0.3s ease;">
             Update Profile
         </button>
     </form>
@@ -44,53 +39,69 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
     <script>
         AOS.init({ duration: 1200, once: true });
 
         // Input glow
         document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('focus', () => input.style.boxShadow = '0 0 10px #5e17eb');
+            input.addEventListener('focus', () => input.style.boxShadow = `0 0 12px var(--primary-color)`);
             input.addEventListener('blur', () => input.style.boxShadow = 'none');
         });
 
         // Cursor glow
         const cursor = document.getElementById('cursorGlow');
-        document.addEventListener('mousemove', (e) => {
+        cursor.style.position = 'fixed';
+        cursor.style.width = '25px';
+        cursor.style.height = '25px';
+        cursor.style.borderRadius = '50%';
+        cursor.style.pointerEvents = 'none';
+        cursor.style.transform = 'translate(-50%, -50%)';
+        cursor.style.background = 'radial-gradient(circle, var(--primary-color) 0%, rgba(0,0,0,0) 60%)';
+        cursor.style.zIndex = 9999;
+
+        document.addEventListener('mousemove', e => {
             cursor.style.top = e.clientY + 'px';
             cursor.style.left = e.clientX + 'px';
         });
     </script>
+
     <style>
-        /* Button hover glow */
-        .btn-gradient:hover {
-            box-shadow: 0 0 20px rgba(94, 23, 235, 0.6), 0 0 40px rgba(94, 23, 235, 0.4);
-            transform: scale(1.05);
-            transition: all 0.3s ease;
+        :root {
+            --primary-color: #076B66;
+            --secondary-color: #0D1f23;
+            --dark-color: #0d1f23;
+            --light-color: #ffffff;
+            --card-color: #b3d4d3;
+            --highlight-color: #cbf1f0;
         }
 
-        /* Card hover lift */
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
             transition: all 0.3s ease;
         }
 
-        /* Smooth input glow transition */
-        input.form-control {
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color, 0.5);
+        }
+
+        input {
+            border-radius: 8px;
+            padding: 0.75rem;
+            border: 1px solid var(--secondary-color);
             transition: box-shadow 0.3s ease, border-color 0.3s ease;
         }
 
-        /* Cursor glow style */
-        #cursorGlow {
-            position: fixed;
-            top:0; left:0;
-            width:25px; height:25px;
-            border-radius:50%;
-            pointer-events:none;
-            transform: translate(-50%, -50%);
-            background: radial-gradient(circle, rgba(94,23,235,0.6) 0%, rgba(94,23,235,0) 60%);
-            transition: transform 0.05s ease, width 0.1s ease, height 0.1s ease;
-            z-index: 9999;
+        @@media (max-width: 576px) {
+            .card
+
+        {
+            margin: 20px;
+            padding: 20px;
+        }
+
         }
     </style>
 }

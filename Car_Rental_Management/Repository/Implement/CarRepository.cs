@@ -52,6 +52,21 @@ namespace Car_Rental_Management.Repository.Implement
         {
             return await _context.Cars.CountAsync(c => c.IsAvailable);
         }
+        public async Task<Car> GetCarByIdAsync(Guid id)
+        {
+            return await _context.Cars.FindAsync(id);
+        }
+
+        public async Task<List<Car>> GetAvailableCarsAsync()
+        {
+            return await _context.Cars.Where(c => c.IsAvailable).ToListAsync();
+        }
+
+        public async Task UpdateCarAsync(Car car)
+        {
+            _context.Cars.Update(car);
+            await _context.SaveChangesAsync();
+        }
 
     }
 }

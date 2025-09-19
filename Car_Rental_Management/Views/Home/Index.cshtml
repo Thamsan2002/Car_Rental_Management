@@ -22,7 +22,6 @@
                 }
             </div>
         </div>
-
         <div class="slide">
             <img src="~/images/car07.jpg" alt="Car 2" />
             <div class="slide-text">
@@ -31,7 +30,6 @@
                 <a asp-action="Index" asp-controller="Car" class="custom-btn warning">View Cars</a>
             </div>
         </div>
-
         <div class="slide">
             <img src="~/images/car6.jpg" alt="Car 3" />
             <div class="slide-text">
@@ -43,52 +41,17 @@
     </div>
 </section>
 
-
-<!-- Clients -->
+<!-- Clients Section -->
 <section id="clients" class="clients py-4 text-center">
     <div class="container d-flex justify-content-center flex-wrap gap-4">
-        <img src="~/images/logo01.jpg" alt="Brand 1" height="50" />
-        <img src="~/images/logo02.jpg" alt="Brand 2" height="50" />
-        <img src="~/images/logo03.jpg" alt="Brand 3" height="50" />
-        <img src="~/images/logo01.jpg" alt="Brand 3" height="50" />
-        <img src="~/images/logo04.jpg" alt="Brand 3" height="50" />
+        <img src="~/images/honda.jpg" alt="Honda" height="50" data-brand="Honda" class="brand-icon" />
+        <img src="~/images/bmw.jpg" alt="BMW" height="50" data-brand="BMW" class="brand-icon" />
+        <img src="~/images/tata.jpg" alt="TATA" height="50" data-brand="TATA" class="brand-icon" />
+        <img src="~/images/audi.jpg" alt="Audi" height="50" data-brand="Audi" class="brand-icon" />
+        <img src="~/images/allbrands.png" alt="All Brands" height="50" data-brand="All" class="brand-icon" />
     </div>
 </section>
 
-<!-- Offers - Customer Only -->
-@if (userId.HasValue)
-{
-    <section id="offers" class="offers py-5" style="background:#fff8e1;">
-        <div class="container">
-            <h3 class="text-center mb-4">🔥 Special Offers</h3>
-            <div id="offersCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner d-flex">
-                    <div class="carousel-item active">
-                        <div class="offer-card text-center p-4 rounded shadow-sm" style="background:#fffbe6;">
-                            <h4>Weekend Special: Rent 1 Day, Get 10% Off!</h4>
-                            <p>Book your dream car this weekend and enjoy exclusive discounts.</p>
-                            <a asp-controller="Booking" asp-action="Booking" class="btn btn-warning">Book Now</a>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="offer-card text-center p-4 rounded shadow-sm" style="background:#ffe6e6;">
-                            <h4>Luxury Ride: 15% Off for First Booking</h4>
-                            <p>Experience premium cars at a discounted rate for your first booking.</p>
-                            <a asp-controller="Booking" asp-action="Booking" class="btn btn-warning">Book Now</a>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="offer-card text-center p-4 rounded shadow-sm" style="background:#e6f7ff;">
-                            <h4>Midweek Madness: Flat LKR 500 Off</h4>
-                            <p>Rent any car from Monday to Wednesday and save instantly.</p>
-                            <a asp-controller="Booking" asp-action="Booking" class="btn btn-warning">Book Now</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-}
 <!-- Cars Section -->
 <section id="cars" class="cars-section py-5">
     <div class="container">
@@ -99,7 +62,7 @@
         <div class="row g-4">
             @foreach (var car in Model)
             {
-                <div class="col-md-4">
+                <div class="col-md-4 car-card-wrapper" data-brand="@car.Make">
                     <div class="car-card">
                         <img src="@(car.ImageUrls?.FirstOrDefault() ?? "/uploads/images/noimage.jpg")" class="w-100" />
                         <div class="p-3">
@@ -119,11 +82,9 @@
                         </div>
                     </div>
 
-                    <!-- Full Page Car Popup with All Details -->
                     <div class="car-popup" id="carPopup_@car.Id">
                         <div class="car-popup-content">
                             <span class="close-btn" onclick="closeCarPopup('@car.Id')">&times;</span>
-
                             <div id="slider_@car.Id" class="image-slider">
                                 @foreach (var img in car.ImageUrls ?? new List<string>())
                                 {
@@ -162,11 +123,7 @@
     </div>
 </section>
 
-
-
-<!-- About Section -->
 @await Html.PartialAsync("_About", model: null)
-
 
 <!-- Features Section -->
 <section id="features" class="py-5" style="background:#f8f8f8;">
@@ -199,30 +156,19 @@
 </section>
 
 
-
 @await Html.PartialAsync("_Contact", model: null)
-
-
 
 @section Scripts {
     <script src="/js/Home.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function(){
-            // AOS
-            AOS.init({duration:1000, once:false});
 
             // Hero Slider
             const slides=document.querySelectorAll(".slide"); let current=0;
             function nextSlide(){ slides[current].classList.remove("active"); current=(current+1)%slides.length; slides[current].classList.add("active"); }
             setInterval(nextSlide,5000);
 
-            // Offers Carousel - auto loop
-            var offersCarousel=document.querySelector('#offersCarousel');
-            if(offersCarousel){
-                new bootstrap.Carousel(offersCarousel, {interval:2500, ride:'carousel', wrap:true});
-            }
-
-            // Car Popup Slider
+            // Car popup slider
             class CarSlider{
                 constructor(carId, delay=3000){
                     this.slider=document.getElementById(`slider_${carId}`);
@@ -240,15 +186,53 @@
                 nextSlide(){ this.show((this.current+1)%this.slides.length); }
                 prevSlide(){ this.show((this.current-1+this.slides.length)%this.slides.length); }
             }
-
             @foreach (var car in Model)
             {
                     <text>new CarSlider("@car.Id");</text>
             }
 
-            // Car popup open/close
             function openCarPopup(id){ document.getElementById(`carPopup_${id}`).style.display='block'; }
             function closeCarPopup(id){ document.getElementById(`carPopup_${id}`).style.display='none'; }
+
+            // Brand Filter
+            const clientImgs = document.querySelectorAll('.brand-icon');
+            const carCards = document.querySelectorAll('.car-card-wrapper');
+
+            clientImgs.forEach(img => {
+                img.addEventListener('click', function(){
+                    // Highlight active
+                    clientImgs.forEach(i=>i.classList.remove('active-brand'));
+                    this.classList.add('active-brand');
+
+                    const brand = this.dataset.brand;
+                    carCards.forEach(card => {
+                        if(brand === "All" || card.dataset.brand === brand){
+                            card.style.display = "block";
+                        } else {
+                            card.style.display = "none";
+                        }
+                    });
+                });
+            });
+
         });
     </script>
 }
+
+<style>
+    /* Brand icons same size + hover */
+    .brand-icon {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        filter: grayscale(100%);
+        transition: transform 0.3s, filter 0.3s;
+        cursor: pointer;
+        border-radius: 8px;
+    }
+
+        .brand-icon:hover, .active-brand {
+            transform: scale(1.2);
+            filter: grayscale(0%);
+        }
+</style>

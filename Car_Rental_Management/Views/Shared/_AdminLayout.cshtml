@@ -44,36 +44,36 @@
             box-shadow: 2px 0 10px rgba(0,0,0,0.2);
         }
 
-            .sidebar h2 {
-                font-weight: bold;
-                margin-bottom: 30px;
-                text-align: center;
-                color: var(--primary-color);
-            }
+        .sidebar h2 {
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--primary-color);
+        }
 
-            .sidebar a {
-                display: block;
-                color: var(--light-color);
-                padding: 12px 15px;
-                border-radius: 8px;
-                text-decoration: none;
-                margin-bottom: 12px;
-                font-weight: 500;
-                transition: all 0.3s ease;
-                position: relative;
-            }
+        .sidebar a {
+            display: block;
+            color: var(--light-color);
+            padding: 12px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-bottom: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-                .sidebar a:hover {
-                    background: rgba(255,255,255,0.1);
-                    box-shadow: 0 0 10px var(--glow-color);
-                    transform: translateX(8px);
-                }
+        .sidebar a:hover {
+            background: rgba(255,255,255,0.1);
+            box-shadow: 0 0 10px var(--glow-color);
+            transform: translateX(8px);
+        }
 
-                .sidebar a.active {
-                    background: var(--primary-color);
-                    font-weight: bold;
-                    box-shadow: 0 0 15px var(--glow-color);
-                }
+        .sidebar a.active {
+            background: var(--primary-color);
+            font-weight: bold;
+            box-shadow: 0 0 15px var(--glow-color);
+        }
 
         /* Main content */
         .content {
@@ -86,10 +86,10 @@
             transition: all 0.3s ease-in-out;
         }
 
-            .card-summary:hover {
-                transform: scale(1.05);
-                box-shadow: 0 0 20px var(--glow-color);
-            }
+        .card-summary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--glow-color);
+        }
 
         /* Footer */
         footer {
@@ -107,6 +107,24 @@
             box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
             font-size: 0.9rem;
         }
+
+
+        /* Settings Dropdown */
+        .dropdown-menu {
+            min-width: 150px;
+            background-color: var(--secondary-color);
+        }
+
+        .dropdown-menu .dropdown-item {
+            color: var(--light-color);
+            transition: all 0.3s ease;
+        }
+
+            .dropdown-menu .dropdown-item:hover {
+                background-color: var(--primary-color);
+                color: var(--light-color);
+            }
+
     </style>
 </head>
 <body>
@@ -116,14 +134,25 @@
             <nav class="sidebar">
                 <h2>GoDrive</h2>
 
-                <a class="@(currentController == "AddCar" ? "active" : "")" asp-controller="AddCar" asp-action="Details">🚗 Car Management</a>
+                <a class="@(currentController == "AddCar" ? "active" : "")" asp-controller="AddCar" asp-action="Details">🚘 Car Management</a>
+                <a class="@(currentController == "CarMaintenance" ? "active" : "")" asp-controller="CarMaintenance" asp-action="History">🛠 Car Maintenance</a>
                 <a class="@(currentController == "Customer" ? "active" : "")" asp-controller="Customer" asp-action="Register">👥 Customer Management</a>
-                <a class="@(currentController == "AdminLogin" ? "active" : "")" asp-controller="Driver" asp-action="Index">🔑 Driver Management</a>
+                <a class="@(currentController == "Driver" ? "active" : "")" asp-controller="Driver" asp-action="Index">🧑‍✈️ Driver Management</a>
                 <a class="@(currentController == "Staff" ? "active" : "")" asp-controller="Staff" asp-action="Index">🧑‍💼 Staff Management</a>
                 <a class="@(currentController == "Booking" ? "active" : "")" asp-controller="Booking" asp-action="AllBookings">📅 Booking Management</a>
                 <a class="@(currentController == "Payment" ? "active" : "")" asp-controller="Payment" asp-action="PaymentDetails">💳 Payment Management</a>
-                <a class="@(currentController == "Admin" ? "active" : "")" asp-controller="User" asp-action="EditProfile">⚙️ Settings</a>
-                <a class="@(currentController == "AdminAdd" ? "active" : "")" asp-controller="Admin" asp-action="List">➕ AdminAdd</a>
+                <a class="@(currentController == "AdminAdd" ? "active" : "")" asp-controller="AdminAdd" asp-action="List">➕ AdminAdd</a>
+                <!-- Settings with dropdown -->
+                <div class="dropdown">
+                    <a class="@(currentController == "User" ? "active" : "") dropdown-toggle" href="#" role="button" id="settingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">⚙️ Settings</a>
+                    <ul class="dropdown-menu" aria-labelledby="settingsDropdown">
+                        <li><a class="dropdown-item" asp-controller="User" asp-action="EditProfile">Edit Profile</a></li>
+                        <li><a class="dropdown-item" asp-controller="User" asp-action="ChangePassword">Change Password</a></li>
+                        <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Logout</a></li>
+                    </ul>
+                </div>
+
+
             </nav>
 
             <!-- Main Content -->
