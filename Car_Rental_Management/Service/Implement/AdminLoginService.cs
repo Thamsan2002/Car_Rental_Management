@@ -1,6 +1,8 @@
-﻿using Car_Rental_Management.Repository.Interface;
+﻿using Car_Rental_Management.Models;
+using Car_Rental_Management.Repository.Interface;
 using Car_Rental_Management.Service.Interface;
 using BCrypt.Net;
+using System.Threading.Tasks;
 
 namespace Car_Rental_Management.Service.Implement
 {
@@ -13,20 +15,17 @@ namespace Car_Rental_Management.Service.Implement
             _userRepo = userRepo;
         }
 
-        public async Task<bool> VerifyAdminLoginAsync(string emailOrPhone, string password)
+        public async Task<User?> VerifyAdminLoginAsync(string emailOrPhone, string password)
         {
             var user = await _userRepo.GetByEmailOrPhoneAsync(emailOrPhone);
-            if (user == null)
-                return false;
+            if (user == null) return null;
 
             bool verified = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
-            if (!verified)
-                return false;
+            if (!verified) return null;
 
-            if (user.Role != "Admin" && user.Role != "Superadmin")
-                return false;
+            if (user.Role != "Admin" && user.Role != "Superadmin") return null;
 
-            return true;
+            return user;
         }
     }
 }

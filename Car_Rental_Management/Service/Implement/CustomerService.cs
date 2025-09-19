@@ -1,16 +1,16 @@
-﻿
-using Car_Rental_Management.Mapper;
+﻿using Car_Rental_Management.Mapper;
 using Car_Rental_Management.Models;
 using Car_Rental_Management.Repository.Interface;
 using Car_Rental_Management.Service.Interface;
 using Car_Rental_Management.ViewModel;
 using System;
+using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace Car_Rental_Management.Service.Implement
 {
     public class CustomerService : ICustomerService
     {
-
         private readonly IUserRepository _userRepository;
         private readonly ICustomerRepository _customerRepository;
 
@@ -20,54 +20,58 @@ namespace Car_Rental_Management.Service.Implement
             _customerRepository = customerRepository;
         }
 
-
+        // Get customer by userId
         public async Task<Customer> GetByIdAsync(Guid customerId)
         {
             return await _customerRepository.GetByUserIdAsync(customerId);
         }
-        public async Task<String> RegisterUserAsync(CustomerSignupViewmodel model)
+
+        // Register user with hashed password
+        public async Task<string> RegisterUserAsync(CustomerSignupViewmodel model)
         {
-            // Check if email or phone already exists
             bool exists = await _userRepository.IsEmailOrPhoneExistAsync(model.Email, model.PhoneNumber);
-
             if (exists)
-            {
                 return "Customer already exists with this email or phone number!";
-            }
 
-            // Map ViewModel → Model
-            var customer = new User
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
+
+            var user = new User
             {
                 Id = Guid.NewGuid(),
                 Email = model.Email,
                 PhoneNumber = model.PhoneNumber,
-                PasswordHash = model.Password,
-                Role = model.Role,
-                
+                PasswordHash = hashedPassword,
+                Role = model.Role
             };
 
-            await _userRepository.AddAsync(customer);
-
+            await _userRepository.AddAsync(user);
             return "Account created successfully";
         }
 
+        // Login customer using email/phone + password
         public async Task<User?> LoginCustomerAsync(CustomerLoginViewModel model)
         {
-            //return await _userRepository.GetCustomerByLoginAsync(model.EmailOrPhone, model.Password);
-            return await _userRepository.GetCustomerByLoginAsync(model.EmailOrPhone);
+            // Call repository method with email/phone AND hashed password
+            var user = await _userRepository.GetByEmailOrPhoneAsync(model.EmailOrPhone, model.Password);
+
+            if (user == null)
+                return null;
+
+            // Verify password using BCrypt
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash);
+            return isPasswordValid ? user : null;
         }
 
+        // Register detailed customer info
         public async Task<(bool isSuccess, string errorMessage, Guid? customerId)> RegisterCustomerAsync(CustomerRegisterViewModel model)
         {
-            // Check duplicates
             bool exists = await _customerRepository.IsCustomerExistsAsync(model.NationalIdentityCard, model.DrivingLicenseNumber, model.Phonenumber);
             if (exists)
                 return (false, "NIC, Driving License, or Phone number already exists", null);
 
-            // Map ViewModel -> Model
             var customer = new Customer
             {
-                UserId = model.UserId, // Or link to actual User entity if needed
+                UserId = model.UserId,
                 FullName = model.FullName,
                 Gender = model.Gender,
                 NationalIdentityCard = model.NationalIdentityCard,
@@ -77,22 +81,20 @@ namespace Car_Rental_Management.Service.Implement
                 AccountCreateDate = DateTime.Now.ToString("yyyy-MM-dd"),
             };
 
-            // Add to DB
             var addedCustomer = await _customerRepository.AddCustomerAsync(customer);
             return (true, string.Empty, addedCustomer.Id);
         }
 
+        // Get customer details by UserId
         public async Task<CustomerRegisterViewModel?> GetCustomerByUserIdAsync(Guid userId)
         {
             var customer = await _customerRepository.GetByUserIdAsync(userId);
             if (customer == null) return null;
 
-            // Map Model → ViewModel
             return new CustomerRegisterViewModel
             {
                 UserId = customer.UserId,
                 FullName = customer.FullName,
-           
                 Address = customer.Address,
                 Phonenumber = customer.Phonenumber,
                 Gender = customer.Gender,
@@ -100,6 +102,5 @@ namespace Car_Rental_Management.Service.Implement
                 DrivingLicenseNumber = customer.DrivingLicenseNumber
             };
         }
-
     }
 }

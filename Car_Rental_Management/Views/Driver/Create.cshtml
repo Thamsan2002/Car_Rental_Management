@@ -1,81 +1,136 @@
 ﻿@model Car_Rental_Management.ViewModel.DriverViewModel
 @{
-    ViewData["Title"] = "Add Driver";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<style>
+    :root {
+        --primary-color: #076B66; /* main accent */
+        --secondary-color: #0D1f23; /* dark accent */
+        --dark-color: #0d1f23; /* hover/dark bg */
+        --light-color: #ffffff; /* text on dark */
+        --card-color: #b3d4d3; /* feature/service cards */
+        --highlight-color: #cbf1f0; /* subtitle/light accent */
+    }
+
+    .driver-form {
+        background-color: var(--card-color);
+        padding: 2rem;
+        border-radius: 10px;
+        max-width: 700px;
+        margin: auto;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+        .driver-form h2 {
+            color: var(--secondary-color);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .driver-form label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+            color: var(--secondary-color);
+        }
+
+        .driver-form input,
+        .driver-form select {
+            width: 100%;
+            padding: 0.5rem 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--secondary-color);
+            border-radius: 6px;
+            background-color: var(--light-color);
+            color: var(--secondary-color);
+            font-size: 1rem;
+        }
+
+            .driver-form input:focus,
+            .driver-form select:focus {
+                outline: none;
+                border-color: var(--primary-color);
+                box-shadow: 0 0 5px var(--primary-color);
+            }
+
+        .driver-form button {
+            display: block;
+            width: 100%;
+            padding: 0.7rem;
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+            .driver-form button:hover {
+                background-color: var(--secondary-color);
+            }
+
+    .text-danger {
+        color: #e74c3c; /* validation error color */
+        font-size: 0.9rem;
+    }
+</style>
+
 <div class="container mt-5">
-    <h2 class="mb-4">Add Driver</h2>
-    <form asp-action="Create" method="post" class="card p-4 shadow">
-        <div class="mb-3">
-            <label asp-for="Name" class="form-label"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
+    <form asp-action="Create" method="post" class="driver-form">
+        <h2>Add Driver</h2>
 
-        <div class="mb-3">
-            <label asp-for="Email" class="form-label"></label>
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
 
-        <div class="mb-3">
-            <label asp-for="Password" class="form-label"></label>
-            <input asp-for="Password" type="password" class="form-control" />
-            <span asp-validation-for="Password" class="text-danger"></span>
-        </div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
 
-        <div class="mb-3">
-            <label asp-for="EmergencyContact" class="form-label"></label>
-            <input asp-for="EmergencyContact" class="form-control" />
-            <span asp-validation-for="EmergencyContact" class="text-danger"></span>
-        </div>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
 
-        <div class="mb-3">
-            <label asp-for="Nic" class="form-label"></label>
-            <input asp-for="Nic" class="form-control" />
-            <span asp-validation-for="Nic" class="text-danger"></span>
-        </div>
+        <label asp-for="EmergencyContact"></label>
+        <input asp-for="EmergencyContact" />
+        <span asp-validation-for="EmergencyContact" class="text-danger"></span>
 
-        <div class="mb-3">
-            <label asp-for="Gender" class="form-label"></label>
-            <select asp-for="Gender" class="form-select">
-                <option value="">-- Select Gender --</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-            </select>
-            <span asp-validation-for="Gender" class="text-danger"></span>
-        </div>
+        <label asp-for="Nic"></label>
+        <input asp-for="Nic" />
+        <span asp-validation-for="Nic" class="text-danger"></span>
 
-        <div class="mb-3">
-            <label asp-for="Address" class="form-label"></label>
-            <input asp-for="Address" class="form-control" />
-            <span asp-validation-for="Address" class="text-danger"></span>
-        </div>
+        <label asp-for="Gender"></label>
+        <select asp-for="Gender">
+            <option value="">-- Select Gender --</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+        <span asp-validation-for="Gender" class="text-danger"></span>
 
-        <div class="mb-3">
-            <label asp-for="LicenseNumber" class="form-label"></label>
-            <input asp-for="LicenseNumber" class="form-control" />
-            <span asp-validation-for="LicenseNumber" class="text-danger"></span>
-        </div>
+        <label asp-for="Address"></label>
+        <input asp-for="Address" />
+        <span asp-validation-for="Address" class="text-danger"></span>
 
-        <div class="mb-3">
-            <label asp-for="LicenseExpiryDate" class="form-label"></label>
-            <input asp-for="LicenseExpiryDate" type="date" class="form-control" />
-            <span asp-validation-for="LicenseExpiryDate" class="text-danger"></span>
-        </div>
+        <label asp-for="LicenseNumber"></label>
+        <input asp-for="LicenseNumber" />
+        <span asp-validation-for="LicenseNumber" class="text-danger"></span>
 
-        <div class="mb-3">
-            <label asp-for="Experience" class="form-label"></label>
-            <input asp-for="Experience" class="form-control" />
-            <span asp-validation-for="Experience" class="text-danger"></span>
-        </div>
+        <label asp-for="LicenseExpiryDate"></label>
+        <input asp-for="LicenseExpiryDate" type="date" />
+        <span asp-validation-for="LicenseExpiryDate" class="text-danger"></span>
 
-        <div class="mb-3">
-            <label asp-for="VehicleType" class="form-label"></label>
-            <input asp-for="VehicleType" class="form-control" />
-            <span asp-validation-for="VehicleType" class="text-danger"></span>
-        </div>
-        <button type="submit" class="btn btn-primary">Add Driver</button>
+        <label asp-for="Experience"></label>
+        <input asp-for="Experience" />
+        <span asp-validation-for="Experience" class="text-danger"></span>
+
+        <label asp-for="VehicleType"></label>
+        <input asp-for="VehicleType" />
+        <span asp-validation-for="VehicleType" class="text-danger"></span>
+
+        <button type="submit">Add Driver</button>
     </form>
 </div>

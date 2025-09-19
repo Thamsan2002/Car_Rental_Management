@@ -203,10 +203,9 @@
 @await Html.PartialAsync("_Contact", model: null)
 
 
+
 @section Scripts {
     <script src="/js/Home.js"></script>
-}
-@section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function(){
             // AOS
@@ -241,16 +240,15 @@
                 nextSlide(){ this.show((this.current+1)%this.slides.length); }
                 prevSlide(){ this.show((this.current-1+this.slides.length)%this.slides.length); }
             }
+
             @foreach (var car in Model)
             {
                     <text>new CarSlider("@car.Id");</text>
             }
+
+            // Car popup open/close
+            function openCarPopup(id){ document.getElementById(`carPopup_${id}`).style.display='block'; }
+            function closeCarPopup(id){ document.getElementById(`carPopup_${id}`).style.display='none'; }
         });
-
-        // Car popup open/close
-        function openCarPopup(id){ document.getElementById(`carPopup_${id}`).style.display='block'; }
-        function closeCarPopup(id){ document.getElementById(`carPopup_${id}`).style.display='none'; }
     </script>
-
-   
 }

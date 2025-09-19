@@ -3,6 +3,9 @@ using Car_Rental_Management.Models;
 using Car_Rental_Management.Repository.Interface;
 using Car_Rental_Management.Service.Interface;
 using Car_Rental_Management.ViewModel;
+using System;
+using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace Car_Rental_Management.Service.Implement
 {
@@ -15,56 +18,49 @@ namespace Car_Rental_Management.Service.Implement
             _userRepo = userRepo;
         }
 
-        public User GetUserById(Guid userId)
+        public async Task<User> GetUserByIdAsync(Guid userId)
         {
-            return _userRepo.GetById(userId);
+            var user = await _userRepo.GetByIdAsync(userId);
+            if (user == null) throw new Exception("User not found");
+            return user;
         }
 
-        public bool VerifyPassword(Guid userId, string password)
+        public async Task<bool> VerifyPasswordAsync(Guid userId, string password)
         {
-            var user = _userRepo.GetById(userId);
+            var user = await _userRepo.GetByIdAsync(userId);
             if (user == null) return false;
 
-            return user.Password == password; 
+            return BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
         }
 
-        public void UpdateProfile(Guid userId, UserViewModel vm)
+        public async Task UpdateProfileAsync(Guid userId, UserViewModel vm)
         {
-            // 1️⃣ Fetch existing user
-            var existingUser = _userRepo.GetById(userId);
-            if (existingUser == null)
-                throw new Exception("User not found");
+            var existingUser = await _userRepo.GetByIdAsync(userId);
+            if (existingUser == null) throw new Exception("User not found");
 
-            // 2️⃣ Use Mapper to map only profile fields (exclude password)
             var updatedUser = UserMapper.ToModel(vm, userId);
 
-            // 3️⃣ Preserve existing password
-            updatedUser.Password = existingUser.Password;
+            // Preserve existing password hash
+            updatedUser.PasswordHash = existingUser.PasswordHash;
 
-            // 4️⃣ Save changes
-            _userRepo.Update(updatedUser);
+            await _userRepo.UpdateAsync(updatedUser);
         }
 
-        public void ChangePassword(Guid userId, string currentPassword, string newPassword, string confirmPassword)
+        public async Task ChangePasswordAsync(Guid userId, string currentPassword, string newPassword, string confirmPassword)
         {
-            var user = _userRepo.GetById(userId);
-            if (user == null)
-                throw new Exception("User not found");
+            var user = await _userRepo.GetByIdAsync(userId);
+            if (user == null) throw new Exception("User not found");
 
-            // Current password verification
-            if (user.Password != currentPassword)
+            if (!BCrypt.Net.BCrypt.Verify(currentPassword, user.PasswordHash))
                 throw new Exception("Current password is incorrect");
 
-            // Check new password matches confirm password
             if (newPassword != confirmPassword)
                 throw new Exception("New password and confirm password do not match");
 
-            // Update password
-            user.Password = newPassword;
+            // Hash new password
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
 
-            // Save to database
-            _userRepo.Update(user);
+            await _userRepo.UpdateAsync(user);
         }
-
     }
 }
