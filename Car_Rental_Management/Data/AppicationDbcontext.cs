@@ -19,6 +19,8 @@ namespace Car_Rental_Management.Data
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<CarMaintenance> CarMaintenances { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+
 
     }
 }
