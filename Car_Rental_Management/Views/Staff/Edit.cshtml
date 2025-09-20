@@ -1,84 +1,156 @@
 ﻿@model Car_Rental_Management.viewmodel.Staffviewmodel
 
 @{
-    ViewData["Title"] = "Edit Staff";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+ 
 }
 
-<h2>Edit Staff</h2>
-
-<form asp-action="Edit" method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="Id" />
-
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Address"></label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Status"></label>
-        <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<Car_Rental_Management.Models.StaffStatus>()"></select>
-        <span asp-validation-for="Status" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ProfileImage"></label>
-        <input asp-for="ProfileImage" class="form-control" />
-        <span asp-validation-for="ProfileImage" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Salary"></label>
-        <input asp-for="Salary" class="form-control" type="number" step="0.01" />
-        <span asp-validation-for="Salary" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ShiftTime"></label>
-        <input asp-for="ShiftTime" class="form-control" type="time" />
-        <span asp-validation-for="ShiftTime" class="text-danger"></span>
-    </div>
-
-    <hr />
-    <h4>User Details</h4>
-
-    <div class="form-group">
-        <label asp-for="EmailAddress"></label>
-        <input asp-for="EmailAddress" class="form-control" />
-        <span asp-validation-for="EmailAddress" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="PhoneNumber"></label>
-        <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Role"></label>
-        <input asp-for="Role" class="form-control" />
-        <span asp-validation-for="Role" class="text-danger"></span>
-    </div>
-
-    <!-- Password -->
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" type="password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Update Staff</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+<style>
+    :root {
+        --primary-color: #076B66;
+        --secondary-color: #0D1f23;
+        --dark-color: #0d1f23;
+        --light-color: #ffffff;
+        --card-color: #b3d4d3;
+        --highlight-color: #cbf1f0;
     }
-}
+
+    .form-container {
+        background-color: var(--card-color);
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    label {
+        font-weight: 500;
+        color: var(--secondary-color);
+    }
+
+    input, select {
+        border-radius: 6px;
+        border: 1px solid var(--secondary-color);
+        padding: 8px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(7,107,102,0.5);
+        }
+
+    .btn-custom-primary {
+        background-color: var(--primary-color);
+        color: var(--light-color);
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+        .btn-custom-primary:hover {
+            background-color: var(--secondary-color);
+            color: var(--light-color);
+        }
+
+    .btn-custom-secondary {
+        background-color: var(--highlight-color);
+        color: var(--secondary-color);
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.3s;
+        text-decoration: none;
+    }
+
+        .btn-custom-secondary:hover {
+            background-color: var(--secondary-color);
+            color: var(--light-color);
+        }
+
+    hr {
+        border-color: var(--secondary-color);
+        margin: 1.5rem 0;
+    }
+</style>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Edit Staff</h2>
+
+    <form asp-action="Edit" method="post" enctype="multipart/form-data" class="form-container">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Address"></label>
+            <input asp-for="Address" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Status"></label>
+            <select asp-for="Status" asp-items="Html.GetEnumSelectList<Car_Rental_Management.Models.StaffStatus>()"></select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ProfileImage"></label>
+            <input asp-for="ProfileImage" />
+            <span asp-validation-for="ProfileImage" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Salary"></label>
+            <input asp-for="Salary" type="number" step="0.01" />
+            <span asp-validation-for="Salary" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ShiftTime"></label>
+            <input asp-for="ShiftTime" type="time" />
+            <span asp-validation-for="ShiftTime" class="text-danger"></span>
+        </div>
+
+        <hr />
+        <h4>User Details</h4>
+
+        <div class="mb-3">
+            <label asp-for="EmailAddress"></label>
+            <input asp-for="EmailAddress" />
+            <span asp-validation-for="EmailAddress" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="position"></label>
+            <input asp-for="position" />
+            <span asp-validation-for="position" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" type="password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn-custom-primary">Update Staff</button>
+        <a asp-action="Index" class="btn-custom-secondary">Cancel</a>
+    </form>
+</div>
+

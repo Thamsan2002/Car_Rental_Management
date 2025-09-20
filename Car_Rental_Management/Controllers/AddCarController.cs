@@ -16,9 +16,24 @@ namespace Car_Rental_Management.Controllers
 
         public async Task<IActionResult> Details()
         {
-            var cars = await _carService.GetAllCarsAsync();
-            return View(cars);
+            var carDtos = await _carService.GetAllCarsAsync();
+
+            // Map DTOs to ViewModels
+            var carViewModels = carDtos.Select(c => new CarViewModel
+            {
+                Id = c.Id,
+                Mileage = c.Mileage,
+                Make = c.Make,
+                Model = c.Model,
+                Year = c.Year,
+                Price = c.Price,
+                Seats = c.Seats,
+                Available = c.Available
+            }).ToList();
+
+            return View(carViewModels); 
         }
+
 
         [HttpGet]
         public IActionResult AddCar()

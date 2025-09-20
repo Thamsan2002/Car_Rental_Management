@@ -46,6 +46,6 @@ namespace Car_Rental_Management.viewmodel
         public string PhoneNumber { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Role is required.")]
-        public string Role { get; set; }
+        public string position { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace Car_Rental_Management.ViewModel
         public decimal CarPricePerDay { get; set; }
         public string CarImage { get; set; }
         public Guid? DriverId { get; set; }
+        public decimal DriverFee { get; set; }
 
-        // Driver list
     }
 }

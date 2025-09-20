@@ -14,16 +14,19 @@ namespace Car_Rental_Management.Controllers
         private readonly ICarRepository _carRepo;
         private readonly IDriverRepository driverRepository;
 
+
         public BookingController(
             IBookingService bookingService,
             ICustomerService customerService,
             ICarRepository carRepo,
             IDriverRepository driverRepository)
+
         {
             _bookingService = bookingService;
             _customerService = customerService;
             _carRepo = carRepo;
             this.driverRepository = driverRepository;
+
         }
 
         // ✅ Create Booking GET
@@ -57,6 +60,7 @@ namespace Car_Rental_Management.Controllers
                 CarColor = car.Color,
                 CarPricePerDay = car.PricePerDay ?? 0,
                 CarImage = car.ImagePaths?.FirstOrDefault() ?? "/uploads/images/noimage.jpg",
+
             };
 
             return View(model);
@@ -133,5 +137,6 @@ namespace Car_Rental_Management.Controllers
         //    var bookings = await _bookingService.GetBookingsByCustomerIdAsync(customerId);
         //    return View(bookings);
         //}
+
     }
 }

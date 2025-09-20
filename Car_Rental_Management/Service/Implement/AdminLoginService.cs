@@ -1,39 +1,31 @@
-﻿using Car_Rental_Management.Repository.Interface;
+﻿using Car_Rental_Management.Models;
+using Car_Rental_Management.Repository.Interface;
 using Car_Rental_Management.Service.Interface;
+using BCrypt.Net;
+using System.Threading.Tasks;
 
 namespace Car_Rental_Management.Service.Implement
 {
-    public class AdminLoginService: IAdminLoginService
+    public class AdminLoginService : IAdminLoginService
     {
-      
-        
-            private readonly IUserRepository _userRepo;
-            private readonly IAdminrepository _adminRepo;
-            public AdminLoginService(IUserRepository userRepo, IAdminrepository adminRepo)
-            {
-                _userRepo = userRepo;
-                _adminRepo = adminRepo;
-            }
-            public async Task<bool> VerifyAdminLoginAsync(string emailOrPhone, string password)
-            {
-                // 1️⃣ Fetch user by email or phone
-                var user = await _userRepo.GetByEmailOrPhoneAsync(emailOrPhone, password);
-                if (user == null)
-                    return false;
+        private readonly IUserRepository _userRepo;
 
-                // 2️⃣ Check password
-                if (user.Password != password)
-                    return false;
+        public AdminLoginService(IUserRepository userRepo)
+        {
+            _userRepo = userRepo;
+        }
 
-                // 3️⃣ Check role
-                if (user.Role != "Admin")
-                    return false;
+        public async Task<User?> VerifyAdminLoginAsync(string emailOrPhone, string password)
+        {
+            var user = await _userRepo.GetByEmailOrPhoneAsync(emailOrPhone);
+            if (user == null) return null;
 
-                // 4️⃣ Check if user has an Admin record
-                var admin = await _adminRepo.GetByUserIdAsync(user.Id);
-                return admin != null;
-            }
+            bool verified = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+            if (!verified) return null;
 
-        
+            if (user.Role != "Admin" && user.Role != "Superadmin") return null;
+
+            return user;
+        }
     }
 }

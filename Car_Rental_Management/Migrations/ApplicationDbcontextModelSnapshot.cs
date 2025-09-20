@@ -149,6 +149,42 @@ namespace Car_Rental_Management.Migrations
                     b.ToTable("Cars");
                 });
 
+            modelBuilder.Entity("Car_Rental_Management.Models.CarMaintenance", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CarId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Cost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsReturned")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.ToTable("CarMaintenances");
+                });
+
             modelBuilder.Entity("Car_Rental_Management.Models.Customer", b =>
                 {
                     b.Property<Guid>("Id")
@@ -323,7 +359,7 @@ namespace Car_Rental_Management.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -374,6 +410,17 @@ namespace Car_Rental_Management.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Driver");
+                });
+
+            modelBuilder.Entity("Car_Rental_Management.Models.CarMaintenance", b =>
+                {
+                    b.HasOne("Car_Rental_Management.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
                 });
 
             modelBuilder.Entity("Car_Rental_Management.Models.Driver", b =>

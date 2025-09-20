@@ -1,6 +1,4 @@
-﻿/* -------------------------------------
-   Hero Slider Styles
-------------------------------------- */
+﻿/* Hero Slider */
 .hero {
     position: relative;
     width: 100%;
@@ -34,7 +32,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    color: white;
     padding: 0 1rem;
     max-width: 90%;
 }
@@ -42,65 +39,151 @@
     .slide-text h1 {
         font-size: 3rem;
         margin-bottom: 1rem;
+        color: white;
         animation: fadeInDown 1s;
     }
 
     .slide-text p {
         font-size: 1.2rem;
         margin-bottom: 1.5rem;
+        color: rgb(203,241,240);
         animation: fadeInUp 1s;
     }
 
-/* -------------------------------------
-   Buttons
-------------------------------------- */
-.btn {
-    background-color: #FFD700;
-    color: #002366;
-    padding: 0.8rem 2rem;
+/* Custom Buttons */
+.custom-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--light-color);
+    background: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 30px;
     text-decoration: none;
-    font-weight: bold;
-    border-radius: 5px;
-    animation: fadeIn 2s;
-    transition: background 0.3s, transform 0.3s;
+    transition: all 0.4s ease;
+    cursor: pointer;
 }
 
-    .btn:hover {
-        background-color: #FFC107;
+    .custom-btn:hover {
+        color: var(--primary-color);
+        background: var(--light-color);
+        border-color: var(--light-color);
+        transform: translateY(-3px);
+    }
+
+    /* Warning Button */
+    .custom-btn.warning {
+        background: #cbf1f0;
+        color: var(--secondary-color);
+        border: 2px solid #cbf1f0;
+    }
+
+        .custom-btn.warning:hover {
+            background: var(--secondary-color);
+            color: var(--light-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+/* -------------------------------------
+   Book Now Button (Home Slider)
+------------------------------------- */
+.btn-book {
+    background-color: #076B66FF;
+    color: white;
+    padding: 0.8rem 2rem;
+    font-weight: bold;
+    border-radius: 5px;
+    text-decoration: none;
+    animation: fadeIn 2s;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 15px rgba(7,107,102,0.4);
+}
+
+    .btn-book:hover {
+        background-color: rgb(6,61,59);
         transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(6,61,59,0.5);
     }
 
 /* -------------------------------------
    Features Section
 ------------------------------------- */
 #features {
-    background: #f8f8f8;
+    background: #69818D;
+    padding: 80px 0;
 }
 
-.feature-box {
-    background: #f9f5ff;
-    padding: 35px;
-    border-radius: 20px;
-    text-align: center;
-    transition: all 0.4s ease;
-    color: #333;
-    border: 2px solid #e0d4ff;
-}
-
-    .feature-box i {
-        font-size: 45px;
-        color: #5e17eb;
-        background: #fff;
-        padding: 20px;
-        border-radius: 50%;
-        margin-bottom: 20px;
-        border: 2px solid #5e17eb;
+    #features h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #076B66; /* primary color */
+        margin-bottom: 50px;
+        text-align: center;
     }
+
+/* Feature Boxes Grid */
+.feature-box {
+    background: #ffffff;
+    padding: 30px 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
     .feature-box:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 25px rgba(94, 23, 235, 0.2);
+        transform: translateY(-8px);
+        box-shadow: 0 12px 28px rgba(0,0,0,0.2);
     }
+
+    /* Feature Icon */
+    .feature-box i {
+        font-size: 3rem;
+        color: #076B66; /* primary color */
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .feature-box:hover i {
+        transform: scale(1.2);
+        color: #0D1f23; /* secondary/dark accent */
+    }
+
+    /* Feature Title */
+    .feature-box h4 {
+        font-size: 1.5rem;
+        color: #0D1f23; /* dark color */
+        margin-bottom: 12px;
+        font-weight: 600;
+    }
+
+    /* Feature Description */
+    .feature-box p {
+        font-size: 1rem;
+        color: #555555;
+        line-height: 1.6;
+    }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #features h2 {
+        font-size: 2rem;
+    }
+
+    .feature-box i {
+        font-size: 2.5rem;
+    }
+
+    .feature-box h4 {
+        font-size: 1.3rem;
+    }
+
+    .feature-box p {
+        font-size: 0.95rem;
+    }
+}
 
 /* -------------------------------------
    Clients Section
@@ -110,8 +193,8 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    background: #000;
-    padding: 20px;
+    background: black;
+    padding: 40px 20px;
     gap: 20px;
 }
 
@@ -119,17 +202,20 @@
         width: 80px;
         max-width: 100%;
         height: auto;
-        filter: grayscale(100);
-        transition: 0.4s;
+        filter: grayscale(100%);
+        transition: 0.4s ease, transform 0.4s ease, filter 0.4s ease;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0,255,247,0.3);
     }
 
         .clients img:hover {
             filter: none;
-            transform: scale(1.1);
+            transform: scale(1.15);
+            box-shadow: 0 0 18px #00fff7, 0 0 36px rgba(0,255,247,0.5);
         }
 
 /* -------------------------------------
-   Animations (Optional for text fade)
+   Animations
 ------------------------------------- */
 @keyframes fadeInDown {
     from {
@@ -181,7 +267,7 @@
         font-size: 1rem;
     }
 
-    .btn {
+    .btn-book {
         padding: 0.6rem 1.2rem;
         font-size: 0.9rem;
     }
@@ -204,7 +290,7 @@
         font-size: 0.8rem;
     }
 
-    .btn {
+    .btn-book {
         padding: 0.5rem 1rem;
         font-size: 0.8rem;
     }

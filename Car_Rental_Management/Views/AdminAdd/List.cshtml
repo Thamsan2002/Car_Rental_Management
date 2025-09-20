@@ -1,8 +1,97 @@
 ﻿@model List<Car_Rental_Management.Dtos.AdminDto>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
 
-<h2>Admin List</h2>
+<style>
+    .page-title {
+        font-size: 22px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
 
-<table class="table table-striped table-bordered">
+    .actions-top {
+        margin-bottom: 15px;
+        text-align: right;
+    }
+
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+        .custom-table th {
+            background: #34495e;
+            color: #fff;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .custom-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            color: #2c3e50;
+        }
+
+        .custom-table tr:hover {
+            background: #f5f6fa;
+        }
+
+    /* Buttons */
+    .btn {
+        padding: 6px 14px;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 5px;
+        transition: background 0.3s;
+    }
+
+    .btn-add {
+        background: #2980b9;
+        color: #fff;
+    }
+
+        .btn-add:hover {
+            background: #1f6690;
+        }
+
+    .btn-edit {
+        background: #27ae60;
+        color: #fff;
+    }
+
+        .btn-edit:hover {
+            background: #1e874b;
+        }
+
+    .btn-delete {
+        background: #e74c3c;
+        color: #fff;
+    }
+
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+
+</style>
+
+<h2 class="page-title">Admin List</h2>
+
+<div class="actions-top">
+    <a asp-action="Add" class="btn btn-add">+ Add Admin</a>
+</div>
+
+<table class="custom-table">
     <thead>
         <tr>
             <th>Name</th>
@@ -23,9 +112,9 @@
                 <td>@admin.PhoneNumber</td>
                 <td>@admin.Role</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@admin.Id" class="btn btn-primary btn-sm">Edit</a>
+                    <a asp-action="Edit" asp-route-id="@admin.Id" class="btn btn-edit">Edit</a>
                     <form asp-action="Delete" asp-route-id="@admin.Id" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-danger btn-sm"
+                        <button type="submit" class="btn btn-delete"
                                 onclick="return confirm('Are you sure you want to delete this admin?');">
                             Delete
                         </button>

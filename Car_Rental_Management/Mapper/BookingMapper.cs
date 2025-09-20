@@ -20,6 +20,7 @@ namespace Car_Rental_Management.Mapper
                 };
             }
 
+
             //public static BookingViewmodel ToDto(Booking model)
             //{
             //    return new BookingViewmodel
@@ -37,5 +38,6 @@ namespace Car_Rental_Management.Mapper
             //        CarImage = model.car?.ImagePaths?.FirstOrDefault() ?? "/uploads/images/noimage.jpg"
             //    };
             //}
+
     }
 }

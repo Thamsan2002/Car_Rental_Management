@@ -1,85 +1,108 @@
-﻿/* Section Headers */
-.section-header {
+﻿/* Cars Section */
+.cars-section .section-header {
     text-align: center;
     margin-bottom: 64px;
 }
 
-    .section-header h2 {
+    .cars-section .section-header h2 {
         font-size: 2.5rem;
         font-weight: 700;
-        color: #111827;
+        color: #076B66;
         margin-bottom: 12px;
         letter-spacing: 1px;
     }
 
-    .section-header p {
+    .cars-section .section-header p {
         font-size: 1.2rem;
-        color: #6b7280;
+        color: #0d1f23;
         max-width: 600px;
         margin: 0 auto;
         line-height: 1.6;
     }
 
-
-/* Car card */
-.car-card {
+/* Car Card */
+.cars-section .car-card {
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    background: #fff;
+    background: var(--secondary-color);
     border: none;
 }
 
-    .car-card:hover {
+    .cars-section .car-card:hover {
         transform: translateY(-6px);
-        box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.6);
     }
 
+/* Custom Button */
+.cars-section .custom-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    background: var(--primary-color);
+    color: var(--light-color);
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .cars-section .custom-btn:hover {
+        background: var(--dark-color);
+        color: var(--highlight-color);
+        transform: translateY(-2px);
+    }
 
 /* Car Popup */
-.car-popup {
+.cars-section .car-popup {
     display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(17,24,39,0.85);
+    background: rgba(13,31,35,0.95);
     z-index: 9999;
     overflow-y: auto;
     animation: fadeIn 0.3s ease;
 }
 
-.car-popup-content {
-    background: #fff;
+.cars-section .car-popup-content {
+    background: var(--secondary-color);
     margin: 40px auto;
     padding: 25px;
     width: 92%;
     max-width: 900px;
     border-radius: 18px;
     position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     animation: slideUp 0.4s ease;
 }
 
-.car-popup .close-btn {
+.cars-section .close-btn {
     position: absolute;
-    top: 12px;
-    right: 20px;
-    font-size: 30px;
+    top: 16px;
+    right: 16px;
+    font-size: 32px;
     cursor: pointer;
-    color: #374151;
-    transition: color 0.3s;
+    color: var(--light-color);
+    z-index: 9999;
+    background: rgba(0,0,0,0.5);
+    padding: 4px 10px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
 }
 
-    .car-popup .close-btn:hover {
-        color: #111827;
+    .cars-section .close-btn:hover {
+        color: var(--highlight-color);
+        background: rgba(0,0,0,0.8);
     }
 
-
-/* Image slider */
-.image-slider {
+/* Image Slider */
+.cars-section .image-slider {
     position: relative;
     width: 100%;
     max-height: 420px;
@@ -88,7 +111,7 @@
     margin-bottom: 20px;
 }
 
-.Animation {
+.cars-section .Animation {
     width: 100%;
     height: 420px;
     object-fit: cover;
@@ -96,14 +119,14 @@
     border-radius: 12px;
 }
 
-
-/* Slider navigation */
-.prev, .next {
+/* Slider Navigation */
+.cars-section .prev,
+.cars-section .next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0,0,0,0.6);
-    color: #fff;
+    background: rgba(0,0,0,0.7);
+    color: var(--light-color);
     border: none;
     font-size: 26px;
     padding: 8px 14px;
@@ -112,40 +135,36 @@
     transition: background 0.3s;
 }
 
-    .prev:hover, .next:hover {
-        background: rgba(0,0,0,0.8);
+    .cars-section .prev:hover,
+    .cars-section .next:hover {
+        background: rgba(0,0,0,0.9);
     }
 
-.prev {
+.cars-section .prev {
     left: 12px;
 }
 
-.next {
+.cars-section .next {
     right: 12px;
 }
-/* Car details - modern grid look */
-.car-details {
-    background: #ffffff;
+
+/* Car Details */
+.cars-section .car-details {
+    background: var(--secondary-color);
     padding: 24px;
     border-radius: 14px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
     margin-top: 20px;
-    transition: all 0.3s ease;
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 2-column layout */
+    grid-template-columns: 1fr 1fr;
     gap: 15px 20px;
 }
 
-    .car-details:hover {
-        box-shadow: 0 10px 28px rgba(0,0,0,0.18);
-        transform: translateY(-3px);
-    }
-
-    .car-details p {
+    .cars-section .car-details p {
         margin: 0;
         font-size: 1rem;
-        color: #374151;
-        background: #f9fafb;
+        color: var(--light-color);
+        background: var(--card-color);
         padding: 10px 14px;
         border-radius: 8px;
         display: flex;
@@ -154,33 +173,17 @@
         font-weight: 500;
     }
 
-    .car-details strong {
-        color: #111827;
+    .cars-section .car-details strong {
+        color: var(--secondary-color);
         font-weight: 600;
         margin-right: 8px;
     }
 
-    .car-details p span {
-        color: #1f2937;
-        font-weight: 500;
-        text-align: left;
-    }
-
-    /* Book button full width */
-    .car-details .btn {
-        grid-column: span 2; /* button takes full width */
-        margin-top: 10px;
-        font-weight: 600;
-        border-radius: 10px;
-    }
-
-
-    /* Book Now button inside popup */
-    .car-details .btn {
-        margin-top: 15px;
+    /* Full width button in popup */
+    .cars-section .car-details .custom-btn {
+        grid-column: span 2;
+        text-align: center;
         width: 100%;
-        font-weight: 600;
-        border-radius: 8px;
     }
 
 /* Animations */

@@ -24,7 +24,7 @@ namespace Car_Rental_Management.Mapper
             return new User
             {
                 Email = vm.Email,
-                Password = vm.Password
+                PasswordHash = vm.Password
             };
         }
 

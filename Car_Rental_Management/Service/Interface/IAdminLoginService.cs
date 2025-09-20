@@ -1,7 +1,9 @@
-﻿namespace Car_Rental_Management.Service.Interface
+﻿using Car_Rental_Management.Models;
+
+namespace Car_Rental_Management.Service.Interface
 {
     public interface IAdminLoginService
     {
-        Task<bool> VerifyAdminLoginAsync(string emailOrPhone, string password);
+        Task<User?> VerifyAdminLoginAsync(string emailOrPhone, string password);
     }
 }
