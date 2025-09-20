@@ -51,7 +51,7 @@ namespace Car_Rental_Management.Controllers
             var model = new BookingViewmodel
             {
                 BookedPeriods = bookingDates,
-                CustomerId = customerGuid,
+                CustomerId = customer.Id,
                 DriverId = randomDriver?.Id,
                 DriverName = randomDriver?.Name,
                 CarId = car.Id,
