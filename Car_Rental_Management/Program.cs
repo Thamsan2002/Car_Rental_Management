@@ -4,6 +4,7 @@ using Car_Rental_Management.Repository.Implement;
 using Car_Rental_Management.Repository.Interface;
 using Car_Rental_Management.Service.Implement;
 using Car_Rental_Management.Service.Interface;
+using Car_Rental_Management.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,23 @@ var builder = WebApplication.CreateBuilder(args);
 // Repositories & Services
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAdminLoginService, AdminLoginService>();
+builder.Services.AddScoped<IDriverService, DriverService>();
+builder.Services.AddScoped<ICarService, CarService>();
+builder.Services.AddScoped<ICarRepository, CarRepository>();
+builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IAdminrepository, Addminrepository>();
+builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IStaffservice, StaffService>();
+builder.Services.AddScoped<IStaffRepository, StaffRepository>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICarMaintenanceRepository, CarMaintenanceRepository>();
+builder.Services.AddScoped<ICarMaintenanceService, CarMaintenanceService>();
+
+
 
 // DbContext
 builder.Services.AddDbContext<ApplicationDbcontext>(options =>

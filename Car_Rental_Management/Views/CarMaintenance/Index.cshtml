@@ -1,0 +1,117 @@
+﻿@model Car_Rental_Management.ViewModel.CarMaintenanceViewmodel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .form-container {
+        max-width: 700px;
+        margin: 30px auto;
+        background: #f4f4f4;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        font-family: Arial, sans-serif;
+    }
+
+    .form-header {
+        background: #2c3e50;
+        color: #fff;
+        padding: 15px;
+        border-radius: 10px 10px 0 0;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 6px;
+        color: #333;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 15px;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    .btn-save {
+        background: #27ae60;
+        color: white;
+        border: none;
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 100%;
+        transition: background 0.3s;
+    }
+
+        .btn-save:hover {
+            background: #219150;
+        }
+
+    .text-danger {
+        font-size: 14px;
+        color: red;
+    }
+</style>
+
+<div class="form-container">
+    <div class="form-header">
+        <h2>Add Car Maintenance</h2>
+    </div>
+
+    <form asp-action="AddMaintenance" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="CarId">Car</label>
+            <select asp-for="CarId" asp-items="@(new SelectList(Model.AvailableCars, "Id", "Model"))">
+                <option value="">-- Select Car --</option>
+            </select>
+            <span asp-validation-for="CarId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="MaintenanceType">Maintenance Type</label>
+            <input asp-for="MaintenanceType" placeholder="Enter maintenance type" />
+            <span asp-validation-for="MaintenanceType" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="MaintenanceDate">Start Date</label>
+            <input asp-for="MaintenanceDate" type="date" />
+            <span asp-validation-for="MaintenanceDate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Cost">Cost</label>
+            <input asp-for="Cost" type="number" step="0.01" placeholder="Enter cost" />
+            <span asp-validation-for="Cost" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Notes">Notes</label>
+            <textarea asp-for="Notes" placeholder="Enter additional notes"></textarea>
+            <span asp-validation-for="Notes" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn-save mt-2">Add Maintenance</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

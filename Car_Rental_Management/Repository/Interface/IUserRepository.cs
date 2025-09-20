@@ -24,6 +24,7 @@ namespace Car_Rental_Management.Repository.Interface
         Task<User?> GetCustomerByLoginAsync(string emailOrPhone);
 
         User? GetById(Guid userId);
+        Task DeleteAsync(Guid userId);
 
     }
 }

@@ -193,8 +193,8 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    background:#000000;
-    padding: 20px;
+    background: black;
+    padding: 40px 20px;
     gap: 20px;
 }
 
@@ -203,12 +203,15 @@
         max-width: 100%;
         height: auto;
         filter: grayscale(100%);
-        transition: 0.4s;
+        transition: 0.4s ease, transform 0.4s ease, filter 0.4s ease;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0,255,247,0.3);
     }
 
         .clients img:hover {
             filter: none;
-            transform: scale(1.1);
+            transform: scale(1.15);
+            box-shadow: 0 0 18px #00fff7, 0 0 36px rgba(0,255,247,0.5);
         }
 
 /* -------------------------------------

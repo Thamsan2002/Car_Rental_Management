@@ -17,6 +17,15 @@ namespace Car_Rental_Management.Repository.Implement
         {
             _context = context;
         }
+        public async Task DeleteAsync(Guid userId)
+        {
+            var user = await GetByIdAsync(userId);
+            if (user != null)
+            {
+                _context.Users.Remove(user); // assuming EF Core
+                await _context.SaveChangesAsync();
+            }
+        }
 
         public async Task<Guid> AddAsync(User user)
         {
