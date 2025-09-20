@@ -68,5 +68,11 @@ namespace Car_Rental_Management.Repository.Implement
             await _context.SaveChangesAsync();
         }
 
+        public async Task<Car?> GetByNumberOrMakeAsync(string number, string make)
+        {
+            return await _context.Cars
+                .FirstOrDefaultAsync(c => c.PlateNumber == number && c.Model == make);
+        }
+
     }
 }

@@ -12,6 +12,6 @@ namespace Car_Rental_Management.Repository.Interface
         Task DeleteAsync(Customer customer);
         Task<Customer?> GetByUserIdAsync(Guid userId);
         Task<int> GetCustomerCountAsync();
-       
+
     }
 }

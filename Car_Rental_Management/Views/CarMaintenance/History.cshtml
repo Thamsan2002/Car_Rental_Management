@@ -2,109 +2,153 @@
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Maintenance History";
 }
 
-<h2 style="text-align:center; margin-bottom:20px; color: var(--primary-color);">Maintenance History</h2>
+<style>
+    :root {
+        --primary-color: #076B66;
+        --secondary-color: #0D1F23;
+        --dark-color: #0d1f23;
+        --light-color: #ffffff;
+        --card-color: #b3d4d3;
+        --highlight-color: #cbf1f0;
+    }
 
-<!-- Add Maintenance button -->
-<div style="display:flex; justify-content:flex-end; margin-bottom:20px;">
-    <a href="@Url.Action("AddMaintenance")" 
-       style="padding:10px 20px; border-radius:10px; 
-              background: linear-gradient(90deg, var(--primary-color), var(--highlight-color)); 
-              color: var(--light-color); font-weight:bold; text-decoration:none; 
-              transition: all 0.3s ease;">
-        Add Maintenance
-    </a>
-</div>
+    body {
+        background-color: var(--highlight-color);
+        color: var(--secondary-color);
+        font-family: Arial, sans-serif;
+    }
 
-@if (Model != null && Model.Any())
-{
-    <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse:collapse; background:var(--card-color); border-radius:15px; overflow:hidden;">
-            <thead style="background: var(--secondary-color); color: var(--light-color);">
-                <tr>
-                    <th style="padding:10px;">Car</th>
-                    <th style="padding:10px;">Maintenance Type</th>
-                    <th style="padding:10px;">Start Date</th>
-                    <th style="padding:10px;">End Date</th>
-                    <th style="padding:10px;">Cost</th>
-                    <th style="padding:10px;">Status</th>
-                    <th style="padding:10px;">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr style="text-align:center; border-bottom:1px solid #ddd;">
-                        <td style="padding:8px;">@item.CarMake - @item.CarModel</td>
-                        <td style="padding:8px;">@item.Description</td>
-                        <td style="padding:8px;">@item.StartDate.ToString("yyyy-MM-dd")</td>
-                        <td style="padding:8px;">@(item.EndDate.HasValue? item.EndDate.Value.ToString("yyyy-MM-dd") : "-")</td>
-                        <td style="padding:8px;">@item.Cost.ToString("C")</td>
-                        <td style="padding:8px; color:@(item.IsReturned ? "green" : "orange");">
-                            @(item.IsReturned ? "Returned" : "Ongoing")
-                        </td>
-                        <td style="padding:8px;">
-                            @if (!item.IsReturned)
-                            {
-                                <form asp-action="ReturnCar" method="post" style="display:inline-block;">
-                                    <input type="hidden" name="maintenanceId" value="@item.MaintenanceId" />
-                                    <button type="submit" style="padding:5px 10px; border:none; border-radius:6px; background:var(--primary-color); color:white; cursor:pointer; transition:0.3s;">
-                                        Return
-                                    </button>
-                                </form>
-                            }
-                            <form asp-action="DeleteMaintenance" method="post" style="display:inline-block; margin-left:5px;">
-                                <input type="hidden" name="maintenanceId" value="@item.MaintenanceId" />
-                                <button type="submit" style="padding:5px 10px; border:none; border-radius:6px; background:red; color:white; cursor:pointer; transition:0.3s;">
-                                    Delete
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+    h2 {
+        color: var(--primary-color);
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: var(--light-color);
+        border: none;
+        border-radius: 5px;
+        padding: 6px 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+        .btn-primary:hover {
+            background-color: var(--dark-color);
+        }
+
+    .btn-return {
+        background-color: var(--primary-color);
+        color: var(--light-color);
+        border: none;
+        border-radius: 5px;
+        padding: 4px 10px;
+        font-size: 0.9rem;
+        margin-right: 5px;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+
+        .btn-return:hover {
+            background-color: #0a4d44;
+            transform: scale(1.05);
+        }
+
+    .btn-delete {
+        background-color: #d9534f;
+        color: var(--light-color);
+        border: none;
+        border-radius: 5px;
+        padding: 4px 10px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        }
+
+    .card {
+        background-color: var(--card-color);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    .table thead {
+        background-color: var(--secondary-color);
+        color: var(--light-color);
+    }
+
+    .table tbody tr:hover {
+        background-color: var(--highlight-color);
+        transition: 0.3s;
+    }
+</style>
+
+<div class="card">
+    <h2>Maintenance History</h2>
+
+    <div style="text-align:right; margin-bottom:15px;">
+        <a href="@Url.Action("Index")" class="btn-primary">+ Add Maintenance</a>
     </div>
-}
-else
-{
-    <p style="text-align:center; margin-top:20px; color:var(--secondary-color);">No maintenance records found.</p>
-}
 
-<!-- Optional cursor glow -->
-<div id="cursorGlow"></div>
-
-@section Scripts {
-    <script>
-        const cursor = document.getElementById('cursorGlow');
-        document.addEventListener('mousemove', e => {
-            cursor.style.top = e.clientY + 'px';
-            cursor.style.left = e.clientX + 'px';
-        });
-    </script>
-    <style>
-        :root {
-            --primary-color: #076B66;
-            --secondary-color: #0D1F23;
-            --light-color: #ffffff;
-            --card-color: #b3d4d3;
-            --highlight-color: #cbf1f0;
-        }
-
-        #cursorGlow {
-            position: fixed;
-            top:0; left:0;
-            width:25px; height:25px;
-            border-radius:50%;
-            pointer-events:none;
-            transform: translate(-50%, -50%);
-            background: radial-gradient(circle, var(--primary-color) 0%, rgba(0,0,0,0) 60%);
-            z-index: 9999;
-            transition: 0.05s;
-        }
-
-        table tr:hover { background: var(--highlight-color); }
-        button:hover { opacity: 0.85; transform: scale(1.05); }
-    </style>
-}
+    @if (Model != null && Model.Any())
+    {
+        <div style="overflow-x:auto;">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Car</th>
+                        <th>Maintenance Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Cost</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr style="text-align:center;">
+                            <td>@item.CarMake - @item.CarModel</td>
+                            <td>@item.Description</td>
+                            <td>@item.StartDate.ToString("yyyy-MM-dd")</td>
+                            <td>@(item.EndDate.HasValue? item.EndDate.Value.ToString("yyyy-MM-dd") : "-")</td>
+                            <td>@item.Cost.ToString("C")</td>
+                            <td style="color:@(item.IsReturned ? "green" : "orange");">
+                                @(item.IsReturned ? "Returned" : "Ongoing")
+                            </td>
+                            <td>
+                                @if (!item.IsReturned)
+                                {
+                                    <form asp-action="ReturnCar" method="post" style="display:inline-block;">
+                                        <input type="hidden" name="maintenanceId" value="@item.MaintenanceId" />
+                                        <button type="submit" class="btn-return">Return</button>
+                                    </form>
+                                }
+                                <form asp-action="DeleteMaintenance" method="post" style="display:inline-block;">
+                                    <input type="hidden" name="maintenanceId" value="@item.MaintenanceId" />
+                                    <button type="submit" class="btn-delete">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p style="text-align:center; margin-top:20px;">No maintenance records found.</p>
+    }
+</div>

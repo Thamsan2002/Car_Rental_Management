@@ -10,7 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Admin Dashboard</title>
 
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
@@ -19,7 +18,7 @@
             --secondary-color: #0D1f23;
             --dark-color: #0d1f23;
             --light-color: #ffffff;
-            --card-color: rgba(179,212,211,0.2);
+            --card-color: rgba(179,212,211,0.15);
             --highlight-color: #cbf1f0;
             --glow-color: #00fff7;
         }
@@ -28,156 +27,218 @@
             margin: 0;
             font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, var(--highlight-color), #e6fffd);
-            padding-bottom: 60px; /* footer space */
+        }
+
+        /* Wrapper to connect sidebar + main + footer */
+        .wrapper {
+            display: flex;
+            min-height: 100vh;
         }
 
         /* Sidebar */
         .sidebar {
-            width: 240px;
-            height: 100vh;
+            width: 220px;
+            min-width: 220px;
             background: var(--secondary-color);
             color: var(--light-color);
-            padding: 20px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
         }
 
-        .sidebar h2 {
-            font-weight: bold;
-            margin-bottom: 30px;
-            text-align: center;
-            color: var(--primary-color);
+            .sidebar h2 {
+                font-weight: bold;
+                margin-bottom: 25px;
+                text-align: center;
+                color: var(--primary-color);
+                font-size: 1.6rem;
+            }
+
+            .sidebar a {
+                display: block;
+                color: var(--light-color);
+                padding: 10px 12px;
+                border-radius: 8px;
+                text-decoration: none;
+                margin-bottom: 10px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+
+                .sidebar a:hover {
+                    background: rgba(255,255,255,0.1);
+                    box-shadow: 0 0 10px var(--glow-color);
+                    transform: translateX(5px);
+                }
+
+                .sidebar a.active {
+                    background: var(--primary-color);
+                    font-weight: bold;
+                    box-shadow: 0 0 15px var(--glow-color);
+                }
+
+        /* Main content + footer wrapper */
+        .main-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
-        .sidebar a {
-            display: block;
-            color: var(--light-color);
-            padding: 12px 15px;
+        /* Content */
+        .content-wrapper {
+            flex: 1;
+            padding: 20px 25px;
+            overflow-x: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        #searchInput {
+            width: 250px;
+            max-width: 100%;
+            padding: 6px 10px;
             border-radius: 8px;
-            text-decoration: none;
-            margin-bottom: 12px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
+            border: 1px solid #ccc;
+            font-size: 0.9rem;
         }
 
-        .sidebar a:hover {
-            background: rgba(255,255,255,0.1);
-            box-shadow: 0 0 10px var(--glow-color);
-            transform: translateX(8px);
-        }
-
-        .sidebar a.active {
-            background: var(--primary-color);
-            font-weight: bold;
-            box-shadow: 0 0 15px var(--glow-color);
-        }
-
-        /* Main content */
-        .content {
-            margin-left: 240px;
-            padding: 25px;
-        }
-
+        /* Cards hover effect */
         .card-summary, .card {
-            border-radius: 14px;
+            border-radius: 12px;
             transition: all 0.3s ease-in-out;
         }
 
-        .card-summary:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--glow-color);
-        }
+            .card-summary:hover {
+                transform: scale(1.03);
+                box-shadow: 0 0 15px var(--glow-color);
+            }
 
         /* Footer */
         footer {
-            position: fixed;
-            bottom: 0;
-            left: 240px; /* match sidebar width */
-            right: 0;
-            height: 60px;
+            height: 50px;
             background: var(--secondary-color);
             color: var(--light-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            border-top: 2px solid var(--primary-color);
-            box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
-            font-size: 0.9rem;
+            border-top: 1px solid var(--primary-color);
+            font-size: 0.85rem;
+            flex-shrink: 0;
         }
 
-
-        /* Settings Dropdown */
+        /* Dropdown */
         .dropdown-menu {
-            min-width: 150px;
+            min-width: 160px;
             background-color: var(--secondary-color);
         }
 
-        .dropdown-menu .dropdown-item {
-            color: var(--light-color);
-            transition: all 0.3s ease;
-        }
-
-            .dropdown-menu .dropdown-item:hover {
-                background-color: var(--primary-color);
+            .dropdown-menu .dropdown-item {
                 color: var(--light-color);
+                transition: all 0.3s ease;
             }
 
+                .dropdown-menu .dropdown-item:hover {
+                    background-color: var(--primary-color);
+                    color: var(--light-color);
+                }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .wrapper
+
+        {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            min-width: 100%;
+            flex-direction: row;
+            overflow-x: auto;
+            padding: 10px;
+        }
+
+            .sidebar a {
+                margin-right: 10px;
+                margin-bottom: 0;
+                white-space: nowrap;
+            }
+
+        .content-wrapper {
+            padding: 15px;
+        }
+
+        }
     </style>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <nav class="sidebar">
-                <h2>GoDrive</h2>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <h2>GoDrive</h2>
+            <a class="@(currentController == "AddCar" ? "active" : "")" asp-controller="AddCar" asp-action="Details">🚘 Car Management</a>
+            <a class="@(currentController == "CarMaintenance" ? "active" : "")" asp-controller="CarMaintenance" asp-action="History">🛠 Car Maintenance</a>
+            <a class="@(currentController == "Customer" ? "active" : "")" asp-controller="Customer" asp-action="Register">👥 Customer Management</a>
+            <a class="@(currentController == "Driver" ? "active" : "")" asp-controller="Driver" asp-action="Index">🧑‍✈️ Driver Management</a>
+            <a class="@(currentController == "Staff" ? "active" : "")" asp-controller="Staff" asp-action="Index">🧑‍💼 Staff Management</a>
+            <a class="@(currentController == "Booking" ? "active" : "")" asp-controller="Booking" asp-action="AllBookings">📅 Booking Management</a>
+            <a class="@(currentController == "Payment" ? "active" : "")" asp-controller="Payment" asp-action="PaymentDetails">💳 Payment Management</a>
+            <a class="@(currentController == "AdminAdd" ? "active" : "")" asp-controller="AdminAdd" asp-action="List">➕ AdminAdd</a>
 
-                <a class="@(currentController == "AddCar" ? "active" : "")" asp-controller="AddCar" asp-action="Details">🚘 Car Management</a>
-                <a class="@(currentController == "CarMaintenance" ? "active" : "")" asp-controller="CarMaintenance" asp-action="History">🛠 Car Maintenance</a>
-                <a class="@(currentController == "Customer" ? "active" : "")" asp-controller="Customer" asp-action="Register">👥 Customer Management</a>
-                <a class="@(currentController == "Driver" ? "active" : "")" asp-controller="Driver" asp-action="Index">🧑‍✈️ Driver Management</a>
-                <a class="@(currentController == "Staff" ? "active" : "")" asp-controller="Staff" asp-action="Index">🧑‍💼 Staff Management</a>
-                <a class="@(currentController == "Booking" ? "active" : "")" asp-controller="Booking" asp-action="AllBookings">📅 Booking Management</a>
-                <a class="@(currentController == "Payment" ? "active" : "")" asp-controller="Payment" asp-action="PaymentDetails">💳 Payment Management</a>
-                <a class="@(currentController == "AdminAdd" ? "active" : "")" asp-controller="AdminAdd" asp-action="List">➕ AdminAdd</a>
-                <!-- Settings with dropdown -->
-                <div class="dropdown">
-                    <a class="@(currentController == "User" ? "active" : "") dropdown-toggle" href="#" role="button" id="settingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">⚙️ Settings</a>
-                    <ul class="dropdown-menu" aria-labelledby="settingsDropdown">
-                        <li><a class="dropdown-item" asp-controller="User" asp-action="EditProfile">Edit Profile</a></li>
-                        <li><a class="dropdown-item" asp-controller="User" asp-action="ChangePassword">Change Password</a></li>
-                        <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Logout</a></li>
-                    </ul>
-                </div>
+            <div class="dropdown mt-2">
+                <a class="@(currentController == "User" ? "active" : "") dropdown-toggle" href="#" role="button" id="settingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">⚙️ Settings</a>
+                <ul class="dropdown-menu" aria-labelledby="settingsDropdown">
+                    <li><a class="dropdown-item" asp-controller="User" asp-action="EditProfile">Edit Profile</a></li>
+                    <li><a class="dropdown-item" asp-controller="User" asp-action="ChangePassword">Change Password</a></li>
+                    <li><a class="dropdown-item" asp-controller="Contact" asp-action="Show">Feedback</a></li>
+                    <li><a class="dropdown-item" asp-controller="User" asp-action="Logout">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
 
-
-            </nav>
-
-            <!-- Main Content -->
-            <main class="col px-md-4 py-4 content">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h1 class="h2 text-dark">@ViewData["Title"]</h1>
-                    <div class="d-flex align-items-center">
-                        <input class="form-control me-2 shadow-sm" type="text" placeholder="🔍 Search...">
-                        <span class="header-icon">👤</span>
-                    </div>
+        <!-- Main panel -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <div class="header">
+                    <h1 class="h4 text-dark">@ViewData["Title"]</h1>
+                    <input id="searchInput" class="form-control shadow-sm mb-2 mb-md-0" type="text" placeholder="🔍 Search...">
                 </div>
 
                 @RenderBody()
-            </main>
+            </div>
+
+            <footer>
+                © 2025 - Car_Rental_Management | All Rights Reserved
+            </footer>
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Scripts Section -->
-    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function() {
+                const filter = searchInput.value.toLowerCase();
+                const tables = document.querySelectorAll('table');
 
-    <footer>
-        © 2025 - Car_Rental_Management | All Rights Reserved
-    </footer>
+                tables.forEach(table => {
+                    const rows = table.querySelectorAll('tbody tr');
+                    rows.forEach(row => {
+                        const text = row.textContent.toLowerCase();
+                        row.style.display = text.includes(filter) ? '' : 'none';
+                    });
+                });
+            });
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

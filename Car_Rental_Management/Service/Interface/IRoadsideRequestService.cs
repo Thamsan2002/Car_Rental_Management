@@ -1,16 +1,15 @@
-﻿using Car_Rental_Management.Dtos;
-using Car_Rental_Management.ViewModel;
+﻿using Car_Rental_Management.ViewModel;
+using Car_Rental_Management.Dtos;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Car_Rental_Management.Service.Interface
 {
-    public interface IReportService
+    public interface IRoadsideRequestService
     {
         Task SubmitRequestAsync(RoadsideRequestViewModel model);
-
-        // Get pending requests (for dashboard, returns DTO with RequestId)
         Task<List<RoadsideRequestDto>> GetPendingRequestsAsync();
-
-        // Mark request as completed using Guid Id
         Task MarkCompletedAsync(Guid requestId);
     }
 }
