@@ -1,4 +1,158 @@
 ﻿/* -------------------- Contact Section -------------------- */
+/*#contact {
+    background: #ffffff;
+    padding: 80px 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+    #contact .section-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+        #contact .section-header h2 {
+            font-size: 2.5rem;
+            color: #076B66;*/ /* primary color */
+            /*font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        #contact .section-header p {
+            font-size: 1.1rem;
+            color: #555555;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }*/
+
+/* Contact Grid */
+/*.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+
+@media (max-width: 992px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+}*/
+
+/* Contact Info */
+/*.contact-info {
+    background: #f1fdfd;*/ /* light card color */
+    /*padding: 30px 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+    .contact-info h3 {
+        color: #076B66;
+        margin-bottom: 25px;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+.contact-item {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.contact-icon {
+    font-size: 2rem;
+    color: #076B66;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.contact-details h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    color: #0D1f23;*/ /* dark color */
+    /*font-weight: 600;
+}
+
+.contact-details p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #555555;
+    line-height: 1.4;
+}*/
+
+/* Contact Form */
+/*.contact-form {
+    background: #ffffff;
+    padding: 30px 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+    .contact-form h3 {
+        color: #076B66;
+        margin-bottom: 25px;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+    .contact-form .form-row {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .contact-form .form-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
+
+    .contact-form label {
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: #0D1f23;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        padding: 10px 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 0.95rem;
+        outline: none;
+        transition: border 0.3s, box-shadow 0.3s;
+    }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #076B66;
+            box-shadow: 0 0 8px rgba(7,107,102,0.3);
+        }
+
+    .contact-form button {
+        background: #076B66;
+        color: #ffffff;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+        margin-top: 10px;
+    }
+
+        .contact-form button:hover {
+            background: #0D1f23;
+            transform: scale(1.03);
+        }*/
+
+/* Responsive */
+/*@media (max-width: 768px) {
+    .contact-form .form-row {
+        flex-direction: column;
+    }
+}*/
 #contact {
     background: #ffffff;
     padding: 80px 0;
@@ -12,7 +166,7 @@
 
         #contact .section-header h2 {
             font-size: 2.5rem;
-            color: #076B66; /* primary color */
+            color: #076B66;
             font-weight: 700;
             margin-bottom: 15px;
         }
@@ -40,7 +194,7 @@
 
 /* Contact Info */
 .contact-info {
-    background: #f1fdfd; /* light card color */
+    background: #f1fdfd;
     padding: 30px 25px;
     border-radius: 12px;
     box-shadow: 0 6px 18px rgba(0,0,0,0.1);
@@ -62,13 +216,12 @@
     font-size: 2rem;
     color: #076B66;
     margin-right: 15px;
-    flex-shrink: 0;
 }
 
 .contact-details h4 {
     margin: 0 0 5px 0;
     font-size: 1.1rem;
-    color: #0D1f23; /* dark color */
+    color: #0D1f23;
     font-weight: 600;
 }
 
@@ -153,3 +306,4 @@
         flex-direction: column;
     }
 }
+

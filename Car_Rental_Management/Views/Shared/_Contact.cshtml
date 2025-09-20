@@ -1,4 +1,4 @@
-﻿@page
+﻿@* @page
 @model Car_Rental_Management.Views.Shared._ContactModel
 @{
 }
@@ -60,7 +60,7 @@
             <div class="contact-form">
                 <h3>Send us a Message</h3>
 
-                <form id="contactForm">
+                <form asp-action="Index" asp-controller="Contact" id="contactForm">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstName">First Name</label>
@@ -92,4 +92,118 @@
             </div>
         </div>
     </div>
+</section> *@
+
+@model Car_Rental_Management.ViewModel.ContactFormViewModel
+
+@{
+    ViewBag.Title = "Contact Us";
+}
+
+<!-- Contact -->
+<section id="contact" class="contact">
+    <div class="container">
+        <div class="section-header">
+            <h2>Get in Touch</h2>
+            <p>Have questions or need assistance? Our friendly team is here to help you find the perfect rental solution for your needs.</p>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>Contact Information</h3>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Phone</h4>
+                        <p>+94 76 451 1453</p>
+                        <p>+1 (555) 987-6543</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Email</h4>
+                        <p>info@driveeasy.com</p>
+                        <p>example@gmail.com</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Address</h4>
+                        <p>123 Main Street<br>Jaffna, JN 10001<br>Main States</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Business Hours</h4>
+                        <p>Monday - Friday: 8:00 AM - 8:00 PM<br>Saturday - Sunday: 9:00 AM - 6:00 PM</p>
+                    </div>
+                </div>
+            </div>
+
+
+        <!-- Contact Form -->
+        <div class="contact-form">
+            <h3>Send us a Message</h3>
+
+            @if (ViewBag.SuccessMessage != null)
+            {
+                <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+            }
+
+            <form asp-action="Index" method="post">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label asp-for="FirstName">First Name</label>
+                        <input asp-for="FirstName" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="LastName">Last Name</label>
+                        <input asp-for="LastName" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email">Email Address</label>
+                    <input asp-for="Email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Phone">Phone Number</label>
+                    <input asp-for="Phone" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Message">Message</label>
+                    <textarea asp-for="Message" rows="6"></textarea>
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
 </section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

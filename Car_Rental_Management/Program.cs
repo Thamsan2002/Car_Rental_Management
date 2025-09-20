@@ -27,6 +27,8 @@ builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICarMaintenanceRepository, CarMaintenanceRepository>();
 builder.Services.AddScoped<ICarMaintenanceService, CarMaintenanceService>();
+builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped<IContactRepository, ContactRepository>();
 
 
 
