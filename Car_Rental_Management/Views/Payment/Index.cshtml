@@ -1,0 +1,48 @@
+﻿@model Car_Rental_Management.ViewModel.PaymentViewModel
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<h2>Payment Summary</h2>
+
+<div class="card p-3 mb-3">
+    <h5>Booking Details</h5>
+    <p><strong>Customer:</strong> @Model.CustomerName</p>
+    <p><strong>Car:</strong> @Model.CarName</p>
+    <p><strong>Total Amount:</strong> LKR @Model.TotalAmount:</p>
+</div>
+
+<form asp-action="Pay" method="post">
+    <input type="hidden" asp-for="BookingId" />
+    <input type="hidden" asp-for="TotalAmount" />
+
+    <div class="mb-3">
+        <label>Payment Method</label>
+        <select class="form-select" asp-for="SelectedPaymentMethod">
+            <option value="Card" selected>Card / Debit / Credit</option>
+            <option value="Debit">Debit</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Card Number</label>
+        <input asp-for="CardNumber" class="form-control" placeholder="XXXX XXXX XXXX XXXX" />
+    </div>
+
+    <div class="mb-3">
+        <label>CVV</label>
+        <input asp-for="CVV" class="form-control" placeholder="123" />
+    </div>
+
+    <div class="mb-3">
+        <label>Expiry Date</label>
+        <input asp-for="ExpiryDate" type="month" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Pay Now</button>
+    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

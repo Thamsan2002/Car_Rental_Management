@@ -71,6 +71,7 @@ namespace Car_Rental_Management.Service.Implement
 
             var customer = new Customer
             {
+
                 UserId = model.UserId,
                 FullName = model.FullName,
                 Gender = model.Gender,
