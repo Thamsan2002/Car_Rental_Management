@@ -14,5 +14,6 @@ namespace Car_Rental_Management.Repository.Interface
         Task<Car> GetCarByIdAsync(Guid id);
         Task<List<Car>> GetAvailableCarsAsync();
         Task UpdateCarAsync(Car car);
+      
     }
 }
