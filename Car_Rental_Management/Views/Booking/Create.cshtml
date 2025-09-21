@@ -34,15 +34,8 @@
             <input type="hidden" asp-for="TotalPrice" id="hiddenTotalPrice" />
             <input type="hidden" asp-for="DriverFee" id="hiddenDriverFee" />
 
-            <!-- Car details -->
-            <input type="hidden" asp-for="CarMake" />
-            <input type="hidden" asp-for="CarModel" />
-            <input type="hidden" asp-for="CarColor" />
-            <input type="hidden" asp-for="CarPricePerDay" />
-            <input type="hidden" asp-for="CarImage" />
-
             <!-- Hidden Booked Periods -->
-            @for (int i = 0; i < Model.BookedPeriods.Count; i++)
+            @for (int i = 0; i < Model.BookedPeriods?.Count; i++)
             {
                 <input type="hidden" name="BookedPeriods[@i].Start" value="@Model.BookedPeriods[i].Start" />
                 <input type="hidden" name="BookedPeriods[@i].End" value="@Model.BookedPeriods[i].End" />
@@ -51,15 +44,12 @@
             <div class="mb-3">
                 <label>Booking Type</label><br />
                 <input type="radio" asp-for="BookingType" value="WithoutDriver" checked onchange="toggleDriver()" /> Without Driver
-
                 <input type="radio"
                        asp-for="BookingType"
                        value="WithDriver"
                        onchange="toggleDriver()"
                        disabled="@(Model.DriverId == null)" /> With Driver
-
                 <span asp-validation-for="BookingType" class="text-danger"></span>
-
             </div>
 
             <!-- Hidden driver fields -->
@@ -71,15 +61,13 @@
 
             <div class="mb-3">
                 <label>Start Date</label>
-
-                <input asp-for="StartDate" type="date" class="form-control" id="startDate" onchange="calculateTotal()" />
+                <input asp-for="StartDate" type="text" class="form-control" id="startDate" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
-
             </div>
 
             <div class="mb-3">
                 <label>End Date</label>
-                <input asp-for="EndDate" type="date" class="form-control" id="endDate" onchange="calculateTotal()" />
+                <input asp-for="EndDate" type="text" class="form-control" id="endDate" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
 
@@ -107,11 +95,44 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        function calculateTotal() {
-            const carPrice = @Model.CarPricePerDay;n
-            const driverPrice = 2000;
 
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        // Booked periods from backend
+        const bookedPeriods = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.BookedPeriods));
+
+        // Convert periods into ranges for Flatpickr
+        const disabledRanges = bookedPeriods
+            .filter(p => p.Start !== "0001-01-01" && p.End !== "0001-01-01") // filter invalid rows
+            .map(p => {
+                return { from: p.Start, to: p.End };
+            });
+
+        // Initialize Flatpickr for Start/End dates
+        flatpickr("#startDate", {
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            disable: disabledRanges,
+            onChange: function () {
+                calculateTotal();
+            }
+        });
+
+        flatpickr("#endDate", {
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            disable: disabledRanges,
+            onChange: function () {
+                calculateTotal();
+            }
+        });
+
+        function calculateTotal() {
+            const carPrice = @Model.CarPricePerDay;
+            const driverPrice = 2000;
 
             const startDateVal = document.getElementById('startDate').value;
             const endDateVal = document.getElementById('endDate').value;
