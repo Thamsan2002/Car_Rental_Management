@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Car_Rental_Management.Migrations
 {
     [DbContext(typeof(ApplicationDbcontext))]
-    [Migration("20250919212811_Furst")]
-    partial class Furst
+    [Migration("20250920090937_Firstmig")]
+    partial class Firstmig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -317,6 +317,48 @@ namespace Car_Rental_Management.Migrations
                     b.ToTable("Drivers");
                 });
 
+            modelBuilder.Entity("Car_Rental_Management.Models.RoadsideRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CarId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("RoadsideRequests");
+                });
+
             modelBuilder.Entity("Car_Rental_Management.Models.Staff", b =>
                 {
                     b.Property<Guid>("Id")
@@ -433,6 +475,25 @@ namespace Car_Rental_Management.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Car_Rental_Management.Models.RoadsideRequest", b =>
+                {
+                    b.HasOne("Car_Rental_Management.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Car_Rental_Management.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Car");
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Car_Rental_Management.Models.Staff", b =>

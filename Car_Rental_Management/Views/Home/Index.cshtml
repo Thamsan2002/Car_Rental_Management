@@ -14,11 +14,11 @@
                 <p>Premium Cars at Affordable Prices</p>
                 @if (userId.HasValue)
                 {
-                    <a asp-action="Booking" asp-controller="Booking" class="custom-btn">Book Now</a>
+                    <a asp-action="Create" asp-controller="Booking" class="custom-btn">Book Now</a>
                 }
                 else
                 {
-                    <a asp-action="SignUp" asp-controller="Customer" class="custom-btn">Book Now</a>
+                    <a asp-action="Login" asp-controller="Customer" class="custom-btn">Book Now</a>
                 }
             </div>
         </div>
@@ -27,7 +27,8 @@
             <div class="slide-text">
                 <h1>Luxury & Comfort</h1>
                 <p>Experience the best ride</p>
-                <a asp-action="Index" asp-controller="Car" class="custom-btn warning">View Cars</a>
+                <a href="#cars" class="custom-btn warning">View Cars</a>
+             
             </div>
         </div>
         <div class="slide">
@@ -126,7 +127,84 @@
     </div>
 </section>
 
-@await Html.PartialAsync("_About", model: null)
+
+<!-- About Section -->
+<section id="about" class="about white-text">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="text-white">About US</h2>
+            <p class="text-white">
+                For over 1 years, KTS has been the trusted choice for car rentals worldwide.
+                We're committed to providing exceptional vehicles and outstanding service
+                to make every journey memorable.
+            </p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-number" data-target="50000">0</div>
+                <div class="stat-label">Happy Customers</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                <div class="stat-number" data-target="1500">0</div>
+                <div class="stat-label">Vehicles Available</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="stat-number" data-target="100">0</div>
+                <div class="stat-label">Locations Worldwide</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <div class="stat-number" data-target="15">0</div>
+                <div class="stat-label">Years of Excellence</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="services">
+    <div class="container">
+        <div class="section-title" data-aos="fade-up">
+            <h2>Our Services</h2>
+            <p>We offer the best car rental services to suit your needs</p>
+        </div>
+
+        <div class="service-box">
+            <div class="service" data-aos="zoom-in" data-aos-delay="100">
+                <h3>Daily Car Rentals</h3>
+                <p>Flexible daily rental options with affordable prices.</p>
+            </div>
+            <div class="service" data-aos="zoom-in" data-aos-delay="200">
+                <h3>Long-Term Leasing</h3>
+                <p>Special packages for monthly or yearly rentals.</p>
+            </div>
+            <div class="service" data-aos="zoom-in" data-aos-delay="300">
+                <h3>Luxury Cars</h3>
+                <p>Premium cars for weddings, business trips, and events.</p>
+            </div>
+            <div class="service" data-aos="zoom-in" data-aos-delay="400">
+                <h3>24/7 Support</h3>
+                <p>We are always available to assist with your booking.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 
 <!-- Features Section -->
 <section id="features" class="py-5" style="background:#f8f8f8;">

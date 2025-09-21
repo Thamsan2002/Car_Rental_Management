@@ -14,6 +14,12 @@ namespace Car_Rental_Management.Service.Implement
             _repository = repository;
         }
 
+
+        public IEnumerable<ContactMessageDto> GetAllMessages()
+        {
+            return _repository.GetAllMessages();
+        }
+
         public bool SendMessage(ContactFormViewModel model, out string response)
         {
             // Duplicate check

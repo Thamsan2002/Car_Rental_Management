@@ -1,72 +1,126 @@
 ﻿@model IEnumerable<Car_Rental_Management.ViewModel.BookingViewmodel>
 
 @{
-    Layout = null; 
-    var monthlyData = ((IEnumerable<dynamic>)ViewBag.MonthlyData)?.ToList() ?? new List<dynamic>();
-    var carData = ((IEnumerable<dynamic>)ViewBag.CarWiseData)?.ToList() ?? new List<dynamic>();
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Booking List";
 }
 
+<style>
+    :root {
+        --primary-color: #076B66;
+        --secondary-color: #0D1F23;
+        --dark-color: #0d1f23;
+        --light-color: #ffffff;
+        --card-color: #b3d4d3;
+        --highlight-color: #cbf1f0;
+    }
 
-<div class="container my-5">
+    body {
+        background-color: var(--highlight-color);
+        color: var(--secondary-color);
+        font-family: Arial, sans-serif;
+    }
 
-    <!-- Charts Section -->
-    <div class="row mb-4 g-4">
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0 rounded-4 p-3">
-                <h5 class="text-center mb-3">📊 Monthly Bookings</h5>
-                <canvas id="monthlyChart"></canvas>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0 rounded-4 p-3">
-                <h5 class="text-center mb-3">🚗 Car-wise Bookings</h5>
-                <canvas id="carChart"></canvas>
-            </div>
-        </div>
+    h2 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+    }
+
+    .card {
+        background-color: var(--card-color);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    .btn-add {
+        background-color: var(--primary-color);
+        color: var(--light-color);
+        border: none;
+        border-radius: 6px;
+        padding: 6px 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+        .btn-add:hover {
+            background-color: var(--dark-color);
+        }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow-x: auto;
+    }
+
+    th {
+        background-color: var(--secondary-color);
+        color: var(--light-color);
+        padding: 10px;
+        text-align: left;
+    }
+
+    td {
+        background-color: var(--card-color);
+        padding: 8px;
+    }
+
+    tr:nth-child(even) td {
+        background-color: #d0e3e2;
+    }
+
+    .fw-bold {
+        font-weight: 600;
+    }
+
+    .text-success {
+        color: #27ae60 !important;
+    }
+</style>
+
+<div class="card">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Booking List</h2>
+
     </div>
 
-    <!-- Bookings Table -->
-    <div class="card shadow-lg border-0 rounded-4">
-        <div class="card-header bg-primary text-white text-center py-3 rounded-top">
-            <h2 class="mb-0">All Bookings</h2>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center" role="alert">
+            <i class="bi bi-info-circle"></i> No bookings found.
         </div>
-        <div class="card-body p-4">
-            @if (!Model.Any())
-            {
-                <div class="alert alert-info text-center" role="alert">
-                    <i class="bi bi-info-circle"></i> No bookings found.
-                </div>
-            }
-            else
-            {
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle text-center">
-                        <thead class="table-dark">
-                            <tr>
-                                <th scope="col">Customer ID</th>
-                                <th scope="col">Car</th>
-                                <th scope="col">Start Date</th>
-                                <th scope="col">End Date</th>
-                                <th scope="col">Total Price (LKR)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var booking in Model)
-                            {
-                                <tr>
-                                    <td>@booking.CustomerId</td>
-                                    <td class="fw-bold">@booking.CarMake @booking.CarModel</td>
-                                    <td>@booking.StartDate.ToString("dd MMM yyyy")</td>
-                                    <td>@booking.EndDate.ToString("dd MMM yyyy")</td>
-                                    <td class="text-success fw-bold">@booking.TotalPrice.ToString("N0")</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
+    }
+    else
+    {
+        <div style="overflow-x:auto;">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Customer ID</th>
+                        <th>Car</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Total Price (LKR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var booking in Model)
+                    {
+                        <tr>
+                            <td>@booking.CustomerId</td>
+                            <td class="fw-bold">@booking.CarMake @booking.CarModel</td>
+                            <td>@booking.StartDate.ToString("dd MMM yyyy")</td>
+                            <td>@booking.EndDate.ToString("dd MMM yyyy")</td>
+                            <td class="text-success fw-bold">@booking.TotalPrice.ToString("N0")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
-    </div>
+    }
 </div>
 
 <!-- Chart.js -->

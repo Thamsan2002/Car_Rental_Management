@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Car_Rental_Management.Migrations
 {
     /// <inheritdoc />
-    public partial class Furst : Migration
+    public partial class Firstmig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -143,6 +143,37 @@ namespace Car_Rental_Management.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RoadsideRequests",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CarId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    CompletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoadsideRequests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RoadsideRequests_Cars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "Cars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RoadsideRequests_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Admins",
                 columns: table => new
                 {
@@ -241,6 +272,16 @@ namespace Car_Rental_Management.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RoadsideRequests_CarId",
+                table: "RoadsideRequests",
+                column: "CarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RoadsideRequests_CustomerId",
+                table: "RoadsideRequests",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Staffs_UserId",
                 table: "Staffs",
                 column: "UserId");
@@ -265,13 +306,16 @@ namespace Car_Rental_Management.Migrations
                 name: "Drivers");
 
             migrationBuilder.DropTable(
+                name: "RoadsideRequests");
+
+            migrationBuilder.DropTable(
                 name: "Staffs");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "Cars");
 
             migrationBuilder.DropTable(
-                name: "Cars");
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Users");

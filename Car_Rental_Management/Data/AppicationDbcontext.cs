@@ -21,6 +21,7 @@ namespace Car_Rental_Management.Data
         public DbSet<Payment> Payments { get; set; }
         public DbSet<CarMaintenance> CarMaintenances { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<RoadsideRequest> RoadsideRequests { get; set; }
 
 
 

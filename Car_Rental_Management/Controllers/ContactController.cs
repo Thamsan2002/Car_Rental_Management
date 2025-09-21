@@ -14,10 +14,12 @@ namespace Car_Rental_Management.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public IActionResult Show()
         {
-            return View();
+            var messages = _contactService.GetAllMessages();
+            return View(messages); // pass list to view
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

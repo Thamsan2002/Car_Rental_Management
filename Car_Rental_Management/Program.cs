@@ -29,6 +29,9 @@ builder.Services.AddScoped<ICarMaintenanceRepository, CarMaintenanceRepository>(
 builder.Services.AddScoped<ICarMaintenanceService, CarMaintenanceService>();
 builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
+builder.Services.AddScoped<IRoadsideRequestRepository, RoadsideRequestRepository>();
+builder.Services.AddScoped<IRoadsideRequestService, RoadsideRequestService>();
+
 
 
 

@@ -13,7 +13,7 @@ namespace Car_Rental_Management.Repository.Interface
         Task<Customer?> GetByUserIdAsync(Guid userId);
 
         Task<int> GetCustomerCountAsync();
-       
+
 
     }
 }

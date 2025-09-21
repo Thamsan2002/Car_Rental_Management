@@ -4,6 +4,7 @@ using Car_Rental_Management.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Car_Rental_Management.Migrations
 {
     [DbContext(typeof(ApplicationDbcontext))]
-    partial class ApplicationDbcontextModelSnapshot : ModelSnapshot
+    [Migration("20250920094608_sfdg")]
+    partial class sfdg
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,8 +85,6 @@ namespace Car_Rental_Management.Migrations
                     b.HasIndex("CarId");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("DriverId");
 
                     b.ToTable("Bookings");
                 });
@@ -315,6 +316,7 @@ namespace Car_Rental_Management.Migrations
 
                     b.ToTable("Drivers");
                 });
+
             modelBuilder.Entity("Car_Rental_Management.Models.RoadsideRequest", b =>
                 {
                     b.Property<Guid>("Id")
@@ -350,7 +352,6 @@ namespace Car_Rental_Management.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("RoadsideRequests");
-
                 });
 
             modelBuilder.Entity("Car_Rental_Management.Models.Staff", b =>
@@ -432,7 +433,7 @@ namespace Car_Rental_Management.Migrations
 
             modelBuilder.Entity("Car_Rental_Management.Models.Booking", b =>
                 {
-                    b.HasOne("Car_Rental_Management.Models.Car", "Car")
+                    b.HasOne("Car_Rental_Management.Models.Car", "car")
                         .WithMany()
                         .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -444,15 +445,9 @@ namespace Car_Rental_Management.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Car_Rental_Management.Models.Driver", "Driver")
-                        .WithMany()
-                        .HasForeignKey("DriverId");
-
-                    b.Navigation("Car");
-
                     b.Navigation("Customer");
 
-                    b.Navigation("Driver");
+                    b.Navigation("car");
                 });
 
             modelBuilder.Entity("Car_Rental_Management.Models.CarMaintenance", b =>
