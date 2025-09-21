@@ -51,36 +51,34 @@ namespace Car_Rental_Management.Repository.Implement
                 throw new Exception("An unexpected error occurred while creating the booking.", ex);
             }
         }
+        public async Task<Booking> GetByIdAsync(Guid bookingId)
+        {
+            return await _context.Bookings
+                .Include(b => b.Car)
+                .Include(b => b.Customer)
+                .FirstOrDefaultAsync(b => b.Id == bookingId);
+        }
 
-        //public async Task AddAsync(Booking booking)
-        //{
-        //    _context.Bookings.Add(booking);
-        //    await _context.SaveChangesAsync();
-        //}
+        public async Task<List<Booking>> GetConfirmedBookingsByCustomerAsync(Guid customerId)
+        {
+            return await _context.Bookings
+                .Include(b => b.Car)
+                .Where(b => b.CustomerId == customerId)
+                .ToListAsync();
+        }
 
-        //public async Task<List<Booking>> GetAllAsync()
-        //{
-        //    return await _context.Bookings
-        //        .Include(b => b.Customer)
-        //        .Include(b => b.car)
-        //        .ToListAsync();
-        //}
+        public async Task<List<Booking>> GetAllBookingsAsync()
+        {
+            return await _context.Bookings.ToListAsync();
+        }
+        public async Task<IEnumerable<Booking>> GetBookingsByCustomerIdAsync(Guid customerId)
+        {
+            return await _context.Bookings
+                .Include(b => b.Car)  // car details use panna
+                .Where(b => b.CustomerId == customerId)
+                .ToListAsync();
+        }
 
-        //public async Task<Booking> GetByIdAsync(Guid id)
-        //{
-        //    return await _context.Bookings
-        //        .Include(b => b.Customer)
-        //        .Include(b => b.car)
-        //        .FirstOrDefaultAsync(b => b.Id == id);
-        //}
 
-        //public async Task<List<Booking>> GetByCustomerIdAsync(Guid customerId)
-        //{
-        //    return await _context.Bookings
-        //        .Include(b => b.Customer)
-        //        .Include(b => b.car)
-        //        .Where(b => b.CustomerId == customerId)
-        //        .ToListAsync();
-        //}
     }
 }

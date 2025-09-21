@@ -7,19 +7,19 @@ namespace Car_Rental_Management.Models
     public class RoadsideRequest
     {
         [Key]
-        public Guid Id { get; set; } // Request Id
+        public Guid RequestId { get; set; } = Guid.NewGuid();
 
         [Required]
         public Guid CustomerId { get; set; }
 
         [ForeignKey("CustomerId")]
-        public virtual Customer? Customer { get; set; } // nullable safe
+        public virtual Customer? Customer { get; set; }
 
         [Required]
         public Guid CarId { get; set; }
 
-        [ForeignKey("CarId")]
-        public virtual Car? Car { get; set; } // nullable safe
+        [ForeignKey(nameof(CarId))]
+        public virtual Car? Car { get; set; }
 
         [Required]
         public double Latitude { get; set; }
@@ -27,7 +27,7 @@ namespace Car_Rental_Management.Models
         [Required]
         public double Longitude { get; set; }
 
-        public string? Notes { get; set; } // nullable safe
+        public string? Notes { get; set; }
 
         [Required]
         public string Status { get; set; } = "Pending";

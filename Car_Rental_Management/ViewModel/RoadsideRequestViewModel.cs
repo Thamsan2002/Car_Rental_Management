@@ -1,21 +1,32 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Car_Rental_Management.ViewModel
 {
     public class RoadsideRequestViewModel
-    {
-        public Guid CustomerId { get; set; }
+        {
 
-        [Required(ErrorMessage = "Car number required")]
-        public string CarNumber { get; set; }
+        public Guid CarId { get; set; }
 
-        [Required(ErrorMessage = "Car make/model required")]
-        public string CarModel { get; set; }
+        [Display(Name = "Car Model")]
+        public string? CarModel { get; set; }
 
-        public double Latitude { get; set; } // hidden in form
-        public double Longitude { get; set; } // hidden in form
+        [Display(Name = "Number Plate")]
+        public string? CarNumberPlate { get; set; }
 
-        [StringLength(250)]
+        [Required]
+        [Display(Name = "Notes")]
+        [MaxLength(500)]
         public string? Notes { get; set; }
+
+        // Hidden for geolocation
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+       
+         
+         
     }
+    
+
 }

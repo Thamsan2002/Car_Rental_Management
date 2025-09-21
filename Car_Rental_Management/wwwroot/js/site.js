@@ -111,3 +111,11 @@ window.addEventListener("scroll", function () {
         navbar.classList.remove("scrolled");
     }
 });
+// 🔹 Hide loading overlay
+window.addEventListener('load', () => {
+    const overlay = document.getElementById('loadingOverlay');
+    setTimeout(() => {
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.remove(), 500);
+    }, 2500);
+});

@@ -44,6 +44,7 @@ namespace Car_Rental_Management.Service.Implement
                     StartDate = model.StartDate,
                     EndDate = model.EndDate,
                     TotalPrice = model.TotalPrice,
+                    Status = "Active",
                     CreatedAt = DateTime.Now
                 };
 
@@ -59,81 +60,36 @@ namespace Car_Rental_Management.Service.Implement
             }
         }
 
+        public async Task<List<Booking>> GetAllBookingsAsync()
+        {
+            return await _repo.GetAllBookingsAsync();
+        }
 
-        //public async Task<BookingViewmodel> CreateBookingAsync(BookingViewmodel dto)
-        //{
-        //    if (dto.CustomerId == Guid.Empty) throw new Exception("Customer ID missing");
-        //    if (dto.CarId == Guid.Empty) throw new Exception("Car ID missing");
-        //    if (dto.StartDate >= dto.EndDate) throw new Exception("Invalid date range");
+        public async Task<Dictionary<int, int>> GetHourlyBookingStatsAsync()
+        {
+            var bookings = await _repo.GetAllBookingsAsync();
+            var hourlyCount = new Dictionary<int, int>();
 
-        //    var model = BookingMapper.ToModel(dto);
-        //    await _repo.CreateAsync(model);
+            foreach (var booking in bookings)
+            {
+                int hour = booking.CreatedAt.Hour;
+                if (!hourlyCount.ContainsKey(hour))
+                    hourlyCount[hour] = 0;
 
-        //    // map back to viewmodel including generated Booking Id
-        //    var result = BookingMapper.ToDto(model);
-        //    result.BookingId = model.Id; // important: set Id for redirect
-        //    return result;
-        //}
+                hourlyCount[hour]++;
+            }
 
-        //public async Task<(bool Success, string Message, Guid BookingId)> CreateBookingAsync(BookingViewmodel model)
-        //{
-        //    // 1️⃣ Map ViewModel → Booking entity
-        //    var booking = new Booking
-        //    {
-        //        CustomerId = model.CustomerId,
-        //        CarId = model.CarId,
-        //        BookingType = model.BookingType,
-        //        DriverId = model.DriverId,
-        //        StartDate = model.StartDate,
-        //        EndDate = model.EndDate,
-        //        TotalPrice = model.TotalPrice,
-        //        CreatedAt = DateTime.Now
-        //    };
+            return hourlyCount; // Ex: {9: 5 bookings, 14: 12 bookings}
+        }
 
-        //    // 2️⃣ Save booking
-        //    await _repo.AddAsync(booking);
+        public async Task<Booking?> GetActiveBookingAsync(Guid customerId)
+        {
+            // Booking table-la active booking edukkanum
+            var bookings = await _repo.GetBookingsByCustomerIdAsync(customerId);
 
-        //    // 3️⃣ Update Car availability
-        //    var car = await _carRepo.GetByIdAsync(model.CarId);
-        //    if (car != null)
-        //    {
-        //        car.IsAvailable = false;
-        //        await _carRepo.UpdateAsync(car);
-        //    }
+            // active booking = finish aagatha booking
+            return bookings.FirstOrDefault(b => b.Status != "Finished");
+        }
 
-        //    return (true, "Booking successful", booking.Id);
-        //}
-
-        //public async Task<BookingViewmodel> GetBookingDtoByIdAsync(Guid id)
-        //{
-        //    var booking = await _repo.GetByIdAsync(id);
-        //    if (booking == null) return null;
-
-        //    var dto = BookingMapper.ToDto(booking);
-
-        //    var car = await _carRepo.GetByIdAsync(booking.CarId);
-        //    if (car != null)
-        //    {
-        //        dto.CarMake = car.Make;
-        //        dto.CarModel = car.Model;
-        //        dto.CarColor = car.Color;
-        //        dto.CarPricePerDay = car.PricePerDay ?? 0;
-        //        dto.CarImage = car.ImagePaths?.FirstOrDefault() ?? "/uploads/images/noimage.jpg";
-        //    }
-
-        //    return dto;
-        //}
-
-        //public async Task<List<BookingViewmodel>> GetAllBookingsAsync()
-        //{
-        //    var bookings = await _repo.GetAllAsync();
-        //    return bookings.Select(BookingMapper.ToDto).ToList();
-        //}
-
-        //public async Task<List<BookingViewmodel>> GetBookingsByCustomerIdAsync(Guid customerId)
-        //{
-        //    var bookings = await _repo.GetByCustomerIdAsync(customerId);
-        //    return bookings.Select(BookingMapper.ToDto).ToList();
-        //}
     }
 }
