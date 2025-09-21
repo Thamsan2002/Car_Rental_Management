@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<Car_Rental_Management.ViewModel.BookingViewmodel>
+
 @{
+
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Booking List";
 }
@@ -82,6 +84,7 @@
 <div class="card">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Booking List</h2>
+
     </div>
 
     @if (!Model.Any())
@@ -119,3 +122,61 @@
         </div>
     }
 </div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Monthly Bookings Chart
+    var monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+    new Chart(monthlyCtx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Json.Serialize(monthlyData.Select(x => x.Month))),
+            datasets: [{
+                label: 'Bookings',
+                data: @Html.Raw(Json.Serialize(monthlyData.Select(x => x.Count))),
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: { display: true, text: 'Monthly Bookings Overview', font: { size: 16 } }
+            },
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+    });
+
+    // Car-wise Bookings Chart
+    var carCtx = document.getElementById('carChart').getContext('2d');
+    new Chart(carCtx, {
+        type: 'pie',
+        data: {
+            labels: @Html.Raw(Json.Serialize(carData.Select(x => x.Car))),
+            datasets: [{
+                data: @Html.Raw(Json.Serialize(carData.Select(x => x.Count))),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(255, 159, 64, 0.7)',
+                    'rgba(199, 199, 199, 0.7)'
+                ],
+                borderColor: 'rgba(255,255,255,1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' },
+                title: { display: true, text: 'Car-wise Booking Distribution', font: { size: 16 } }
+            }
+        }
+    });
+</script>

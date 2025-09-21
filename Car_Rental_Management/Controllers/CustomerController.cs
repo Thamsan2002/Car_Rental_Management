@@ -79,6 +79,9 @@ namespace Car_Rental_Management.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(CustomerRegisterViewModel model, Guid? userId)
         {
+
+            // ✅ If userId is not passed, try to get from session
+
             if (userId == null || userId == Guid.Empty)
             {
                 var sessionUserId = HttpContext.Session.GetString("UserId");
@@ -86,7 +89,12 @@ namespace Car_Rental_Management.Controllers
                     userId = Guid.Parse(sessionUserId);
             }
 
+            // ✅ Assign UserId to model
             model.UserId = (Guid)userId;
+
+            //if (!ModelState.IsValid)
+            //    return View(model);
+
 
             var (isSuccess, errorMessage, customerId) = await _customerService.RegisterCustomerAsync(model);
 

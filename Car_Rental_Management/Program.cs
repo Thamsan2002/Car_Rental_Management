@@ -49,6 +49,7 @@ var app = builder.Build();
 // Ensure SuperAdmin exists
 using (var scope = app.Services.CreateScope())
 {
+
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbcontext>();
     var superAdminCreator = new CreateSuperAdmin(context);
     await superAdminCreator.EnsureSuperAdminAsync();
