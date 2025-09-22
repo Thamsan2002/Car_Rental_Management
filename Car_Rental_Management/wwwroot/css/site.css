@@ -1,228 +1,153 @@
-/* =========================
-   Variables
-========================= */
+﻿/*Loding page*/
 :root {
-    --primary-color: #076B66; /* main accent */
-    --secondary-color:#0D1f23; /* dark accent */
-    --dark-color: #0d1f23; /* hover / dark bg */
-    --light-color: #ffffff; /* text on dark */
-    --card-color: #b3d4d3; /* feature / service cards */
-    --highlight-color: #cbf1f0; /* subtitle background / light accent */
+    --primary-color: #076B66;
+    --secondary-color: #0D1f23;
+    --dark-color: #0d1f23;
+    --light-color: #ffffff;
+    --card-color: #b3d4d3;
+    --highlight-color: #cbf1f0;
 }
 
-/* =========================
-   Navbar
-========================= */
-nav.navbar {
-    background: var(--secondary-color);
-    padding: 15px 25px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    border-radius: 0; /* No border radius */
+body, html {
+    margin: 0;
+    padding: 0;
 }
 
-    nav.navbar .navbar-brand {
-        font-weight: 700;
-        color: var(--light-color);
-        font-size: 1.7rem;
-        letter-spacing: 1px;
-    }
-
-    nav.navbar .nav-link {
-        color: #bfc7cb;
-        margin: 0 8px;
-        font-weight: 500;
-        transition: 0.3s;
-    }
-
-        nav.navbar .nav-link:hover,
-        nav.navbar .nav-link.active {
-            color: var(--light-color);
-            background: var(--dark-color);
-            border-radius: 0; /* No rounding */
-            padding: 6px 12px;
-        }
-
-    nav.navbar .dropdown-menu {
-        background: var(--secondary-color);
-        border-radius: 0; /* No rounding */
-        box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-    }
-
-    nav.navbar .dropdown-item {
-        color: #bfc7cb;
-        transition: 0.3s;
-    }
-
-        nav.navbar .dropdown-item:hover {
-            background: var(--dark-color);
-            color: var(--light-color);
-        }
-
-/* Login / Profile button */
-.btn-login {
-    background: var(--dark-color);
-    color: var(--light-color);
-    padding: 6px 18px;
-    border-radius: 0; /* modern sharp edges */
-    font-weight: 600;
-    border: none;
-    transition: 0.3s;
-}
-
-    .btn-login:hover {
-        background: var(--primary-color);
-        color: var(--light-color);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    }
-
-/* =========================
-   Hero Slider
-========================= */
-.hero {
-    position: relative;
-    width: 100%;
-    height: 90vh;
-    overflow: hidden;
-}
-
-.slider .slide {
-    position: absolute;
+/* 🔹 Loading Overlay */
+.loading-overlay {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
+    background: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+    flex-direction: column;
+    color: var(--light-color);
+    font-family: Arial, sans-serif;
 }
 
-    .slider .slide.active {
-        opacity: 1;
+.road {
+    position: relative;
+    width: 250px;
+    height: 8px;
+    background: linear-gradient(90deg, var(--highlight-color), var(--card-color));
+    margin-top: 20px;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 0 10px var(--highlight-color);
+}
+
+.car {
+    position: absolute;
+    top: -45px;
+    left: -90px;
+    font-size: 3.8rem;
+    animation: drive 2.5s linear infinite;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--highlight-color), 0 0 20px var(--card-color);
+}
+
+@keyframes drive {
+    0% {
+        left: -90px;
     }
 
-.slider img {
+    100% {
+        left: 260px;
+    }
+}
+
+.loading-text {
+    margin-top: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--highlight-color);
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0.4;
+    }
+}
+
+/* Navbar */
+.navbar {
+    background: transparent;
+    transition: all 0.3s ease;
+    padding: 15px 30px;
+}
+
+.navbar.scrolled {
+    background: #132e35;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.navbar-brand {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* Mobile Overlay Menu */
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-}
-
-.slide-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    padding: 0 1rem;
-    max-width: 90%;
-    color: var(--light-color);
-}
-
-    .slide-text h1 {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        animation: fadeInDown 1s;
-    }
-
-    .slide-text p {
-        font-size: 1.2rem;
-        margin-bottom: 1.5rem;
-        animation: fadeInUp 1s;
-        color: var(--highlight-color);
-    }
-
-.btn-book {
-    background-color: var(--primary-color);
-    color: var(--light-color);
-    padding: 0.8rem 2rem;
-    font-weight: bold;
-    border-radius: 0; /* sharp edges */
-    transition: 0.3s;
-}
-
-    .btn-book:hover {
-        background-color: var(--dark-color);
-        transform: scale(1.05);
-        box-shadow: 0 6px 20px rgba(45,74,83,0.5);
-    }
-
-/* =========================
-   Features / Clients
-========================= */
-#features {
-    background: var(--highlight-color);
-}
-
-.feature-box {
-    background: var(--card-color);
-    padding: 35px;
-    border-radius: 0; /* sharp edges */
-    text-align: center;
-    transition: transform 0.4s, box-shadow 0.4s;
-    color: var(--dark-color);
-    border: 2px solid var(--primary-color);
-}
-
-    .feature-box i {
-        font-size: 45px;
-        color: var(--primary-color);
-        background: var(--light-color);
-        padding: 20px;
-        border-radius: 0; /* sharp */
-        margin-bottom: 20px;
-        border: 2px solid var(--primary-color);
-    }
-
-    .feature-box:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 25px rgba(45,74,83,0.2);
-    }
-
-.clients {
-    display: flex;
-    flex-wrap: wrap;
+    background: #076B66;
+    display: none;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: #000000;
-    padding: 20px;
-    gap: 20px;
+    z-index: 2000;
+    transition: opacity 0.4s ease;
 }
 
-    .clients img {
-        width: 80px;
-        height: auto;
-        filter: grayscale(100%);
-        transition: 0.4s;
+    .mobile-menu-overlay.active {
+        display: flex;
+        animation: fadeIn 0.5s ease forwards;
     }
 
-        .clients img:hover {
-            filter: none;
-            transform: scale(1.1);
+    .mobile-menu-overlay ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+    }
+
+    .mobile-menu-overlay li {
+        margin: 20px 0;
+    }
+
+    .mobile-menu-overlay a, .mobile-menu-overlay button {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #fff;
+        text-decoration: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+        .mobile-menu-overlay a:hover, .mobile-menu-overlay button:hover {
+            color: #cbf1f0;
         }
 
-/* =========================
-   Animations
-========================= */
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.close-menu {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 2rem;
+    color: #fff;
+    cursor: pointer;
 }
 
 @keyframes fadeIn {
@@ -235,51 +160,93 @@ nav.navbar {
     }
 }
 
-/* =========================
-   Responsive
-========================= */
-@media (max-width: 992px) {
-    .hero {
-        height: 70vh;
+/* Hide bootstrap collapse in mobile */
+@media (max-width: 991px) {
+    #navMenu {
+        display: none !important;
     }
 
-    .slide-text h1 {
-        font-size: 2rem;
-    }
-
-    .slide-text p {
-        font-size: 1rem;
-    }
-
-    .btn-book {
-        padding: 0.6rem 1.2rem;
-        font-size: 0.9rem;
-    }
-
-    nav.navbar .nav-link {
-        margin: 0 6px;
+    .navbar-toggler {
+        border: none;
     }
 }
 
-@media (max-width: 576px) {
-    .hero {
-        height: 60vh;
+
+/* ===== Footer ===== */
+footer {
+    background-color: #132e35; /* dark-blue footer */
+    color: white; /* light text */
+    margin-top: auto;
+    padding: 2rem 1rem 1rem;
+}
+
+.footer-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: space-between;
+}
+
+.footer-col h4,
+.footer-col h3 {
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.footer-col a {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+    .footer-col a:hover {
+        color: white;
     }
 
-    .slide-text h1 {
+.footer .social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+    .footer .social-links a {
+        color: white;
         font-size: 1.5rem;
+        transition: color 0.3s;
     }
 
-    .slide-text p {
-        font-size: 0.8rem;
-    }
+        .footer .social-links a:hover {
+            color: white;
+        }
 
-    .btn-book {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
-    }
-
-    .clients img {
-        width: 70px;
-    }
+.footer-bottom {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: white;
 }
+
+.chatbutton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #25D366;
+    color: white;
+    font-size: 2rem;
+    padding: 15px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    z-index: 9999;
+    cursor: pointer;
+    transition: transform 0.3s, background 0.3s;
+}
+
+    .chatbutton:hover {
+        transform: scale(1.1);
+        background: #128C7E;
+    }

@@ -1,0 +1,32 @@
+﻿@model Car_Rental_Management.ViewModel.RoadsideRequestViewModel
+
+<h3>Roadside Assistance Request</h3>
+
+<form asp-action="RequestForm" method="post">
+    <div>
+        <label>Car Model:</label>
+        <input type="text" value="@Model.CarModel" readonly />
+    </div>
+    <div>
+        <label>Number Plate:</label>
+        <input type="text" value="@Model.CarNumberPlate" readonly />
+    </div>
+    <div>
+        <label>Notes:</label>
+        <textarea asp-for="Notes"></textarea>
+    </div>
+
+    <input type="hidden" asp-for="Latitude" id="Latitude" />
+    <input type="hidden" asp-for="Longitude" id="Longitude" />
+
+    <button type="submit">Send Request</button>
+</form>
+
+<script>
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos){
+            document.getElementById("Latitude").value = pos.coords.latitude;
+            document.getElementById("Longitude").value = pos.coords.longitude;
+        });
+    }
+</script>

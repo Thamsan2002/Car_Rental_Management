@@ -43,5 +43,36 @@ namespace Car_Rental_Management.Repository.Implement
             _context.Cars.Remove(car);
             await _context.SaveChangesAsync();
         }
+        public async Task<int> GetCarCountAsync()
+        {
+            return await _context.Cars.CountAsync();
+        }
+
+        public async Task<int> GetAvailableCarCountAsync()
+        {
+            return await _context.Cars.CountAsync(c => c.IsAvailable);
+        }
+        public async Task<Car> GetCarByIdAsync(Guid id)
+        {
+            return await _context.Cars.FindAsync(id);
+        }
+
+        public async Task<List<Car>> GetAvailableCarsAsync()
+        {
+            return await _context.Cars.Where(c => c.IsAvailable).ToListAsync();
+        }
+
+        public async Task UpdateCarAsync(Car car)
+        {
+            _context.Cars.Update(car);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Car?> GetByNumberOrMakeAsync(string number, string make)
+        {
+            return await _context.Cars
+                .FirstOrDefaultAsync(c => c.PlateNumber == number && c.Model == make);
+        }
+
     }
 }

@@ -2,55 +2,139 @@
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Add Admin";
 }
 
-<h2>Add Admin</h2>
+<style>
+    :root {
+        --primary-color: #076B66;
+        --secondary-color: #0D1F23;
+        --card-color: #b3d4d3;
+        --highlight-color: #cbf1f0;
+        --text-light: #ffffff;
+    }
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
+    .form-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: var(--card-color);
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    }
 
-<form asp-action="Add" method="post">
-    @Html.AntiForgeryToken()
+    h2 {
+        color: var(--secondary-color);
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
+    .form-group {
+        margin-bottom: 15px;
+    }
 
-    <div class="form-group">
-        <label asp-for="Address"></label>
-        <input asp-for="Address" class="form-control" />
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
+    label {
+        font-weight: 600;
+        color: var(--secondary-color);
+        display: block;
+        margin-bottom: 6px;
+    }
 
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
 
-    <div class="form-group">
-        <label asp-for="PhoneNumber"></label>
-        <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
+    input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 6px rgba(7, 107, 102, 0.4);
+    }
 
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" type="password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
+    .text-danger {
+        font-size: 0.85rem;
+        color: red;
+    }
 
-   
+    .btn-submit {
+        background-color: var(--primary-color);
+        color: var(--text-light);
+        border: none;
+        padding: 12px;
+        width: 100%;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
 
-    <button type="submit" class="btn btn-primary">Add Admin</button>
-</form>
+        .btn-submit:hover {
+            background-color: var(--secondary-color);
+        }
+
+    .alert-success {
+        background: var(--highlight-color);
+        border-left: 5px solid var(--primary-color);
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        color: var(--secondary-color);
+        text-align: center;
+        font-weight: 500;
+    }
+</style>
+
+<div class="form-container">
+    <h2>Add Admin</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <form asp-action="Add" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" type="text" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Address"></label>
+            <input asp-for="Address" type="text" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" type="email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" type="text" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" type="password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn-submit">Add Admin</button>
+    </form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

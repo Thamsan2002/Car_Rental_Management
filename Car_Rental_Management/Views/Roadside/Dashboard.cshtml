@@ -1,0 +1,82 @@
+﻿@* @model List<Car_Rental_Management.Dtos.RoadsideRequestDto>
+
+@{
+    ViewBag.Title = "Roadside Requests Dashboard";
+}
+
+<h2>Roadside Requests Dashboard</h2>
+
+<!-- TempData Alert -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Customer Name</th>
+            <th>Car Number</th>
+            <th>Car Model</th>
+            <th>Location (Lat, Lng)</th>
+            <th>Notes</th>
+            <th>Request Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CustomerName</td>
+                    <td>@item.CarNumber</td>
+                    <td>@item.CarModel</td>
+                    <td>@item.Latitude, @item.Longitude</td>
+                    <td>@item.Notes</td>
+                    <td>@item.RequestDate.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>
+                        @if (item.Status == "Pending")
+                        {
+                            <span class="badge bg-warning text-dark">@item.Status</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">@item.Status</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.Status == "Pending")
+                        {
+                            <form asp-action="CompleteRequest" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.RequestId" />
+                                <button type="submit" class="btn btn-sm btn-success">Mark Completed</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Done</span>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center">No pending requests found.</td>
+            </tr>
+        }
+    </tbody>
+</table> *@

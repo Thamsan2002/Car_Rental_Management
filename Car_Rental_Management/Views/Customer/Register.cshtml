@@ -1,139 +1,125 @@
 ﻿@model Car_Rental_Management.ViewModel.CustomerRegisterViewModel
 @{
-    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
 
 <style>
-    body {
-        background-color: #FFFFFF; /* White background */
-        color: #0D1F23;
+    .form-container {
+        max-width: 700px;
+        margin: 30px auto;
+        background: #f4f4f4;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         font-family: Arial, sans-serif;
     }
 
-    .card {
-        background-color: #FFFFFF;
-        border: 1px solid #2D4A50;
+    .form-header {
+        background: #2c3e50;
+        color: #fff;
+        padding: 15px;
+        border-radius: 10px 10px 0 0;
         color: #FFFFFF;
-        border-radius: 12px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        border-bottom: 1px solid rgba(173, 179, 183, 0.3);
+        border-radius: 15px 15px 0 0;
+    .form-group {
+        margin-bottom: 15px;
     }
 
-    .card-header {
-        background-color: #698180;
-        color: #FFFFFF;
+    label {
+        display: block;
         font-weight: bold;
-        text-align: center;
-        border-radius: 12px 12px 0 0;
-    }
-
-    .form-label {
+        margin-bottom: 6px;
+        color: #333;
+        background-color: rgba(45, 74, 80, 0.7);
         color: #FFFFFF;
-        font-weight: 500;
+    input, select, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 15px;
     }
-
-    .form-control,
-    select,
+        border: 1px solid #ccc;
     textarea {
-        background-color: #2D4A50;
-        color: #FFFFFF;
-        border: 1px solid #5A636A;
-        border-radius: 8px;
+        resize: vertical;
     }
-
-        .form-control::placeholder {
-            color: #AFB3B7;
-            opacity: 1;
-        }
-
-        .form-control:focus,
-        select:focus,
-        textarea:focus {
-            background-color: #2D4A50;
-            color: #FFFFFF;
             border-color: #698180;
-            box-shadow: 0 0 8px #698180;
-            outline: none;
-        }
-
-    .btn-success {
-        background-color: #698180;
-        border-color: #698180;
+    .btn-save {
+        background: #27ae60;
+        color: white;
+        border: none;
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 100%;
+        transition: background 0.3s;
         color: #FFFFFF;
         font-weight: bold;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-    }
-
-        .btn-success:hover {
+        .btn-save:hover {
+            background: #219150;
             background-color: #5A636A;
             border-color: #5A636A;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            color: #FFFFFF;
+        font-size: 14px;
+        color: red;
         }
 
     .text-danger {
-        color: #FF6B6B;
-    }
-</style>
-
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <h4>profile Registraion</h4>
-                </div>
-                <div class="card-body">
-                    <form method="post">
-                        <div class="mb-3">
-                            <label asp-for="FullName" class="form-label"></label>
-                            <input asp-for="FullName" class="form-control" placeholder="Enter full name" />
-                            <span asp-validation-for="FullName" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="Gender" class="form-label"></label>
-                            <select asp-for="Gender" class="form-control">
-                                <option value="">-- Select Gender --</option>
-                                <option>Male</option>
-                                <option>Female</option>
-                            </select>
-                            <span asp-validation-for="Gender" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="NationalIdentityCard" class="form-label"></label>
-                            <input asp-for="NationalIdentityCard" class="form-control" placeholder="Enter NIC" />
-                            <span asp-validation-for="NationalIdentityCard" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="DrivingLicenseNumber" class="form-label"></label>
-                            <input asp-for="DrivingLicenseNumber" class="form-control" placeholder="Enter driving license number" />
-                            <span asp-validation-for="DrivingLicenseNumber" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="Phonenumber" class="form-label"></label>
-                            <input asp-for="Phonenumber" class="form-control" placeholder="Enter phone number" />
-                            <span asp-validation-for="Phonenumber" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label asp-for="Address" class="form-label"></label>
-                            <textarea asp-for="Address" class="form-control" placeholder="Enter address"></textarea>
-                            <span asp-validation-for="Address" class="text-danger"></span>
-                        </div>
-
-                        <button type="submit" class="btn btn-success w-100">Save</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+<div class="form-container">
+    <div class="form-header">
+        <h2>Create Customer</h2>
     </div>
-</div>
+    <form method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+        <div class="form-group">
+            <label asp-for="FullName"></label>
+            <input asp-for="FullName" placeholder="Enter full name" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+                        <div class="mb-3">
+        <div class="form-group">
+            <label asp-for="Gender"></label>
+            <select asp-for="Gender">
+                <option value="">-- Select Gender --</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+            </select>
+            <span asp-validation-for="Gender" class="text-danger"></span>
+        </div>
+                                <option>Female</option>
+        <div class="form-group">
+            <label asp-for="NationalIdentityCard"></label>
+            <input asp-for="NationalIdentityCard" placeholder="Enter NIC" />
+            <span asp-validation-for="NationalIdentityCard" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+        <div class="form-group">
+            <label asp-for="DrivingLicenseNumber"></label>
+            <input asp-for="DrivingLicenseNumber" placeholder="Enter driving license number" />
+            <span asp-validation-for="DrivingLicenseNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+        <div class="form-group">
+            <label asp-for="Phonenumber"></label>
+            <input asp-for="Phonenumber" placeholder="Enter phone number" />
+            <span asp-validation-for="Phonenumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+        <div class="form-group">
+            <label asp-for="Address"></label>
+            <textarea asp-for="Address" placeholder="Enter address"></textarea>
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+        <button type="submit" class="btn-save">Save</button>
+    </form>
+</div>
+        </div>
+
+        <button type="submit" class="btn-save">Save</button>
+    </form>
+</div>

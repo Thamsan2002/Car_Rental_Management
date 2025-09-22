@@ -1,151 +1,131 @@
-﻿@* <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Car Management</title>
+﻿@model IEnumerable<Car_Rental_Management.ViewModel.CarViewModel>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Car Inventory";
+}
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="~/css/Addcar.css">
-</head>
-<body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <nav class="col-md-2 d-none d-md-block sidebar">
-                <h2>GoDrive</h2>
-                <a href="#">Dashboard</a>
-                <a href="#" class="active">Car Management</a>
-                <a href="#">Customer Management</a>
-                <a href="#">Staff Management</a>
-                <a href="#">Booking Management</a>
-                <a href="#">Payment Management</a>
-                <a href="#">Settings</a>
-            </nav>
+<style>
+    :root {
+        --primary-color: #076B66;
+        --secondary-color: #0D1f23;
+        --dark-color: #0d1f23;
+        --light-color: #ffffff;
+        --card-color: #b3d4d3;
+        --highlight-color: #cbf1f0;
+    }
 
-            <!-- Main -->
-            <main class="col-md-10 ms-sm-auto px-md-4 py-4">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h1 class="h2 text-dark">Car Management</h1>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCarModal">+ Add Car</button>
-                </div>
+    body {
+        background-color: var(--highlight-color);
+        color: var(--secondary-color);
+        font-family: Arial, sans-serif;
+    }
 
-                <!-- Car list -->
-                <div id="carsContainer" class="row g-2"></div>
-                <div id="emptyState" class="mt-4 text-center text-muted">
-                    <p>No cars added yet. Click <strong>Add Car</strong> to start.</p>
-                </div>
-            </main>
-        </div>
-    </div>
+    h2 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+    }
 
-    <!-- Modals -->
-    <!-- Add/Edit Car Modal -->
-    <div class="modal fade" id="addCarModal" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="carModalTitle">Add New Car</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addCarForm" autocomplete="off">
-                        <input type="hidden" id="editCarId" value="">
-                        <div class="row g-2">
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label">Make</label>
-                                <input type="text" class="form-control" id="make" required>
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label">Model</label>
-                                <input type="text" class="form-control" id="model" required>
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label">Year</label>
-                                <input type="number" class="form-control" id="year" required>
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label">Plate Number</label>
-                                <input type="text" class="form-control" id="plate">
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label">Seats</label>
-                                <input type="number" class="form-control" id="seats">
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label">Transmission</label>
-                                <select class="form-select" id="transmission">
-                                    <option>Automatic</option>
-                                    <option>Manual</option>
-                                    <option>CVT</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label">Fuel Type</label>
-                                <select class="form-select" id="fuel">
-                                    <option>Petrol</option>
-                                    <option>Diesel</option>
-                                    <option>Hybrid</option>
-                                    <option>Electric</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label">Mileage</label>
-                                <input type="number" class="form-control" id="mileage">
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label">Price Per Day</label>
-                                <input type="number" class="form-control" id="price" step="0.01">
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label">Color</label>
-                                <input type="text" class="form-control" id="color">
-                            </div>
-                            <div class="col-md-6 mb-2 form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="isAvailable" checked>
-                                <label class="form-check-label" for="isAvailable">Available Now</label>
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label">Description</label>
-                                <textarea class="form-control" id="description"></textarea>
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label">Upload Images</label>
-                                <input type="file" id="images" accept="image/*" multiple class="form-control">
-                                <div id="imagesPreview" class="d-flex flex-wrap mt-2"></div>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-2">Save Car</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    .btn-primary {
+        background-color: var(--primary-color);
+        border: none;
+    }
 
-    <!-- View Car Modal -->
-    <div class="modal fade" id="viewCarModal" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Car Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body" id="carDetailsBody"></div>
-            </div>
-        </div>
-    </div>
+        .btn-primary:hover {
+            background-color: var(--dark-color);
+        }
 
-    <!-- JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/Addcar.js"></script>
+    .table thead {
+        background-color: var(--secondary-color);
+        color: var(--light-color);
+    }
 
-    <!-- Footer -->
-    <footer class="text-white text-center py-2 mt-4 footer-gradient">
-        <small class="fw-bold">©️ 2025 - Car_Rental_Management - Privacy</small>
-    </footer>
-</body>
-</html>
- *@
+    .table tbody tr:hover {
+        background-color: var(--card-color);
+        transition: 0.3s;
+    }
+
+    .btn-warning {
+        background-color: #f0ad4e;
+        border: none;
+    }
+
+    .btn-danger {
+        background-color: #d9534f;
+        border: none;
+    }
+
+    .alert {
+        border-radius: 5px;
+    }
+
+    .card {
+        background-color: var(--card-color);
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="card">
+    <h2>Car Inventory</h2>
+
+    <!-- Success/Error Messages -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <!-- Add Car Button -->
+    <p>
+        <a class="btn btn-primary" asp-action="AddCar">Add New Car</a>
+    </p>
+
+    <!-- Cars Table -->
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Model</th>
+                <th>Brand</th>
+                <th>Status</th>
+                <th>Year</th>
+                <th>Price/Day</th>
+                <th>Seats</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var car in Model)
+                {
+                    <tr>
+                        <td>@car.Model</td>
+                        <td>@car.Make</td>
+                        <td>@(car.Available ? "Available" : "Not Available")</td>
+                        <td>@car.Year</td>
+                        <td>@(car.Price.HasValue? car.Price.Value.ToString("C") : "-")</td>
+                        <td>@car.Seats</td>
+                        <td>
+                            <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@car.Id">Edit</a>
+                            <form asp-action="Delete" asp-route-id="@car.Id" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure to delete this car?');">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center">No cars found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

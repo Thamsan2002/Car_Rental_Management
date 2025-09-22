@@ -9,5 +9,12 @@ namespace Car_Rental_Management.Repository.Interface
         Task<Car?> GetByIdAsync(Guid id);
         Task UpdateAsync(Car car);
         Task DeleteAsync(Car car);
+        Task<int> GetCarCountAsync();
+        Task<int> GetAvailableCarCountAsync();
+        Task<Car> GetCarByIdAsync(Guid id);
+        Task<List<Car>> GetAvailableCarsAsync();
+        Task UpdateCarAsync(Car car);
+        Task<Car?> GetByNumberOrMakeAsync(string number, string make);
+
     }
 }

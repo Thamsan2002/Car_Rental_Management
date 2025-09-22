@@ -21,6 +21,27 @@ namespace Car_Rental_Management.Repository.Implement
             return driver;
         }
 
+        public async Task<Driver?> GetRandomDriverAsync(Guid? excludeId = null)
+        {
+            var query = _context.Drivers.Include(d => d.User).AsQueryable();
+
+            // If excludeId provided → filter it out
+            if (excludeId.HasValue)
+            {
+                query = query.Where(d => d.Id != excludeId.Value);
+            }
+
+            var count = await query.CountAsync();
+
+            if (count == 0)
+                return null;
+
+            var random = new Random();
+            var skip = random.Next(count);
+
+            return await query.Skip(skip).FirstOrDefaultAsync();
+        }
+
         public async Task<List<Driver>> GetAllAsync()
         {
             return await _context.Drivers.Include(d => d.User).ToListAsync();
@@ -42,6 +63,11 @@ namespace Car_Rental_Management.Repository.Implement
             _context.Drivers.Remove(driver);
             await _context.SaveChangesAsync();
         }
+        public async Task<int> GetDriverCountAsync()
+        {
+            return await _context.Drivers.CountAsync();
+        }
+
 
     }
 }

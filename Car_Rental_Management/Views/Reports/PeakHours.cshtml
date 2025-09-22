@@ -1,0 +1,26 @@
+﻿@model Dictionary<int, int>
+@{
+    ViewData["Title"] = "Peak Hours Report";
+}
+
+<h2>Peak vs Off-Peak Booking Hours</h2>
+<canvas id="bookingChart" width="400" height="200"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('bookingChart').getContext('2d');
+    var labels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Keys));
+    var data = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Values));
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Bookings Count',
+                data: data,
+                backgroundColor: 'rgba(75, 192, 192, 0.7)'
+            }]
+        }
+    });
+</script>

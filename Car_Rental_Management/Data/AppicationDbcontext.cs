@@ -18,6 +18,12 @@ namespace Car_Rental_Management.Data
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<CarMaintenance> CarMaintenances { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<RoadsideRequest> RoadsideRequests { get; set; }
+
+
 
     }
 }

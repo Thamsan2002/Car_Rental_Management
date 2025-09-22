@@ -21,5 +21,9 @@ namespace Car_Rental_Management.Dtos
 
         // Driver list
         public List<DriverDto> Drivers { get; set; } = new();
+
+        public Guid BookingId { get; set; }
+        public bool WithDriver { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 }

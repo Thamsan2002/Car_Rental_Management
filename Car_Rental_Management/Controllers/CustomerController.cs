@@ -1,6 +1,8 @@
 ﻿using Car_Rental_Management.Service.Interface;
 using Car_Rental_Management.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace Car_Rental_Management.Controllers
 {
@@ -13,6 +15,7 @@ namespace Car_Rental_Management.Controllers
             _customerService = customerService;
         }
 
+        // ---------------- SIGNUP ----------------
         [HttpGet]
         public IActionResult SignUp()
         {
@@ -23,23 +26,21 @@ namespace Car_Rental_Management.Controllers
         public async Task<IActionResult> SignUp(CustomerSignupViewmodel model)
         {
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
 
+            // Password hashing handled inside CustomerService
             var result = await _customerService.RegisterUserAsync(model);
 
             if (result != "Account created successfully")
             {
-                // Show error message (duplicate email/phone)
-
                 ModelState.AddModelError("", result);
                 return View(model);
             }
 
-            // Success → Redirect to Login
             return RedirectToAction("Login");
         }
+
+        // ---------------- LOGIN ----------------
         [HttpGet]
         public IActionResult Login()
         {
@@ -52,6 +53,7 @@ namespace Car_Rental_Management.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
+            // Password hashing verification handled inside CustomerService
             var user = await _customerService.LoginCustomerAsync(model);
 
             if (user == null)
@@ -60,13 +62,14 @@ namespace Car_Rental_Management.Controllers
                 return View(model);
             }
 
-            // ✅ Store essential info in Session
+            // Store essential info in Session
             HttpContext.Session.SetString("UserId", user.Id.ToString());
             HttpContext.Session.SetString("UserEmail", user.Email);
 
             return RedirectToAction("Index", "Home");
         }
 
+        // ---------------- REGISTER DETAILED CUSTOMER INFO ----------------
         [HttpGet]
         public IActionResult Register()
         {
@@ -78,6 +81,7 @@ namespace Car_Rental_Management.Controllers
         {
 
             // ✅ If userId is not passed, try to get from session
+
             if (userId == null || userId == Guid.Empty)
             {
                 var sessionUserId = HttpContext.Session.GetString("UserId");
@@ -91,6 +95,7 @@ namespace Car_Rental_Management.Controllers
             //if (!ModelState.IsValid)
             //    return View(model);
 
+
             var (isSuccess, errorMessage, customerId) = await _customerService.RegisterCustomerAsync(model);
 
             if (!isSuccess)
@@ -99,11 +104,11 @@ namespace Car_Rental_Management.Controllers
                 return View(model);
             }
 
-            // Registration successful, pass CustomerId to view
             ViewBag.CustomerId = customerId;
             return View("Login");
         }
 
+        // ---------------- PROFILE ----------------
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
@@ -120,6 +125,5 @@ namespace Car_Rental_Management.Controllers
 
             return View(customer);
         }
-
     }
 }

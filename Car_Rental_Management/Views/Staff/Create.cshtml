@@ -1,100 +1,134 @@
 ﻿@model Car_Rental_Management.viewmodel.Staffviewmodel
 
-
 @{
-    ViewData["Title"] = "Add Staff";
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Add Staff</h2>
+<style>
+    :root {
+        --primary-color: #076B66;
+        --secondary-color: #0D1f23;
+        --dark-color: #0d1f23;
+        --light-color: #ffffff;
+        --card-color: #b3d4d3;
+        --highlight-color: #cbf1f0;
+    }
 
-<!-- Success message -->
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success">@TempData["Success"]</div>
-}
+    .staff-form-card {
+        background-color: var(--card-color);
+        padding: 2rem;
+        border-radius: 8px;
+        max-width: 700px;
+        margin: 2rem auto;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
 
-<form asp-action="Create" method="post" enctype="multipart/form-data">
-    <!-- Validation summary -->
-    <div asp-validation-summary="All" class="text-danger"></div>
+        .staff-form-card h2 {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+        }
 
-    <!-- Email -->
-    <div class="form-group">
+        .staff-form-card label {
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+
+        .staff-form-card input,
+        .staff-form-card select {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--secondary-color);
+            margin-bottom: 0.5rem;
+            background-color: var(--light-color);
+            color: var(--secondary-color);
+        }
+
+        .staff-form-card button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            .staff-form-card button:hover {
+                background-color: var(--secondary-color);
+            }
+
+    .text-danger {
+        color: #c0392b;
+        font-size: 0.9rem;
+    }
+
+    .alert-success {
+        background-color: var(--highlight-color);
+        color: var(--secondary-color);
+        padding: 0.75rem 1rem;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+    }
+</style>
+
+<div class="staff-form-card">
+    <h2>Add Staff</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert-success">@TempData["Success"]</div>
+    }
+
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
         <label asp-for="EmailAddress"></label>
-        <input asp-for="EmailAddress" class="form-control" />
+        <input asp-for="EmailAddress" />
         <span asp-validation-for="EmailAddress" class="text-danger"></span>
-    </div>
 
-    <!-- Password -->
-    <div class="form-group">
         <label asp-for="Password"></label>
-        <input asp-for="Password" type="password" class="form-control" />
+        <input asp-for="Password" type="password" />
         <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
 
-    <!-- Phone Number -->
-    <div class="form-group">
         <label asp-for="PhoneNumber"></label>
-        <input asp-for="PhoneNumber" class="form-control" />
+        <input asp-for="PhoneNumber" />
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
 
-    <!-- Role -->
-    <div class="form-group">
-        <label asp-for="Role"></label>
-        <input asp-for="Role" class="form-control" />
-        <span asp-validation-for="Role" class="text-danger"></span>
-    </div>
+        <label asp-for="position"></label>
+        <input asp-for="position" />
+        <span asp-validation-for="position" class="text-danger"></span>
 
-    <!-- Staff Name -->
-    <div class="form-group">
         <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
+        <input asp-for="Name" />
         <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
 
-    <!-- Address -->
-    <div class="form-group">
         <label asp-for="Address"></label>
-        <input asp-for="Address" class="form-control" />
+        <input asp-for="Address" />
         <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
 
-    <!-- Salary -->
-    <div class="form-group">
         <label asp-for="Salary"></label>
-        <input asp-for="Salary" type="number" class="form-control" />
+        <input asp-for="Salary" type="number" />
         <span asp-validation-for="Salary" class="text-danger"></span>
-    </div>
 
-    <!-- Shift Time -->
-    <div class="form-group">
         <label asp-for="ShiftTime"></label>
-        <input asp-for="ShiftTime" class="form-control" />
+        <input asp-for="ShiftTime" type="time" />
         <span asp-validation-for="ShiftTime" class="text-danger"></span>
-    </div>
 
-    <!-- Profile Image -->
-    <div class="form-group">
         <label asp-for="ProfileImage"></label>
-        <input asp-for="ProfileImage" type="file" class="form-control" />
+        <input asp-for="ProfileImage" type="file" />
         <span asp-validation-for="ProfileImage" class="text-danger"></span>
-    </div>
 
-    <!-- Status -->
-    <div class="form-group">
         <label asp-for="Status"></label>
-        <select asp-for="Status" class="form-control">
+        <select asp-for="Status">
             <option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
         </select>
         <span asp-validation-for="Status" class="text-danger"></span>
-    </div>
 
-    <button type="submit" class="btn btn-primary">Add Staff</button>
-</form>
+        <button type="submit">Add Staff</button>
+    </form>
+</div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

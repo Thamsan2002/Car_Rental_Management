@@ -14,11 +14,11 @@
                 <p>Premium Cars at Affordable Prices</p>
                 @if (userId.HasValue)
                 {
-                    <a asp-action="Booking" asp-controller="Booking" class="btn btn-success">Book Now</a>
+                    <a asp-action="Create" asp-controller="Booking" class="custom-btn">Book Now</a>
                 }
                 else
                 {
-                    <a asp-action="SignUp" asp-controller="Customer" class="btn btn-primary">Book Now</a>
+                    <a asp-action="Login" asp-controller="Customer" class="custom-btn">Book Now</a>
                 }
             </div>
         </div>
@@ -27,104 +27,76 @@
             <div class="slide-text">
                 <h1>Luxury & Comfort</h1>
                 <p>Experience the best ride</p>
-                <a asp-action="Index" asp-controller="Car" class="btn btn-warning">View Cars</a>
+                <a href="#cars" class="custom-btn warning">View Cars</a>
+             
             </div>
         </div>
         <div class="slide">
-            <img src="~/images/car6.jpg" alt="Car 2" />
+            <img src="~/images/car6.jpg" alt="Car 3" />
             <div class="slide-text">
                 <h1>Luxury & Comfort</h1>
                 <p>Experience the best ride</p>
-                <a asp-action="Index" asp-controller="Car" class="btn btn-warning">View Cars</a>
+                <a asp-action="Index" asp-controller="Car" class="custom-btn warning">View Cars</a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Clients -->
+<!-- Clients Section -->
 <section id="clients" class="clients py-4 text-center">
     <div class="container d-flex justify-content-center flex-wrap gap-4">
-        <img src="~/images/logo01.jpg" alt="Brand 1" height="50" />
-        <img src="~/images/logo02.jpg" alt="Brand 2" height="50" />
-        <img src="~/images/logo03.jpg" alt="Brand 3" height="50" />
-        <img src="~/images/logo01.jpg" alt="Brand 3" height="50" />
-        <img src="~/images/logo04.jpg" alt="Brand 3" height="50" />
+        <img src="~/images/honda.jpg" alt="Honda" height="50" data-brand="Honda" class="brand-icon" />
+        <img src="~/images/bmw.jpg" alt="BMW" height="50" data-brand="BMW" class="brand-icon" />
+        <img src="~/images/tata.jpg" alt="TATA" height="50" data-brand="TATA" class="brand-icon" />
+        <img src="~/images/audi.jpg" alt="Audi" height="50" data-brand="Audi" class="brand-icon" />
+        <img src="~/images/allbrands.png" alt="All Brands" height="50" data-brand="All" class="brand-icon" />
     </div>
 </section>
 
-<!-- Offers - Customer Only -->
-@if (userId.HasValue)
-{
-    <section id="offers" class="offers py-5" style="background:#fff8e1;">
-        <div class="container">
-            <h3 class="text-center mb-4">🔥 Special Offers</h3>
-            <div id="offersCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner d-flex">
-                    <div class="carousel-item active">
-                        <div class="offer-card text-center p-4 rounded shadow-sm" style="background:#fffbe6;">
-                            <h4>Weekend Special: Rent 1 Day, Get 10% Off!</h4>
-                            <p>Book your dream car this weekend and enjoy exclusive discounts.</p>
-                            <a asp-controller="Booking" asp-action="Booking" class="btn btn-warning">Book Now</a>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="offer-card text-center p-4 rounded shadow-sm" style="background:#ffe6e6;">
-                            <h4>Luxury Ride: 15% Off for First Booking</h4>
-                            <p>Experience premium cars at a discounted rate for your first booking.</p>
-                            <a asp-controller="Booking" asp-action="Booking" class="btn btn-warning">Book Now</a>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="offer-card text-center p-4 rounded shadow-sm" style="background:#e6f7ff;">
-                            <h4>Midweek Madness: Flat LKR 500 Off</h4>
-                            <p>Rent any car from Monday to Wednesday and save instantly.</p>
-                            <a asp-controller="Booking" asp-action="Booking" class="btn btn-warning">Book Now</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-}
-
 <!-- Cars Section -->
-<section id="cars" class="py-5">
+<section id="cars" class="cars-section py-5">
     <div class="container">
-        <h2 class="text-center mb-4">Available Cars</h2>
+        <div class="section-header">
+            <h2>Available Cars</h2>
+            <p>Choose your ride from our premium collection</p>
+        </div>
         <div class="row g-4">
             @foreach (var car in Model)
             {
-                <div class="col-md-4">
-                    <div class="card shadow-sm">
-                        <img src="@(car.ImageUrls?.FirstOrDefault() ?? "/uploads/images/noimage.jpg")" class="card-img-top" />
-                        <div class="card-body">
-                            <h5>@car.Make @car.Model (@car.Year)</h5>
-                            <p>Price: @(car.Price.HasValue ? $"LKR {car.Price.Value:N0}" : "N/A")</p>
+                <div class="col-md-4 car-card-wrapper" data-brand="@car.Make">
+                    <div class="car-card">
+                        <img src="@(car.ImageUrls?.FirstOrDefault() ?? "/uploads/images/noimage.jpg")" class="w-100" />
+                        <div class="p-3">
+                            <h5 class="text-white">@car.Make @car.Model (@car.Year)</h5>
+                            <p class="text-light">Price: @(car.Price.HasValue ? $"LKR {car.Price.Value:N0}" : "N/A")</p>
+
                             @if (userId.HasValue)
                             {
-                                <a asp-controller="Booking" asp-action="Create" asp-route-id="@car.Id" class="btn btn-success">Book Now</a>
+                                <a asp-controller="Booking" asp-action="Create" asp-route-id="@car.Id" class="custom-btn">Book Now</a>
                             }
                             else
                             {
                                 <a asp-controller="Customer" asp-action="Login" class="btn btn-primary">Book Now</a>
+
                             }
-                            <button class="btn btn-info mt-2" onclick="openCarPopup('@car.Id')">Details</button>
+
+                            <button class="custom-btn mt-2" onclick="openCarPopup('@car.Id')">Details</button>
                         </div>
                     </div>
 
-                    <!-- Full Page Car Popup with All Details -->
-                    <div class="car-popup-overlay" id="carPopup_@car.Id" style="display:none;">
-                        <div class="popup-content p-4 position-relative">
-                            <button class="btn btn-secondary mb-3" onclick="closeCarPopup('@car.Id')">Back</button>
-                            <div id="slider_@car.Id" class="image-slider position-relative">
+                    <div class="car-popup" id="carPopup_@car.Id">
+                        <div class="car-popup-content">
+                            <span class="close-btn" onclick="closeCarPopup('@car.Id')">&times;</span>
+                            <div id="slider_@car.Id" class="image-slider">
                                 @foreach (var img in car.ImageUrls ?? new List<string>())
                                 {
-                                    <img src="@img" class="Animation w-100" style="display:none;" />
+                                    <img src="@img" class="Animation" />
                                 }
-                                <button class="prev btn btn-secondary position-absolute top-50 start-0 translate-middle-y" onclick="prevSlide('@car.Id')">&#10094;</button>
-                                <button class="next btn btn-secondary position-absolute top-50 end-0 translate-middle-y" onclick="nextSlide('@car.Id')">&#10095;</button>
+                                <button class="prev" onclick="prevSlide('@car.Id')">&#10094;</button>
+                                <button class="next" onclick="nextSlide('@car.Id')">&#10095;</button>
                             </div>
-                            <div class="car-details mt-3">
+
+                            <div class="car-details">
                                 <p><strong>Make:</strong> @car.Make</p>
                                 <p><strong>Model:</strong> @car.Model</p>
                                 <p><strong>Year:</strong> @car.Year</p>
@@ -135,13 +107,16 @@
                                 <p><strong>Color:</strong> @car.Color</p>
                                 <p><strong>Description:</strong> @car.Description</p>
                                 <p><strong>Price:</strong> @(car.Price.HasValue ? $"LKR {car.Price.Value:N0}" : "N/A")</p>
+
                                 @if (userId.HasValue)
                                 {
-                                    <a asp-controller="Booking" asp-action="Create" asp-route-id="@car.Id" class="btn btn-success mt-2">Book Now</a>
+                                    <a asp-controller="Booking" asp-action="Create" asp-route-id="@car.Id" class="custom-btn">Book Now</a>
                                 }
                                 else
                                 {
+
                                     <a asp-controller="Customer" asp-action="Login" class="btn btn-primary mt-2">Book Now</a>
+
                                 }
                             </div>
                         </div>
@@ -152,8 +127,83 @@
     </div>
 </section>
 
+
 <!-- About Section -->
-@await Html.PartialAsync("_About", model: null)
+<section id="about" class="about white-text">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="text-white">About US</h2>
+            <p class="text-white">
+                For over 1 years, KTS has been the trusted choice for car rentals worldwide.
+                We're committed to providing exceptional vehicles and outstanding service
+                to make every journey memorable.
+            </p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-number" data-target="50000">0</div>
+                <div class="stat-label">Happy Customers</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                <div class="stat-number" data-target="1500">0</div>
+                <div class="stat-label">Vehicles Available</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="stat-number" data-target="100">0</div>
+                <div class="stat-label">Locations Worldwide</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <div class="stat-number" data-target="15">0</div>
+                <div class="stat-label">Years of Excellence</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="services">
+    <div class="container">
+        <div class="section-title" data-aos="fade-up">
+            <h2>Our Services</h2>
+            <p>We offer the best car rental services to suit your needs</p>
+        </div>
+
+        <div class="service-box">
+            <div class="service" data-aos="zoom-in" data-aos-delay="100">
+                <h3>Daily Car Rentals</h3>
+                <p>Flexible daily rental options with affordable prices.</p>
+            </div>
+            <div class="service" data-aos="zoom-in" data-aos-delay="200">
+                <h3>Long-Term Leasing</h3>
+                <p>Special packages for monthly or yearly rentals.</p>
+            </div>
+            <div class="service" data-aos="zoom-in" data-aos-delay="300">
+                <h3>Luxury Cars</h3>
+                <p>Premium cars for weddings, business trips, and events.</p>
+            </div>
+            <div class="service" data-aos="zoom-in" data-aos-delay="400">
+                <h3>24/7 Support</h3>
+                <p>We are always available to assist with your booking.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
 
 <!-- Features Section -->
@@ -187,29 +237,19 @@
 </section>
 
 
-
 @await Html.PartialAsync("_Contact", model: null)
 
-
-
 @section Scripts {
+    <script src="/js/Home.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function(){
-            // AOS
-            AOS.init({duration:1000, once:false});
 
             // Hero Slider
             const slides=document.querySelectorAll(".slide"); let current=0;
             function nextSlide(){ slides[current].classList.remove("active"); current=(current+1)%slides.length; slides[current].classList.add("active"); }
             setInterval(nextSlide,5000);
 
-            // Offers Carousel - auto loop
-            var offersCarousel=document.querySelector('#offersCarousel');
-            if(offersCarousel){
-                new bootstrap.Carousel(offersCarousel, {interval:2500, ride:'carousel', wrap:true});
-            }
-
-            // Car Popup Slider
+            // Car popup slider
             class CarSlider{
                 constructor(carId, delay=3000){
                     this.slider=document.getElementById(`slider_${carId}`);
@@ -231,12 +271,49 @@
             {
                     <text>new CarSlider("@car.Id");</text>
             }
+
+            function openCarPopup(id){ document.getElementById(`carPopup_${id}`).style.display='block'; }
+            function closeCarPopup(id){ document.getElementById(`carPopup_${id}`).style.display='none'; }
+
+            // Brand Filter
+            const clientImgs = document.querySelectorAll('.brand-icon');
+            const carCards = document.querySelectorAll('.car-card-wrapper');
+
+            clientImgs.forEach(img => {
+                img.addEventListener('click', function(){
+                    // Highlight active
+                    clientImgs.forEach(i=>i.classList.remove('active-brand'));
+                    this.classList.add('active-brand');
+
+                    const brand = this.dataset.brand;
+                    carCards.forEach(card => {
+                        if(brand === "All" || card.dataset.brand === brand){
+                            card.style.display = "block";
+                        } else {
+                            card.style.display = "none";
+                        }
+                    });
+                });
+            });
+
         });
-
-        // Car popup open/close
-        function openCarPopup(id){ document.getElementById(`carPopup_${id}`).style.display='block'; }
-        function closeCarPopup(id){ document.getElementById(`carPopup_${id}`).style.display='none'; }
     </script>
-
-   
 }
+
+<style>
+    /* Brand icons same size + hover */
+    .brand-icon {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        filter: grayscale(100%);
+        transition: transform 0.3s, filter 0.3s;
+        cursor: pointer;
+        border-radius: 8px;
+    }
+
+        .brand-icon:hover, .active-brand {
+            transform: scale(1.2);
+            filter: grayscale(0%);
+        }
+</style>

@@ -5,49 +5,134 @@
     ViewData["Title"] = "Edit Admin";
 }
 
-<h2>Edit Admin</h2>
+<style>
+    .page-title {
+        font-size: 22px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
 
-<form asp-action="Edit" method="post" class="mt-3">
+    /* Form Layout */
+    .custom-form {
+        max-width: 600px;
+        background: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            font-weight: 500;
+            display: block;
+            margin-bottom: 6px;
+            color: #34495e;
+        }
+
+    .form-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccd1d9;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: border 0.3s;
+    }
+
+        .form-input:focus {
+            border-color: #2980b9;
+            outline: none;
+        }
+
+        .form-input.readonly {
+            background: #f4f4f4;
+            cursor: not-allowed;
+        }
+
+    /* Buttons */
+    .form-actions {
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: background 0.3s;
+    }
+
+    .btn-save {
+        background-color: #27ae60;
+        color: #fff;
+    }
+
+        .btn-save:hover {
+            background-color: #219150;
+        }
+
+    .btn-cancel {
+        background-color: #7f8c8d;
+        color: #fff;
+        margin-left: 10px;
+    }
+
+        .btn-cancel:hover {
+            background-color: #666;
+        }
+
+</style>
+<h2 class="page-title">Edit Admin</h2>
+
+<form asp-action="Edit" method="post" class="custom-form">
     @* Hidden field for Id *@
     <input type="hidden" asp-for="Id" />
 
-    <div class="form-group mb-3">
-        <label asp-for="Name" class="form-label"></label>
-        <input asp-for="Name" class="form-control" />
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-input" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
-    <div class="form-group mb-3">
-        <label asp-for="Address" class="form-label"></label>
-        <input asp-for="Address" class="form-control" />
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-input" />
         <span asp-validation-for="Address" class="text-danger"></span>
     </div>
 
-    <div class="form-group mb-3">
-        <label asp-for="Email" class="form-label"></label>
-        <input asp-for="Email" class="form-control" />
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-input" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
-    <div class="form-group mb-3">
-        <label asp-for="PhoneNumber" class="form-label"></label>
-        <input asp-for="PhoneNumber" class="form-control" />
+    <div class="form-group">
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" class="form-input" />
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
 
-    <div class="form-group mb-3">
-        <label asp-for="Password" class="form-label"></label>
-        <input asp-for="Password" class="form-control" placeholder="Leave blank to keep current password" />
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-input" placeholder="Leave blank to keep current password" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
-    <div class="form-group mb-3">
-        <label asp-for="Role" class="form-label"></label>
-        <input asp-for="Role" class="form-control" readonly /> @* Default: Admin *@
+    <div class="form-group">
+        <label asp-for="Role"></label>
+        <input asp-for="Role" class="form-input readonly" readonly /> @* Default: Admin *@
     </div>
 
-    <button type="submit" class="btn btn-success">Update</button>
-    <a asp-action="List" class="btn btn-secondary ms-2">Cancel</a>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-save">Update</button>
+        <a asp-action="List" class="btn btn-cancel">Cancel</a>
+    </div>
 </form>
 
 @section Scripts {

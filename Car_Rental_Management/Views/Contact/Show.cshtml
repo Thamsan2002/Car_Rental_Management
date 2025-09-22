@@ -1,0 +1,128 @@
+﻿@model List<Car_Rental_Management.Dtos.ContactMessageDto>
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Contact Messages";
+}
+
+<style>
+    :root {
+        --primary-color: #076B66;
+        --secondary-color: #0D1f23;
+        --dark-color: #0d1f23;
+        --light-color: #ffffff;
+        --card-color: #b3d4d3;
+        --highlight-color: #cbf1f0;
+    }
+
+    body {
+        background-color: var(--highlight-color);
+        color: var(--secondary-color);
+        font-family: Arial, sans-serif;
+    }
+
+    h2 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        border: none;
+        color: var(--light-color);
+        border-radius: 5px;
+        padding: 6px 14px;
+        transition: 0.3s;
+    }
+
+        .btn-primary:hover {
+            background-color: var(--dark-color);
+        }
+
+    .table thead {
+        background-color: var(--secondary-color);
+        color: var(--light-color);
+    }
+
+    .table tbody tr:hover {
+        background-color: var(--card-color);
+        transition: 0.3s;
+    }
+
+    .btn-danger {
+        background-color: #d9534f;
+        border: none;
+        color: var(--light-color);
+        border-radius: 5px;
+        padding: 4px 10px;
+        font-size: 0.9rem;
+        transition: 0.3s;
+    }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+    .alert {
+        border-radius: 5px;
+    }
+
+    .card {
+        background-color: var(--card-color);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="card">
+    <h2>Contact Messages</h2>
+
+    <!-- Messages Table -->
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Message</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                int i = 1;
+                foreach (var msg in Model)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@msg.FirstName @msg.LastName</td>
+                        <td>@msg.Email</td>
+                        <td>@msg.Phone</td>
+                        <td>@msg.Message</td>
+                        <td>@msg.CreatedAt.ToString("dd MMM yyyy HH:mm")</td>
+                        <td>
+                            <form asp-action="Delete" asp-route-id="@msg.Id" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Are you sure you want to delete this message?');">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center">No messages found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
