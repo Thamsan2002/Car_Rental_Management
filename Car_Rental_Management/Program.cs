@@ -1,7 +1,9 @@
 ﻿using Car_Rental_Management.Data;
 using Car_Rental_Management.Extra_Needs;
+using Car_Rental_Management.Repository;
 using Car_Rental_Management.Repository.Implement;
 using Car_Rental_Management.Repository.Interface;
+using Car_Rental_Management.Service;
 using Car_Rental_Management.Service.Implement;
 using Car_Rental_Management.Service.Interface;
 using Car_Rental_Management.Services;
@@ -29,8 +31,9 @@ builder.Services.AddScoped<ICarMaintenanceRepository, CarMaintenanceRepository>(
 builder.Services.AddScoped<ICarMaintenanceService, CarMaintenanceService>();
 builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
-builder.Services.AddScoped<IRoadsideRequestRepository, RoadsideRequestRepository>();
 builder.Services.AddScoped<IRoadsideRequestService, RoadsideRequestService>();
+builder.Services.AddScoped<IRoadsideRequestRepository, RoadsideRequestRepository>();
+
 
 
 

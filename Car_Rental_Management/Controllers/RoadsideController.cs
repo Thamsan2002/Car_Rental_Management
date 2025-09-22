@@ -1,58 +1,73 @@
-﻿using Car_Rental_Management.Service.Interface;
+﻿using Car_Rental_Management.Dtos;
+using Car_Rental_Management.Service.Interface;
 using Car_Rental_Management.ViewModel;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
-namespace Car_Rental_Management.Controllers
+public class RoadsideController : Controller
 {
-    public class RoadsideController : Controller
+    private readonly IRoadsideRequestService _service;
+    private readonly IBookingService _bookingService;
+
+    public RoadsideController(IRoadsideRequestService service, IBookingService bookingService)
     {
-        private readonly IRoadsideRequestService _service;
+        _service = service;
+        _bookingService = bookingService;
+    }
 
-        public RoadsideController(IRoadsideRequestService service)
+    [HttpGet]
+    public async Task<IActionResult> RequestHelp()
+    {
+        var customerIdStr = HttpContext.Session.GetString("UserId");
+        if (string.IsNullOrEmpty(customerIdStr))
         {
-            _service = service;
+            TempData["Error"] = "⚠️ Please login first.";
+            return RedirectToAction("Login", "Customer");
+        }
+        var customerId = Guid.Parse(customerIdStr);
+
+        var booking = await _bookingService.GetActiveBookingAsync(customerId);
+        if (booking == null)
+        {
+            TempData["Error"] = "❌ No active booking found.";
+            return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet]
-        public IActionResult RequestHelp()
+        var vm = new RoadsideRequestViewModel
         {
-            return View();
-        }
+            CarId = booking.CarId,
+            CarModel = booking.Car?.Model,
+            CarNumberPlate = booking.Car?.PlateNumber
+        };
 
-        [HttpPost]
-        public async Task<IActionResult> RequestHelp(RoadsideRequestViewModel model)
+        return View(vm);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> RequestHelp(RoadsideRequestViewModel vm)
+    {
+        if (!ModelState.IsValid)
+            return View(vm);
+
+        var customerIdStr = HttpContext.Session.GetString("CustomerId");
+        if (string.IsNullOrEmpty(customerIdStr))
         {
-
-            if (!ModelState.IsValid)
-                return View(model);
-
-            try
-            {
-                await _service.SubmitRequestAsync(model);
-                TempData["SuccessMessage"] = "Request sent! Admin will contact you soon.";
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = ex.Message;
-            }
-
-            return RedirectToAction("RequestHelp");
+            TempData["Error"] = "⚠️ Login required.";
+            return RedirectToAction("Signup", "Customer");
         }
+        var customerId = Guid.Parse(customerIdStr);
 
-        [HttpGet]
-        public async Task<IActionResult> Dashboard()
+        var dto = new RoadsideRequestDto
         {
-            var requests = await _service.GetPendingRequestsAsync();
-            return View(requests);
-        }
+            CustomerId = customerId,
+            CarId = vm.CarId,
+            Latitude = vm.Latitude,
+            Longitude = vm.Longitude,
+            Notes = vm.Notes
+        };
 
-        [HttpPost]
-        public async Task<IActionResult> CompleteRequest(Guid id)
-        {
-            await _service.MarkCompletedAsync(id);
-            return RedirectToAction("Dashboard");
-        }
+        await _service.CreateRequestAsync(dto);
+
+        TempData["Success"] = "✅ Request sent successfully!";
+        return RedirectToAction("Dashboard", "Customer");
     }
 }

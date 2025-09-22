@@ -1,123 +1,98 @@
-﻿using Car_Rental_Management.Models;
+﻿using Car_Rental_Management.Dtos;
+using Car_Rental_Management.Models;
 using Car_Rental_Management.Repository.Interface;
 using Car_Rental_Management.Service.Interface;
-using Car_Rental_Management.ViewModel;
-using Car_Rental_Management.Dtos;
-using System.Net.Mail;
 using System.Net;
-using System.Text;
-using Newtonsoft.Json;
+using System.Net.Mail;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
 
-namespace Car_Rental_Management.Service.Implement
+namespace Car_Rental_Management.Service
 {
     public class RoadsideRequestService : IRoadsideRequestService
     {
         private readonly IRoadsideRequestRepository _repo;
-        private readonly ICarRepository _carRepo;
+        private readonly IConfiguration _config;
 
-        public RoadsideRequestService(IRoadsideRequestRepository repo, ICarRepository carRepo)
+        public RoadsideRequestService(IRoadsideRequestRepository repo, IConfiguration config)
         {
             _repo = repo;
-            _carRepo = carRepo;
+            _config = config;
         }
 
-        public async Task SubmitRequestAsync(RoadsideRequestViewModel model)
+        public async Task<bool> CreateRequestAsync(RoadsideRequestDto dto)
         {
-            if (model == null) throw new ArgumentNullException(nameof(model));
-
-            // ✅ Find car by number and make
-            var car = await _carRepo.GetByNumberOrMakeAsync(model.CarNumber, model.CarModel);
-            if (car == null)
+            // Mapping DTO → Model
+            var entity = new RoadsideRequest
             {
-                throw new Exception("Car not found! Please check number and make.");
-            }
-
-            var request = new RoadsideRequest
-            {
-                Id = Guid.NewGuid(),
-                CustomerId = model.CustomerId,
-                CarId = car.Id,
-                Latitude = model.Latitude,
-                Longitude = model.Longitude,
-                Notes = model.Notes ?? "",
+                CustomerId = dto.CustomerId,
+                CarId = dto.CarId,
+                Latitude = dto.Latitude,
+                Longitude = dto.Longitude,
+                Notes = dto.Notes,
                 Status = "Pending",
                 RequestDate = DateTime.Now
             };
 
-            await _repo.AddAsync(request);
+            // Save to DB
+            await _repo.AddAsync(entity);
 
-            // ✅ Send admin alerts
-            SendAdminEmail(request, car);
-            await SendAdminWhatsAppAsync(request, car);
+            // 🔔 Notifications
+            await SendEmailNotification(dto);
+            await SendWhatsAppNotification(dto);
+
+            return true;
         }
 
-        public async Task<List<RoadsideRequestDto>> GetPendingRequestsAsync()
+        private async Task SendEmailNotification(RoadsideRequestDto dto)
         {
-            var requests = await _repo.GetAllPendingAsync();
-            return requests.Select(r => new RoadsideRequestDto
+            var smtpClient = new SmtpClient("smtp.gmail.com")
             {
-                RequestId = r.Id,
-                CustomerName = r.Customer != null ? r.Customer.FullName : "Unknown",
-                CarNumber = r.Car != null ? r.Car.PlateNumber : "N/A",
-                CarModel = r.Car != null ? r.Car.Model : "N/A",
+                Port = 587,
+                Credentials = new NetworkCredential(_config["Smtp:User"], _config["Smtp:Password"]),
+                EnableSsl = true,
+            };
+
+            var mail = new MailMessage
+            {
+                From = new MailAddress(_config["Smtp:User"]),
+                Subject = "New Roadside Assistance Request",
+                Body = $"Customer ID: {dto.CustomerId}\nCar ID: {dto.CarId}\nIssue: {dto.Notes}",
+                IsBodyHtml = false,
+            };
+            mail.To.Add("sureshkirusthiya@gmail.com");
+
+            await smtpClient.SendMailAsync(mail);
+        }
+
+        private async Task SendWhatsAppNotification(RoadsideRequestDto dto)
+        {
+            TwilioClient.Init(_config["Twilio:AccountSid"], _config["Twilio:AuthToken"]);
+
+            await MessageResource.CreateAsync(
+                body: $"🚨 New Roadside Request\nCustomer: {dto.CustomerId}\nCar: {dto.CarId}\nIssue: {dto.Notes}",
+                from: new PhoneNumber("whatsapp:+946784561"),
+                to: new PhoneNumber("whatsapp:+94763891103") // admin number
+            );
+        }
+
+        public async Task<IEnumerable<RoadsideRequestDto>> GetAllRequestsAsync()
+        {
+            var data = await _repo.GetAllPendingAsync();
+            return data.Select(r => new RoadsideRequestDto
+            {
+                CustomerId = r.CustomerId,
+                CarId = r.CarId,
                 Latitude = r.Latitude,
                 Longitude = r.Longitude,
-                Notes = r.Notes,
-                RequestDate = r.RequestDate,
-                Status = r.Status
+                Notes = r.Notes
             }).ToList();
         }
 
-        public async Task MarkCompletedAsync(Guid requestId)
+        public async Task MarkResolvedAsync(Guid requestId)
         {
-            await _repo.UpdateStatusAsync(requestId, "Completed");
-        }
-
-        // ---------------- Admin Alerts ----------------
-        private void SendAdminEmail(RoadsideRequest request, Car car)
-        {
-            try
-            {
-                var smtp = new SmtpClient("smtp.yourmail.com")
-                {
-                    Port = 587,
-                    Credentials = new NetworkCredential("admin@gmail.com", "password"),
-                    EnableSsl = true
-                };
-
-                var message = new MailMessage
-                {
-                    From = new MailAddress("admin@gmail.com"),
-                    Subject = $"New Roadside Request: {request.Id}",
-                    Body = $"Customer: {request.Customer?.FullName}\nCar: {car.PlateNumber} ({car.Model})\nLocation: {request.Latitude},{request.Longitude}\nNotes: {request.Notes}",
-                    IsBodyHtml = false
-                };
-                message.To.Add("admin@gmail.com");
-                smtp.Send(message);
-            }
-            catch
-            {
-                // log error
-            }
-        }
-
-        private async Task SendAdminWhatsAppAsync(RoadsideRequest request, Car car)
-        {
-            try
-            {
-                using var client = new HttpClient();
-                var data = new
-                {
-                    to = "whatsapp:+94772671337",
-                    message = $"New Roadside Request!\nCustomer: {request.Customer?.FullName}\nCar: {car.PlateNumber} ({car.Model})\nLocation: {request.Latitude},{request.Longitude}\nNotes: {request.Notes}"
-                };
-                var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
-                await client.PostAsync("https://api.whatsapp.com/send", content);
-            }
-            catch
-            {
-                // log error
-            }
+            await _repo.UpdateStatusAsync(requestId, "Resolved");
         }
     }
 }

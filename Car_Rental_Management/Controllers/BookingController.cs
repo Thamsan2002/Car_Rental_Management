@@ -100,43 +100,25 @@ namespace Car_Rental_Management.Controllers
 
             return View(model); // return view with error messages
         }
+        [HttpGet]
+        public async Task<IActionResult> AllBookingsChart()
+        {
+            // Get all bookings
+            var bookings = await _bookingService.GetAllBookingsAsync();
 
+            // Prepare hourly booking stats for chart
+            var hourlyStats = new Dictionary<int, int>();
+            foreach (var booking in bookings)
+            {
+                int hour = booking.CreatedAt.Hour; // Booking created hour
+                if (!hourlyStats.ContainsKey(hour))
+                    hourlyStats[hour] = 0;
+                hourlyStats[hour]++;
+            }
 
-        //// ✅ All Bookings (for admin)
-        //[HttpGet]
-        //public async Task<IActionResult> AllBookings()
-        //{
-        //    var bookings = await _bookingService.GetAllBookingsAsync();
-
-        //    var monthlyData = bookings
-        //        .GroupBy(b => new { b.StartDate.Year, b.StartDate.Month })
-        //        .Select(g => new
-        //        {
-        //            Month = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM yyyy", CultureInfo.InvariantCulture),
-        //            Count = g.Count()
-        //        }).ToList();
-
-        //    var carData = bookings
-        //        .GroupBy(b => $"{b.CarMake} {b.CarModel}")
-        //        .Select(g => new
-        //        {
-        //            Car = g.Key,
-        //            Count = g.Count()
-        //        }).ToList();
-
-        //    ViewBag.MonthlyData = monthlyData;
-        //    ViewBag.CarWiseData = carData;
-
-        //    return View(bookings);
-        //}
-
-        //// ✅ My Bookings (for customer)
-        //[HttpGet]
-        //public async Task<IActionResult> MyBookings(Guid customerId)
-        //{
-        //    var bookings = await _bookingService.GetBookingsByCustomerIdAsync(customerId);
-        //    return View(bookings);
-        //}
+            // Pass to view
+            return View(hourlyStats);
+        }
 
     }
 }
