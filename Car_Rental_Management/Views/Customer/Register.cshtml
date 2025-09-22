@@ -19,9 +19,9 @@
         color: #fff;
         padding: 15px;
         border-radius: 10px 10px 0 0;
-        text-align: center;
-    }
-
+        color: #FFFFFF;
+        border-bottom: 1px solid rgba(173, 179, 183, 0.3);
+        border-radius: 15px 15px 0 0;
     .form-group {
         margin-bottom: 15px;
     }
@@ -31,8 +31,8 @@
         font-weight: bold;
         margin-bottom: 6px;
         color: #333;
-    }
-
+        background-color: rgba(45, 74, 80, 0.7);
+        color: #FFFFFF;
     input, select, textarea {
         width: 100%;
         padding: 10px;
@@ -40,11 +40,11 @@
         border-radius: 8px;
         font-size: 15px;
     }
-
+        border: 1px solid #ccc;
     textarea {
         resize: vertical;
     }
-
+            border-color: #698180;
     .btn-save {
         background: #27ae60;
         color: white;
@@ -55,18 +55,18 @@
         cursor: pointer;
         width: 100%;
         transition: background 0.3s;
-    }
-
+        color: #FFFFFF;
+        font-weight: bold;
         .btn-save:hover {
             background: #219150;
+            background-color: #5A636A;
+            border-color: #5A636A;
+            color: #FFFFFF;
+        font-size: 14px;
+        color: red;
         }
 
     .text-danger {
-        font-size: 14px;
-        color: red;
-    }
-</style>
-
 <div class="form-container">
     <div class="form-header">
         <h2>Create Customer</h2>
@@ -79,7 +79,7 @@
             <input asp-for="FullName" placeholder="Enter full name" />
             <span asp-validation-for="FullName" class="text-danger"></span>
         </div>
-
+                        <div class="mb-3">
         <div class="form-group">
             <label asp-for="Gender"></label>
             <select asp-for="Gender">
@@ -90,29 +90,34 @@
             </select>
             <span asp-validation-for="Gender" class="text-danger"></span>
         </div>
-
+                                <option>Female</option>
         <div class="form-group">
             <label asp-for="NationalIdentityCard"></label>
             <input asp-for="NationalIdentityCard" placeholder="Enter NIC" />
             <span asp-validation-for="NationalIdentityCard" class="text-danger"></span>
         </div>
-
+        <div class="form-group">
         <div class="form-group">
             <label asp-for="DrivingLicenseNumber"></label>
             <input asp-for="DrivingLicenseNumber" placeholder="Enter driving license number" />
             <span asp-validation-for="DrivingLicenseNumber" class="text-danger"></span>
         </div>
-
+        <div class="form-group">
         <div class="form-group">
             <label asp-for="Phonenumber"></label>
             <input asp-for="Phonenumber" placeholder="Enter phone number" />
             <span asp-validation-for="Phonenumber" class="text-danger"></span>
         </div>
-
+        <div class="form-group">
         <div class="form-group">
             <label asp-for="Address"></label>
             <textarea asp-for="Address" placeholder="Enter address"></textarea>
             <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+        <button type="submit" class="btn-save">Save</button>
+    </form>
+</div>
         </div>
 
         <button type="submit" class="btn-save">Save</button>
